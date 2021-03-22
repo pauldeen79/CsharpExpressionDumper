@@ -20,7 +20,7 @@ jobs:
           sonarProjectName: CsharpExpressionDumper
           # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
           sonarOrganization: pauldeen79
-          dotnetBuildArguments: CsharpExpressionDumper.sln
+          dotnetBuildArguments: /home/runner/work/CsharpExpressionDumper/CsharpExpressionDumper/CsharpExpressionDumper.sln
           dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
           sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
     env:
