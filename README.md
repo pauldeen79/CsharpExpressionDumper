@@ -13,4 +13,4 @@ var dumper = new CsharpExpressionDumper
     Default.ReadOnlyPropertyResolvers
 );
 
-var sourceCode = dumper.Dump(input, typeof(T));
+var sourceCode = dumper.Dump(input, input.GetType());
