@@ -47,5 +47,5 @@ jobs:
           dotnet build CsharpExpressionDumper.sln --no-restore
           dotnet test CsharpExpressionDumper.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/
           echo "##vso[task.prependpath]$HOME/.dotnet/tools"      
-          reportgenerator "-reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml" "-targetDir:$(Build.SourcesDirectory)/TestResults/Coverage/Reports" -tag:$(Build.BuildNumber) -reportTypes:htmlInline
+          reportgenerator "-reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml" "-targetDir:${{ Build.SourcesDirectory }}/TestResults/Coverage/Reports" -tag:${{ Build.BuildNumber }} -reportTypes:htmlInline
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
