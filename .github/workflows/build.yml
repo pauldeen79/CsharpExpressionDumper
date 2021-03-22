@@ -60,6 +60,11 @@ jobs:
           targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
           reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
 
+      - name: Setup .NET Core # Required to execute sonar scanner
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.*
+
       - name: Post process SonarCloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
