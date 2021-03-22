@@ -37,10 +37,11 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-      - name: Setup .NET Core # Required to execute ReportGenerator
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.*
+
+      #- name: Setup .NET Core # Required to execute ReportGenerator
+      #  uses: actions/setup-dotnet@v1
+      #  with:
+      #    dotnet-version: 3.1.*
 
       - name: Build and analyze
         env:
@@ -51,19 +52,19 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"pauldeen79_CsharpExpressionDumper" /o:"pauldeen79" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet restore
           dotnet build CsharpExpressionDumper.sln --no-restore
-          dotnet test CsharpExpressionDumper.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
-
-      - name: ReportGenerator
-        uses: danielpalme/ReportGenerator-GitHub-Action@4.8.7
-        with:
-          reports: '**\coverage.cobertura.xml' # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
-          targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
-          reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
-
-      - name: Post process SonarCloud
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: |
+          dotnet test CsharpExpressionDumper.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+      #- name: ReportGenerator
+      #  uses: danielpalme/ReportGenerator-GitHub-Action@4.8.7
+      #  with:
+      #    reports: '**\coverage.cobertura.xml' # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
+      #    targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
+      #    reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
+
+      #- name: Post process SonarCloud
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #  shell: powershell
+      #  run: |
