@@ -51,7 +51,7 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"pauldeen79_CsharpExpressionDumper" /o:"pauldeen79" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet restore
           dotnet build CsharpExpressionDumper.sln --no-restore
-          dotnet test CsharpExpressionDumper.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
+          dotnet test CsharpExpressionDumper.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=coverage.xml
 
       - name: ReportGenerator
         uses: danielpalme/ReportGenerator-GitHub-Action@4.8.7
