@@ -1,5 +1,6 @@
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.ConstructorResolvers;
+using CsharpExpressionDumper.CsharpExpressionDumperCallbacks;
 using CsharpExpressionDumper.Extensions;
 using CsharpExpressionDumper.ObjectHandlerPropertyFilters;
 using FluentAssertions;
@@ -953,10 +954,14 @@ input.Property2 = 3;
             (
                 Enumerable.Empty<IObjectHandler>(),
                 Enumerable.Empty<ICustomTypeHandler>(),
-                Default.TypeNameFormatters,
-                Default.ConstructorResolvers,
-                Default.ReadOnlyPropertyResolvers,
-                Default.ObjectHandlerPropertyFilters
+                new DefaultCsharpExpressionDumperCallback
+                (
+                    Enumerable.Empty<ICustomTypeHandler>(),
+                    Default.TypeNameFormatters,
+                    Default.ConstructorResolvers,
+                    Default.ReadOnlyPropertyResolvers,
+                    Default.ObjectHandlerPropertyFilters
+                )
             );
 
             // Act & Assert
@@ -971,10 +976,14 @@ input.Property2 = 3;
             (
                 Default.ObjectHandlers,
                 customTypeHandlers.Concat(Default.CustomTypeHandlers),
-                Default.TypeNameFormatters,
-                Default.ConstructorResolvers,
-                Default.ReadOnlyPropertyResolvers,
-                Default.ObjectHandlerPropertyFilters
+                new DefaultCsharpExpressionDumperCallback
+                (
+                    customTypeHandlers.Concat(Default.CustomTypeHandlers),
+                    Default.TypeNameFormatters,
+                    Default.ConstructorResolvers,
+                    Default.ReadOnlyPropertyResolvers,
+                    Default.ObjectHandlerPropertyFilters
+                )
             );
             return sut.Dump(input, typeof(T));
         }
@@ -985,10 +994,14 @@ input.Property2 = 3;
             (
                 Default.ObjectHandlers,
                 Default.CustomTypeHandlers,
-                Default.TypeNameFormatters,
-                constructorResolvers,
-                Default.ReadOnlyPropertyResolvers,
-                Default.ObjectHandlerPropertyFilters
+                new DefaultCsharpExpressionDumperCallback
+                (
+                    Default.CustomTypeHandlers,
+                    Default.TypeNameFormatters,
+                    constructorResolvers,
+                    Default.ReadOnlyPropertyResolvers,
+                    Default.ObjectHandlerPropertyFilters
+                )
             );
             return sut.Dump(input, typeof(T));
         }
@@ -999,10 +1012,14 @@ input.Property2 = 3;
             (
                 Default.ObjectHandlers,
                 Default.CustomTypeHandlers,
-                Default.TypeNameFormatters,
-                Default.ConstructorResolvers,
-                Default.ReadOnlyPropertyResolvers,
-                objectHandlerPropertyFilters
+                new DefaultCsharpExpressionDumperCallback
+                (
+                    Default.CustomTypeHandlers,
+                    Default.TypeNameFormatters,
+                    Default.ConstructorResolvers,
+                    Default.ReadOnlyPropertyResolvers,
+                    objectHandlerPropertyFilters
+                )
             );
             return sut.Dump(input, typeof(T));
         }
