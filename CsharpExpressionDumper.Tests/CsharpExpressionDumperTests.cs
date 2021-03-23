@@ -1,7 +1,9 @@
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.ConstructorResolvers;
 using CsharpExpressionDumper.Extensions;
+using CsharpExpressionDumper.ObjectHandlerPropertyFilters;
 using FluentAssertions;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -930,6 +932,20 @@ input.Property2 = 3;
         }
 
         [Fact]
+        public void Can_Filter_Empty_Property_Values_On_Dump()
+        {
+            // Arrange
+            var input = new MyFlatClass();
+            var filter = new SkipDefaultValues();
+
+            // Act
+            var actual = Dump(input, new[] { filter });
+
+            // Asset
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass()");
+        }
+
+        [Fact]
         public void Dump_Throws_InvalidOperationExcepion_When_No_ObjectHandler_Supports_The_Object_Instance()
         {
             // Arrange
@@ -939,7 +955,8 @@ input.Property2 = 3;
                 Enumerable.Empty<ICustomTypeHandler>(),
                 Default.TypeNameFormatters,
                 Default.ConstructorResolvers,
-                Default.ReadOnlyPropertyResolvers
+                Default.ReadOnlyPropertyResolvers,
+                Default.ObjectHandlerPropertyFilters
             );
 
             // Act & Assert
@@ -956,7 +973,8 @@ input.Property2 = 3;
                 customTypeHandlers.Concat(Default.CustomTypeHandlers),
                 Default.TypeNameFormatters,
                 Default.ConstructorResolvers,
-                Default.ReadOnlyPropertyResolvers
+                Default.ReadOnlyPropertyResolvers,
+                Default.ObjectHandlerPropertyFilters
             );
             return sut.Dump(input, typeof(T));
         }
@@ -969,7 +987,22 @@ input.Property2 = 3;
                 Default.CustomTypeHandlers,
                 Default.TypeNameFormatters,
                 constructorResolvers,
-                Default.ReadOnlyPropertyResolvers
+                Default.ReadOnlyPropertyResolvers,
+                Default.ObjectHandlerPropertyFilters
+            );
+            return sut.Dump(input, typeof(T));
+        }
+
+        private string Dump<T>(T input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
+        {
+            var sut = new CsharpExpressionDumper
+            (
+                Default.ObjectHandlers,
+                Default.CustomTypeHandlers,
+                Default.TypeNameFormatters,
+                Default.ConstructorResolvers,
+                Default.ReadOnlyPropertyResolvers,
+                objectHandlerPropertyFilters
             );
             return sut.Dump(input, typeof(T));
         }

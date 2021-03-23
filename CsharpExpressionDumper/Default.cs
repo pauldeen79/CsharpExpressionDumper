@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.ConstructorResolvers;
 using CsharpExpressionDumper.CustomTypeHandlers;
@@ -55,10 +56,14 @@ namespace CsharpExpressionDumper
                     new DefaultTypeNameFormatter()
                 });
 
+        public static IEnumerable<IObjectHandlerPropertyFilter> ObjectHandlerPropertyFilters
+            => _objectHandlerPropertyFilters ?? (_objectHandlerPropertyFilters = Array.Empty<IObjectHandlerPropertyFilter>());
+
         private static IEnumerable<IObjectHandler> _objectHandlers;
         private static IEnumerable<ICustomTypeHandler> _customTypeHandlers;
         private static IEnumerable<IConstructorResolver> _constructorResolvers;
         private static IEnumerable<IReadOnlyPropertyResolver> _readOnlyPropertyResolvers;
         private static IEnumerable<ITypeNameFormatter> _typeNameFormatters;
+        private static IEnumerable<IObjectHandlerPropertyFilter> _objectHandlerPropertyFilters;
     }
 }

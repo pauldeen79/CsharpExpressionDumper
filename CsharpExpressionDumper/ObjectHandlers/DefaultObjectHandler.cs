@@ -75,6 +75,7 @@ namespace CsharpExpressionDumper.ObjectHandlers
                 property =>
                     (command.IsAnonymousType || !property.IsReadOnly())
                     && !processedProperties.Contains(property.Name)
+                    && callback.IsPropertyValid(command, property)
             ).ToArray();
 
             if (!first)
