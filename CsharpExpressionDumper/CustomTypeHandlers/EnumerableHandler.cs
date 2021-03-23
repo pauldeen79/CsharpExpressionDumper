@@ -16,32 +16,7 @@ namespace CsharpExpressionDumper.CustomTypeHandlers
             {
                 var items = enumerable.Cast<object>().ToArray();
                 var typeSuffix = GetTypeSuffix(items, command.Instance);
-                if (IsGenericCollection(command.InstanceType))
-                {
-                    AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.ObjectModel.Collection");
-                }
-                else if (IsGenericReadOnlyCollection(command.InstanceType))
-                {
-                    AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.ObjectModel.ReadOnlyCollection");
-                }
-                else if (IsGenericList(command.InstanceType))
-                {
-                    AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.Generic.List");
-                }
-                else
-                {
-                    callback.ChainAppendPrefix()
-                            .ChainAppend("new");
-
-                    if (typeSuffix != null)
-                    {
-                        callback.ChainAppend(" ")
-                                .ChainAppendTypeName(typeSuffix);
-                    }
-                    callback.AppendLine("[]");
-                }
-                callback.ChainAppend(new string(' ', command.Level * 4))
-                        .ChainAppendLine("{");
+                AppendInitialization(command, callback, typeSuffix);
                 var level = command.Level + 1;
                 foreach (var item in items)
                 {
@@ -51,9 +26,7 @@ namespace CsharpExpressionDumper.CustomTypeHandlers
                 }
                 level--;
                 callback.Append(new string(' ', level * 4));
-                if (IsGenericCollection(command.InstanceType)
-                    || IsGenericReadOnlyCollection(command.InstanceType)
-                    || IsGenericList(command.InstanceType))
+                if (IsGenericCollectionOrDerrivedType(command))
                 {
                     callback.Append("} )");
                 }
@@ -70,49 +43,74 @@ namespace CsharpExpressionDumper.CustomTypeHandlers
 
         private Type GetTypeSuffix(object[] items, object instance)
         {
-            if (items == null || instance == null)
+            if (TypeIsEmpty(items, instance))
             {
                 return null;
             }
 
-            if (items.Length == 0 || items.Select(x => x.GetType()).Distinct().Count() > 1)
+            if (ItemsAreOfTheSameType(items))
             {
-                var instanceType = instance.GetType();
-                if (instanceType.IsGenericType && new[]
-                {
-                    typeof(IEnumerable<>),
-                    typeof(ICollection<>),
-                    typeof(IReadOnlyCollection<>),
-                    typeof(Collection<>),
-                    typeof(List<>),
-                    typeof(ReadOnlyCollection<>),
-                    typeof(ObservableCollection<>)
-                }.Contains(instanceType.GetGenericTypeDefinition()))
-                {
-                    var instanceGenericTypeArguments = instanceType.GetGenericArguments();
-                    if (instanceGenericTypeArguments.Length != 1)
-                    {
-                        return null;
-                    }
-                    return instanceGenericTypeArguments[0];
-                }
+                // If all items are the same type, then C# can infer the type without any problem
+                return null;
+            }
 
-                if (instanceType.IsArray)
+            var instanceType = instance.GetType();
+            if (TypeIsGenericSequence(instanceType))
+            {
+                var instanceGenericTypeArguments = instanceType.GetGenericArguments();
+                return instanceGenericTypeArguments[0];
+            }
+
+            if (instanceType.IsArray)
+            {
+                var genericEnumerableType = GetEnumerableGenericArgumentType(instanceType);
+                if (genericEnumerableType == null)
                 {
-                    var genericEnumerableType = Array.Find(instanceType.GetInterfaces(), t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
-                    if (genericEnumerableType == null)
-                    {
-                        return null;
-                    }
-                    return genericEnumerableType.GetGenericArguments()[0];
+                    return null;
                 }
+                return genericEnumerableType.GetGenericArguments()[0];
             }
 
             // If all items are the same type, then C# can infer the type without any problem
             return null;
         }
 
-        private void AppendCustomInitialization(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback, Type typeSuffix, string collectionTypeName)
+        private void AppendInitialization(CustomTypeHandlerCommand command,
+                                          ICsharpExpressionDumperCallback callback,
+                                          Type typeSuffix)
+        {
+            if (IsGenericCollection(command.InstanceType))
+            {
+                AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.ObjectModel.Collection");
+            }
+            else if (IsGenericReadOnlyCollection(command.InstanceType))
+            {
+                AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.ObjectModel.ReadOnlyCollection");
+            }
+            else if (IsGenericList(command.InstanceType))
+            {
+                AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.Generic.List");
+            }
+            else
+            {
+                callback.ChainAppendPrefix()
+                        .ChainAppend("new");
+
+                if (typeSuffix != null)
+                {
+                    callback.ChainAppend(" ")
+                            .ChainAppendTypeName(typeSuffix);
+                }
+                callback.AppendLine("[]");
+            }
+            callback.ChainAppend(new string(' ', command.Level * 4))
+                    .ChainAppendLine("{");
+        }
+
+        private void AppendCustomInitialization(CustomTypeHandlerCommand command,
+                                                ICsharpExpressionDumperCallback callback,
+                                                Type typeSuffix,
+                                                string collectionTypeName)
         {
             callback.ChainAppendPrefix()
                     .ChainAppend("new ")
@@ -128,6 +126,37 @@ namespace CsharpExpressionDumper.CustomTypeHandlers
             }
             callback.AppendLine("[]");
         }
+
+        private static Type GetEnumerableGenericArgumentType(Type instanceType)
+            => Array.Find
+            (
+                instanceType.GetInterfaces(),
+                t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+            );
+
+        private static bool TypeIsEmpty(object[] items, object instance)
+            => items == null || instance == null;
+
+        private static bool ItemsAreOfTheSameType(object[] items)
+            => items.Length != 0
+                && items.Select(x => x.GetType()).Distinct().Count() <= 1;
+
+        private static bool TypeIsGenericSequence(Type instanceType)
+            => instanceType.IsGenericType && new[]
+                {
+                    typeof(IEnumerable<>),
+                    typeof(ICollection<>),
+                    typeof(IReadOnlyCollection<>),
+                    typeof(Collection<>),
+                    typeof(List<>),
+                    typeof(ReadOnlyCollection<>),
+                    typeof(ObservableCollection<>)
+                }.Contains(instanceType.GetGenericTypeDefinition());
+
+        private static bool IsGenericCollectionOrDerrivedType(CustomTypeHandlerCommand command)
+            => IsGenericCollection(command.InstanceType)
+                || IsGenericReadOnlyCollection(command.InstanceType)
+                || IsGenericList(command.InstanceType);
 
         private static bool IsGenericCollection(Type t)
             => t.IsGenericType

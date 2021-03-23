@@ -26,50 +26,41 @@ namespace CsharpExpressionDumper.ObjectHandlers
             var ctor = callback.ResolveConstructor(type);
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             var processedProperties = new List<string>();
-            if (!command.IsAnonymousType && ctor != null)
-            {
-                var arguments = ctor.GetParameters();
-                if (arguments.Length > 0)
-                {
-                    foreach (var argument in arguments)
-                    {
-                        var readOnlyProperty = callback.ResolveReadOnlyProperty(properties, ctor, argument);
-                        if (readOnlyProperty == null)
-                        {
-                            continue;
-                        }
-
-                        if (first)
-                        {
-                            first = false;
-                            callback.ChainAppendLine()
-                                    .ChainAppend(new string(' ', (level - 1) * 4))
-                                    .ChainAppendLine("(");
-                        }
-                        else
-                        {
-                            callback.AppendLine(",");
-                        }
-
-                        processedProperties.Add(readOnlyProperty.Name);
-
-                        var value = readOnlyProperty.GetValue(command.Instance);
-
-                        callback.ChainAppend(new string(' ', level * 4))
-                                .ChainAppend(argument.Name)
-                                .ChainAppend(": ")
-                                .ChainProcessRecursive(value, value?.GetType(), level);
-                    }
-
-                    if (!first)
-                    {
-                        callback.AppendLine();
-                    }
-                }
-            }
+            first = AppendReadOnlyProperties(command, callback, level, first, ctor, properties, processedProperties);
 
             level--;
 
+            AppendFinalize(command, callback, level, first, properties, processedProperties);
+
+            return true;
+        }
+
+        private static bool AppendInitialization(ICsharpExpressionDumperCallback callback,
+                                                 int level,
+                                                 bool first)
+        {
+            if (first)
+            {
+                first = false;
+                callback.ChainAppendLine()
+                        .ChainAppend(new string(' ', (level - 1) * 4))
+                        .ChainAppendLine("(");
+            }
+            else
+            {
+                callback.AppendLine(",");
+            }
+
+            return first;
+        }
+
+        private static void AppendFinalize(ObjectHandlerCommand command,
+                                           ICsharpExpressionDumperCallback callback,
+                                           int level,
+                                           bool first,
+                                           PropertyInfo[] properties,
+                                           List<string> processedProperties)
+        {
             var writableProperties = properties.Where
             (
                 property =>
@@ -92,8 +83,49 @@ namespace CsharpExpressionDumper.ObjectHandlers
             {
                 command.ProcessWritableProperties(callback, writableProperties);
             }
+        }
 
-            return true;
+        private static bool AppendReadOnlyProperties(ObjectHandlerCommand command,
+                                                     ICsharpExpressionDumperCallback callback,
+                                                     int level,
+                                                     bool first,
+                                                     ConstructorInfo ctor,
+                                                     PropertyInfo[] properties,
+                                                     List<string> processedProperties)
+        {
+            if (!command.IsAnonymousType && ctor != null)
+            {
+                var arguments = ctor.GetParameters();
+                if (arguments.Length > 0)
+                {
+                    foreach (var argument in arguments)
+                    {
+                        var readOnlyProperty = callback.ResolveReadOnlyProperty(properties, ctor, argument);
+                        if (readOnlyProperty == null)
+                        {
+                            continue;
+                        }
+
+                        first = AppendInitialization(callback, level, first);
+
+                        processedProperties.Add(readOnlyProperty.Name);
+
+                        var value = readOnlyProperty.GetValue(command.Instance);
+
+                        callback.ChainAppend(new string(' ', level * 4))
+                                .ChainAppend(argument.Name)
+                                .ChainAppend(": ")
+                                .ChainProcessRecursive(value, value?.GetType(), level);
+                    }
+
+                    if (!first)
+                    {
+                        callback.AppendLine();
+                    }
+                }
+            }
+
+            return first;
         }
     }
 }
