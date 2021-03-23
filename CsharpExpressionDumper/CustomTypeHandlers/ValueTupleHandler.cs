@@ -1,5 +1,6 @@
 ﻿using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.Extensions;
+using System;
 
 namespace CsharpExpressionDumper.CustomTypeHandlers
 {
@@ -16,40 +17,14 @@ namespace CsharpExpressionDumper.CustomTypeHandlers
                     return false;
                 }
 
-                callback.ChainAppendPrefix()
-                        .ChainAppend("new System.ValueTuple<");
-
-                var first = true;
-                foreach (var itemType in genericArguments)
-                {
-                    if (!first)
-                    {
-                        callback.Append(", ");
-                    }
-                    else
-                    {
-                        first = false;
-                    }
-                    callback.AppendTypeName(itemType);
-                }
-
-                callback.ChainAppend(">")
-                        .ChainAppend("(");
+                AppendInitialization(callback, genericArguments);
 
                 var t = command.Instance.GetType();
-                first = true;
+                var first = true;
                 for (int i = 1; i <= genericArguments.Length; i++)
                 {
+                    first = AppendSeparator(callback, first);
                     var item = t.GetField($"Item{i}").GetValue(command.Instance);
-
-                    if (!first)
-                    {
-                        callback.Append(", ");
-                    }
-                    else
-                    {
-                        first = false;
-                    }
                     callback.ProcessRecursive(item, item?.GetType(), command.Level);
                 }
 
@@ -60,6 +35,36 @@ namespace CsharpExpressionDumper.CustomTypeHandlers
             }
 
             return false;
+        }
+
+        private static bool AppendSeparator(ICsharpExpressionDumperCallback callback, bool first)
+        {
+            if (!first)
+            {
+                callback.Append(", ");
+            }
+            else
+            {
+                first = false;
+            }
+
+            return first;
+        }
+
+        private static void AppendInitialization(ICsharpExpressionDumperCallback callback, Type[] genericArguments)
+        {
+            callback.ChainAppendPrefix()
+                    .ChainAppend("new System.ValueTuple<");
+
+            var first = true;
+            foreach (var itemType in genericArguments)
+            {
+                first = AppendSeparator(callback, first);
+                callback.AppendTypeName(itemType);
+            }
+
+            callback.ChainAppend(">")
+                    .ChainAppend("(");
         }
     }
 }
