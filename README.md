@@ -2,6 +2,7 @@
 Generates c# initialization code from object instances
 
 Example:
+```C#
 var input = new { Property1 = "test", Property2 = 2 };
 
 var dumper = new CsharpExpressionDumper
@@ -14,3 +15,6 @@ var dumper = new CsharpExpressionDumper
 );
 
 var sourceCode = dumper.Dump(input, input.GetType());
+```
+
+See unit tests for more examples.
