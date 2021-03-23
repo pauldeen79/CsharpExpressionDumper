@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Reflection;
+using System.Text;
 
 namespace CsharpExpressionDumper.Abstractions
 {
     public interface ICsharpExpressionDumperCallback
     {
+        Action<object, Type, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; }
+        StringBuilder Builder { get; set; }
         void ProcessRecursive(object instance, Type type, int level);
         void AppendSingleValue(object value);
         void AppendPrefix();
