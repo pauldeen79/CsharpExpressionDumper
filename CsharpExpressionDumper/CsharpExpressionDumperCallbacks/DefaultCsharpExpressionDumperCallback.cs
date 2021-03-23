@@ -10,8 +10,8 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
 {
     public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
     {
-        private readonly Action<object, Type, StringBuilder, int> _processRecursiveCallbackDelegate;
-        private readonly StringBuilder _builder;
+        public Action<object, Type, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; }
+        public StringBuilder Builder { get; set; }
         private string Prefix { get; set; }
         private string Suffix { get; set; }
         private readonly IEnumerable<ICustomTypeHandler> _typeHandlers;
@@ -20,16 +20,12 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
         private readonly IEnumerable<IReadOnlyPropertyResolver> _readOnlyPropertyResolvers;
         private readonly IEnumerable<IObjectHandlerPropertyFilter> _objectHandlerPropertyFilters;
 
-        public DefaultCsharpExpressionDumperCallback(Action<object, Type, StringBuilder, int> processRecursiveCallbackDelegate,
-                                                     StringBuilder builder,
-                                                     IEnumerable<ICustomTypeHandler> typeHandlers,
+        public DefaultCsharpExpressionDumperCallback(IEnumerable<ICustomTypeHandler> typeHandlers,
                                                      IEnumerable<ITypeNameFormatter> typeNameFormatters,
                                                      IEnumerable<IConstructorResolver> constructorResolvers,
                                                      IEnumerable<IReadOnlyPropertyResolver> readOnlyPropertyResolvers,
                                                      IEnumerable<IObjectHandlerPropertyFilter> objectHandlerPropertyFilters)
         {
-            _processRecursiveCallbackDelegate = processRecursiveCallbackDelegate;
-            _builder = builder;
             _typeHandlers = typeHandlers;
             _typeNameFormatters = typeNameFormatters;
             _constructorResolvers = constructorResolvers;
@@ -38,23 +34,23 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
         }
 
         public void Append(object value)
-            => _builder.Append(value);
+            => Builder.Append(value);
 
         public void AppendFormattedString(string value)
             => ProcessRecursive(value, typeof(string), 0);
 
         public void AppendLine(object value)
-            => _builder.Append(value)
+            => Builder.Append(value)
                        .AppendLine();
 
         public void AppendLine()
-            => _builder.AppendLine();
+            => Builder.AppendLine();
 
         public void AppendPrefix()
             => Append(Prefix);
 
         public void AppendSingleValue(object value)
-            => _builder.Append(Prefix)
+            => Builder.Append(Prefix)
                        .Append(value)
                        .Append(Suffix);
 
@@ -76,22 +72,25 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
         private ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
             => new DefaultCsharpExpressionDumperCallback
             (
-                _processRecursiveCallbackDelegate,
-                _builder,
                 _typeHandlers,
                 _typeNameFormatters,
                 _constructorResolvers,
                 _readOnlyPropertyResolvers,
                 _objectHandlerPropertyFilters
             )
-            { Prefix = prefix, Suffix = suffix };
+            {
+                Prefix = prefix,
+                Suffix = suffix,
+                ProcessRecursiveCallbackDelegate = ProcessRecursiveCallbackDelegate,
+                Builder = Builder
+            };
 
         public void ProcessRecursive(object instance, Type type, int level)
-            => _processRecursiveCallbackDelegate.Invoke
+            => ProcessRecursiveCallbackDelegate.Invoke
                (
                    instance,
                    type,
-                   _builder,
+                   Builder,
                    level
                );
 

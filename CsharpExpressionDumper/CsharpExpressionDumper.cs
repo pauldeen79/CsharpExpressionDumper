@@ -44,14 +44,16 @@ namespace CsharpExpressionDumper
             var instanceType = type ?? instance?.GetType();
             var instanceCallback = new DefaultCsharpExpressionDumperCallback
             (
-                DoProcessRecursive,
-                builder,
                 _customTypeHandlers,
                 _typeNameFormatters,
                 _constructorResolvers,
                 _readOnlyPropertyResolvers,
                 _objectHandlerPropertyFilters
-            );
+            )
+            {
+                ProcessRecursiveCallbackDelegate = DoProcessRecursive,
+                Builder = builder
+            };
             var instanceCommand = new CustomTypeHandlerCommand(instance, instanceType, level);
             var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceCommand, instanceCallback));
             if (!instanceIsCustom)
