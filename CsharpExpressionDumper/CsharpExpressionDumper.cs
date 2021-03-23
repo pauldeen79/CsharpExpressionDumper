@@ -46,8 +46,6 @@ namespace CsharpExpressionDumper
             (
                 DoProcessRecursive,
                 builder,
-                string.Empty,
-                string.Empty,
                 _customTypeHandlers,
                 _typeNameFormatters,
                 _constructorResolvers,

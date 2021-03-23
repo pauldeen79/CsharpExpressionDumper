@@ -14,8 +14,7 @@ namespace CsharpExpressionDumper.Abstractions
         void AppendLine();
         void AppendFormattedString(string value);
         void AppendTypeName(Type type);
-        ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix);
-        bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, ICsharpExpressionDumperCallback propertyCallback);
+        bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, string prefix, string suffix);
         bool IsPropertyValid(ObjectHandlerCommand command, PropertyInfo propertyInfo);
         ConstructorInfo ResolveConstructor(Type type);
         PropertyInfo ResolveReadOnlyProperty(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument);

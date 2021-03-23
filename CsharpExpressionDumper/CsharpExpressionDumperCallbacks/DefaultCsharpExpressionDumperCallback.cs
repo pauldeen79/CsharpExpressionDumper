@@ -12,8 +12,8 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
     {
         private readonly Action<object, Type, StringBuilder, int> _processRecursiveCallbackDelegate;
         private readonly StringBuilder _builder;
-        private readonly string _prefix;
-        private readonly string _suffix;
+        private string Prefix { get; set; }
+        private string Suffix { get; set; }
         private readonly IEnumerable<ICustomTypeHandler> _typeHandlers;
         private readonly IEnumerable<ITypeNameFormatter> _typeNameFormatters;
         private readonly IEnumerable<IConstructorResolver> _constructorResolvers;
@@ -22,8 +22,6 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
 
         public DefaultCsharpExpressionDumperCallback(Action<object, Type, StringBuilder, int> processRecursiveCallbackDelegate,
                                                      StringBuilder builder,
-                                                     string prefix,
-                                                     string suffix,
                                                      IEnumerable<ICustomTypeHandler> typeHandlers,
                                                      IEnumerable<ITypeNameFormatter> typeNameFormatters,
                                                      IEnumerable<IConstructorResolver> constructorResolvers,
@@ -32,8 +30,6 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
         {
             _processRecursiveCallbackDelegate = processRecursiveCallbackDelegate;
             _builder = builder;
-            _prefix = prefix;
-            _suffix = suffix;
             _typeHandlers = typeHandlers;
             _typeNameFormatters = typeNameFormatters;
             _constructorResolvers = constructorResolvers;
@@ -55,15 +51,15 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
             => _builder.AppendLine();
 
         public void AppendPrefix()
-            => Append(_prefix);
+            => Append(Prefix);
 
         public void AppendSingleValue(object value)
-            => _builder.Append(_prefix)
+            => _builder.Append(Prefix)
                        .Append(value)
-                       .Append(_suffix);
+                       .Append(Suffix);
 
         public void AppendSuffix()
-            => Append(_suffix);
+            => Append(Suffix);
 
         public void AppendTypeName(Type type)
         {
@@ -77,19 +73,18 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
             Append(typeName);
         }
 
-        public ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
+        private ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
             => new DefaultCsharpExpressionDumperCallback
             (
                 _processRecursiveCallbackDelegate,
                 _builder,
-                prefix,
-                suffix,
                 _typeHandlers,
                 _typeNameFormatters,
                 _constructorResolvers,
                 _readOnlyPropertyResolvers,
                 _objectHandlerPropertyFilters
-            );
+            )
+            { Prefix = prefix, Suffix = suffix };
 
         public void ProcessRecursive(object instance, Type type, int level)
             => _processRecursiveCallbackDelegate.Invoke
@@ -100,8 +95,11 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
                    level
                );
 
-        public bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, ICsharpExpressionDumperCallback propertyCallback)
-            => _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, propertyCallback));
+        public bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, string prefix, string suffix)
+        {
+            var propertyCallback = CreateNestedCallback(prefix, suffix);
+            return _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, propertyCallback));
+        }
 
         public bool IsPropertyValid(ObjectHandlerCommand command, PropertyInfo propertyInfo)
             => _objectHandlerPropertyFilters.All(x => x.IsValid(command, propertyInfo));

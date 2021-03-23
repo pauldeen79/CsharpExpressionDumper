@@ -21,9 +21,8 @@ namespace CsharpExpressionDumper.Extensions
                 var propertyValue = property.GetValue(command.Instance);
                 var propertyType = propertyValue?.GetType();
                 callback.Append(new string(' ', level * 4));
-                var propertyCallback = callback.CreateNestedCallback($"{property.Name} = ", ",");
                 var propertyCommand = new CustomTypeHandlerCommand(propertyValue, propertyType, level);
-                var propertyIsCustom = callback.IsPropertyCustom(propertyCommand, propertyCallback);
+                var propertyIsCustom = callback.IsPropertyCustom(propertyCommand, $"{property.Name} = ", ",");
                 if (!propertyIsCustom)
                 {
                     callback.ChainAppend(property.Name)
