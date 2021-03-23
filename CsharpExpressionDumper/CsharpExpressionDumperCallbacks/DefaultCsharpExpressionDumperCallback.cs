@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using CsharpExpressionDumper.Abstractions;
@@ -17,15 +18,17 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
         private readonly IEnumerable<ITypeNameFormatter> _typeNameFormatters;
         private readonly IEnumerable<IConstructorResolver> _constructorResolvers;
         private readonly IEnumerable<IReadOnlyPropertyResolver> _readOnlyPropertyResolvers;
+        private readonly IEnumerable<IObjectHandlerPropertyFilter> _objectHandlerPropertyFilters;
 
         public DefaultCsharpExpressionDumperCallback(Action<object, Type, StringBuilder, int> processRecursiveCallbackDelegate,
-                              StringBuilder builder,
-                              string prefix,
-                              string suffix,
-                              IEnumerable<ICustomTypeHandler> typeHandlers,
-                              IEnumerable<ITypeNameFormatter> typeNameFormatters,
-                              IEnumerable<IConstructorResolver> constructorResolvers,
-                              IEnumerable<IReadOnlyPropertyResolver> readOnlyPropertyResolvers)
+                                                     StringBuilder builder,
+                                                     string prefix,
+                                                     string suffix,
+                                                     IEnumerable<ICustomTypeHandler> typeHandlers,
+                                                     IEnumerable<ITypeNameFormatter> typeNameFormatters,
+                                                     IEnumerable<IConstructorResolver> constructorResolvers,
+                                                     IEnumerable<IReadOnlyPropertyResolver> readOnlyPropertyResolvers,
+                                                     IEnumerable<IObjectHandlerPropertyFilter> objectHandlerPropertyFilters)
         {
             _processRecursiveCallbackDelegate = processRecursiveCallbackDelegate;
             _builder = builder;
@@ -35,6 +38,7 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
             _typeNameFormatters = typeNameFormatters;
             _constructorResolvers = constructorResolvers;
             _readOnlyPropertyResolvers = readOnlyPropertyResolvers;
+            _objectHandlerPropertyFilters = objectHandlerPropertyFilters;
         }
 
         public void Append(object value)
@@ -83,7 +87,8 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
                 _typeHandlers,
                 _typeNameFormatters,
                 _constructorResolvers,
-                _readOnlyPropertyResolvers
+                _readOnlyPropertyResolvers,
+                _objectHandlerPropertyFilters
             );
 
         public void ProcessRecursive(object instance, Type type, int level)
@@ -97,6 +102,9 @@ namespace CsharpExpressionDumper.CsharpExpressionDumperCallbacks
 
         public bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, ICsharpExpressionDumperCallback propertyCallback)
             => _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, propertyCallback));
+
+        public bool IsPropertyValid(ObjectHandlerCommand command, PropertyInfo propertyInfo)
+            => _objectHandlerPropertyFilters.All(x => x.IsValid(command, propertyInfo));
 
         public ConstructorInfo ResolveConstructor(Type type)
             => _constructorResolvers.ProcessUntilSuccess(x => x.Resolve(type));

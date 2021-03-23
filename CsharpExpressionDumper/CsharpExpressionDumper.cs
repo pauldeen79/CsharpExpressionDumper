@@ -15,18 +15,21 @@ namespace CsharpExpressionDumper
         private readonly IReadOnlyCollection<ITypeNameFormatter> _typeNameFormatters;
         private readonly IReadOnlyCollection<IConstructorResolver> _constructorResolvers;
         private readonly IReadOnlyCollection<IReadOnlyPropertyResolver> _readOnlyPropertyResolvers;
+        private readonly IEnumerable<IObjectHandlerPropertyFilter> _objectHandlerPropertyFilters;
 
         public CsharpExpressionDumper(IEnumerable<IObjectHandler> objectHandlers,
                                       IEnumerable<ICustomTypeHandler> customTypeHandlers,
                                       IEnumerable<ITypeNameFormatter> typeNameFormatters,
                                       IEnumerable<IConstructorResolver> constructorResolvers,
-                                      IEnumerable<IReadOnlyPropertyResolver> readOnlyPropertyResolvers)
+                                      IEnumerable<IReadOnlyPropertyResolver> readOnlyPropertyResolvers,
+                                      IEnumerable<IObjectHandlerPropertyFilter> objectHandlerPropertyFilters)
         {
             _objectHandlers = new List<IObjectHandler>(objectHandlers ?? Enumerable.Empty<IObjectHandler>());
             _customTypeHandlers = new List<ICustomTypeHandler>(customTypeHandlers ?? Enumerable.Empty<ICustomTypeHandler>());
             _typeNameFormatters = new List<ITypeNameFormatter>(typeNameFormatters ?? Enumerable.Empty<ITypeNameFormatter>());
             _constructorResolvers = new List<IConstructorResolver>(constructorResolvers ?? Enumerable.Empty<IConstructorResolver>());
             _readOnlyPropertyResolvers = new List<IReadOnlyPropertyResolver>(readOnlyPropertyResolvers ?? Enumerable.Empty<IReadOnlyPropertyResolver>());
+            _objectHandlerPropertyFilters = new List<IObjectHandlerPropertyFilter>(objectHandlerPropertyFilters ?? Enumerable.Empty<IObjectHandlerPropertyFilter>());
         }
 
         public string Dump(object instance, Type type = null)
@@ -48,7 +51,8 @@ namespace CsharpExpressionDumper
                 _customTypeHandlers,
                 _typeNameFormatters,
                 _constructorResolvers,
-                _readOnlyPropertyResolvers
+                _readOnlyPropertyResolvers,
+                _objectHandlerPropertyFilters
             );
             var instanceCommand = new CustomTypeHandlerCommand(instance, instanceType, level);
             var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceCommand, instanceCallback));
