@@ -15,6 +15,7 @@ var dumper = new CsharpExpressionDumper
 );
 
 var sourceCode = dumper.Dump(input, input.GetType());
+// generates: new { Property1 = "test", Property2 = 2 }
 ```
 
 See unit tests for more examples.
