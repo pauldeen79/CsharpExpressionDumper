@@ -11,16 +11,17 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@1.0.2
         with:
-          # The key of the SonarQube project
           sonarProjectKey: pauldeen79_CsharpExpressionDumper
-          # The name of the SonarQube project
           sonarProjectName: CsharpExpressionDumper
-          # The name of the SonarQube organization in SonarCloud. For hosted SonarQube, skip this setting.
           sonarOrganization: pauldeen79
-          dotnetBuildArguments: CsharpExpressionDumper/CsharpExpressionDumper.sln
           dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
           sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
     env:
