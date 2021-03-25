@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.ObjectHandlers;
-using CsharpExpressionDumper.Tests.TestFixtures;
 using Xunit;
+using Moq;
 
 namespace CsharpExpressionDumper.Tests.ObjectHandlers
 {
@@ -15,7 +15,7 @@ namespace CsharpExpressionDumper.Tests.ObjectHandlers
             var sut = new DefaultObjectHandler();
             var instance = new MyImmutableClass("test");
             var command = new ObjectHandlerCommand(instance, typeof(MyImmutableClass), 0, typeof(MyImmutableClass), false);
-            var callbackMock = CallbackMock.Create();
+            var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
 
             // Act
             var actual = sut.ProcessInstance(command, callbackMock.Object);
@@ -31,7 +31,7 @@ namespace CsharpExpressionDumper.Tests.ObjectHandlers
             var sut = new DefaultObjectHandler();
             var instance = new MyPocoClass();
             var command = new ObjectHandlerCommand(instance, typeof(MyPocoClass), 0, typeof(MyPocoClass), false);
-            var callbackMock = CallbackMock.Create();
+            var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
 
             // Act
             var actual = sut.ProcessInstance(command, callbackMock.Object);
@@ -47,7 +47,7 @@ namespace CsharpExpressionDumper.Tests.ObjectHandlers
             var sut = new DefaultObjectHandler();
             var instance = default(MyImmutableClass);
             var command = new ObjectHandlerCommand(instance, typeof(MyImmutableClass), 0, typeof(MyImmutableClass), false);
-            var callbackMock = CallbackMock.Create();
+            var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
 
             // Act
             var actual = sut.ProcessInstance(command, callbackMock.Object);

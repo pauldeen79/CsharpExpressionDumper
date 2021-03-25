@@ -1,21 +1,19 @@
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.ConstructorResolvers;
 using CsharpExpressionDumper.CsharpExpressionDumperCallbacks;
-using CsharpExpressionDumper.Extensions;
 using CsharpExpressionDumper.ObjectHandlerPropertyFilters;
+using CsharpExpressionDumper.Tests.TestData;
 using FluentAssertions;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Linq;
-using System.Reflection;
 using Xunit;
 
 namespace CsharpExpressionDumper.Tests
 {
-    public class CsharpExpressionDumperTests
+    public partial class CsharpExpressionDumperTests
     {
         [Fact]
         public void Can_Dump_String_To_Csharp()
@@ -118,7 +116,7 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(MyEnumeration.First);
 
             // Assert
-            actual.Should().Be("CsharpExpressionDumper.Tests.MyEnumeration.First");
+            actual.Should().Be("CsharpExpressionDumper.Tests.TestData.MyEnumeration.First");
         }
 
         [Fact]
@@ -381,10 +379,10 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyBaseClass>(new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyBaseClass[]
+            actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Tests.TestData.MyBaseClass>(new CsharpExpressionDumper.Tests.TestData.MyBaseClass[]
 {
-    new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyBaseClass(),
-    new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyOverrideClass(),
+    new CsharpExpressionDumper.Tests.TestData.MyBaseClass(),
+    new CsharpExpressionDumper.Tests.TestData.MyOverrideClass(),
 } )");
         }
 
@@ -398,7 +396,7 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyBaseClass>(new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyBaseClass[]
+            actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Tests.TestData.MyBaseClass>(new CsharpExpressionDumper.Tests.TestData.MyBaseClass[]
 {
 } )");
         }
@@ -413,7 +411,7 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyFlatClass
 {
     Property1 = @""hello"",
     Property2 = 1,
@@ -442,13 +440,13 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyRecursiveClass
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyRecursiveClass
 {
     Property1 = @""Root"",
-    Property2 = new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyRecursiveClass
+    Property2 = new CsharpExpressionDumper.Tests.TestData.MyRecursiveClass
     {
         Property1 = @""Child"",
-        Property2 = new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyRecursiveClass
+        Property2 = new CsharpExpressionDumper.Tests.TestData.MyRecursiveClass
         {
             Property1 = @""Grandchild"",
             Property2 = null,
@@ -467,7 +465,7 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithStringArray
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithStringArray
 {
     Property1 = @""test"",
     Property2 = new[]
@@ -488,18 +486,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassArray
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassArray
 {
     Property1 = @""test"",
     Property2 = new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
@@ -519,18 +517,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassICollection
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassICollection
 {
     Property1 = @""test"",
     Property2 = new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = @""test"",
             Property2 = 0,
@@ -550,18 +548,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassCollection
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassCollection
 {
     Property1 = @""test"",
-    Property2 = new System.Collections.ObjectModel.Collection<CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass>(new[]
+    Property2 = new System.Collections.ObjectModel.Collection<CsharpExpressionDumper.Tests.TestData.MyFlatClass>(new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = @""test"",
             Property2 = 0,
@@ -581,18 +579,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassIReadOnlyCollection
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassIReadOnlyCollection
 {
     Property1 = @""test"",
     Property2 = new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = @""test"",
             Property2 = 0,
@@ -612,18 +610,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassReadOnlyCollection
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassReadOnlyCollection
 {
     Property1 = @""test"",
-    Property2 = new System.Collections.ObjectModel.ReadOnlyCollection<CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass>(new[]
+    Property2 = new System.Collections.ObjectModel.ReadOnlyCollection<CsharpExpressionDumper.Tests.TestData.MyFlatClass>(new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = @""test"",
             Property2 = 0,
@@ -643,18 +641,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassIList
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassIList
 {
     Property1 = @""test"",
     Property2 = new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = @""test"",
             Property2 = 0,
@@ -674,18 +672,18 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithFlatClassList
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithFlatClassList
 {
     Property1 = @""test"",
-    Property2 = new System.Collections.Generic.List<CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass>(new[]
+    Property2 = new System.Collections.Generic.List<CsharpExpressionDumper.Tests.TestData.MyFlatClass>(new[]
     {
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = null,
             Property2 = 0,
             Property3 = false,
         },
-        new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass
+        new CsharpExpressionDumper.Tests.TestData.MyFlatClass
         {
             Property1 = @""test"",
             Property2 = 0,
@@ -712,7 +710,7 @@ namespace CsharpExpressionDumper.Tests
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithIDictionary
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithIDictionary
 {
     Property1 = new System.Collections.Generic.Dictionary<System.String, System.Object>
     {
@@ -796,7 +794,7 @@ input.Property2 = 3;
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithReadOnlyProperty
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyClassWithReadOnlyProperty
 {
     Property1 = @""Test"",
 }");
@@ -812,7 +810,7 @@ input.Property2 = 3;
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be("new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyClassWithOnlyReadOnlyProperties()");
+            actual.Should().Be("new CsharpExpressionDumper.Tests.TestData.MyClassWithOnlyReadOnlyProperties()");
         }
 
         [Fact]
@@ -825,7 +823,7 @@ input.Property2 = 3;
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyImmutableClass
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyImmutableClass
 (
     property1: @""test"",
     property2: 2
@@ -846,7 +844,7 @@ input.Property2 = 3;
             });
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyImmutableClassWithTwoCtors
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyImmutableClassWithTwoCtors
 (
     property1: @""test"",
     property2: 2
@@ -863,7 +861,7 @@ input.Property2 = 3;
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyHalfImmutableClass1
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyHalfImmutableClass1
 (
     property1: @""test""
 )
@@ -882,7 +880,7 @@ input.Property2 = 3;
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyHalfImmutableClass2
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyHalfImmutableClass2
 (
     property1: @""test""
 )
@@ -901,15 +899,15 @@ input.Property2 = 3;
             var actual = Dump(input);
 
             // Assert
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyNestedImmutableClass
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyNestedImmutableClass
 (
     property1: @""Root"",
     property2: 1,
-    property3: new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyNestedImmutableClass
+    property3: new CsharpExpressionDumper.Tests.TestData.MyNestedImmutableClass
     (
         property1: @""Child"",
         property2: 2,
-        property3: new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyNestedImmutableClass
+        property3: new CsharpExpressionDumper.Tests.TestData.MyNestedImmutableClass
         (
             property1: @""Grandchild"",
             property2: 3,
@@ -943,7 +941,7 @@ input.Property2 = 3;
             var actual = Dump(input, new[] { filter });
 
             // Asset
-            actual.Should().Be(@"new CsharpExpressionDumper.Tests.CsharpExpressionDumperTests.MyFlatClass()");
+            actual.Should().Be(@"new CsharpExpressionDumper.Tests.TestData.MyFlatClass()");
         }
 
         [Fact]
@@ -1023,239 +1021,5 @@ input.Property2 = 3;
             );
             return sut.Dump(input, typeof(T));
         }
-
-        public class MyFlatClass
-        {
-            public string Property1 { get; set; }
-            public int Property2 { get; set; }
-            public bool Property3 { get; set; }
-        }
-
-        public class MyRecursiveClass
-        {
-            public string Property1 { get; set; }
-            public MyRecursiveClass Property2 { get; set; }
-        }
-
-        public class MyClassWithStringArray
-        {
-            public string Property1 { get; set; }
-            public string[] Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassArray
-        {
-            public string Property1 { get; set; }
-            public MyFlatClass[] Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassICollection
-        {
-            public string Property1 { get; set; }
-            public ICollection<MyFlatClass> Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassCollection
-        {
-            public string Property1 { get; set; }
-            public Collection<MyFlatClass> Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassIReadOnlyCollection
-        {
-            public string Property1 { get; set; }
-            public IReadOnlyCollection<MyFlatClass> Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassReadOnlyCollection
-        {
-            public string Property1 { get; set; }
-            public ReadOnlyCollection<MyFlatClass> Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassIList
-        {
-            public string Property1 { get; set; }
-            public IList<MyFlatClass> Property2 { get; set; }
-        }
-
-        public class MyClassWithFlatClassList
-        {
-            public string Property1 { get; set; }
-            public List<MyFlatClass> Property2 { get; set; }
-        }
-
-        public class MyClassWithIDictionary
-        {
-            public IDictionary<string, object> Property1 { get; set; }
-        }
-
-        public class MyClassWithDictionary
-        {
-            public Dictionary<string, object> Property1 { get; set; }
-        }
-
-        public class MyClassWithReadOnlyProperty
-        {
-            public string Property1 { get; set; }
-            public int Property2 { get; }
-
-            public MyClassWithReadOnlyProperty()
-            {
-                Property2 = 3;
-            }
-        }
-
-        public class MyClassWithOnlyReadOnlyProperties
-        {
-            public string Property1 { get; }
-            public int Property2 { get; }
-
-            public MyClassWithOnlyReadOnlyProperties()
-            {
-                Property1 = "Test";
-                Property2 = 13;
-            }
-        }
-
-        public class MyImmutableClass
-        {
-            public string Property1 { get; }
-            public int Property2 { get; }
-
-            public MyImmutableClass(string property1, int property2)
-            {
-                Property1 = property1;
-                Property2 = property2;
-            }
-        }
-
-        public class MyImmutableClassWithTwoCtors
-        {
-            public string Property1 { get; }
-            public int Property2 { get; }
-
-            public MyImmutableClassWithTwoCtors(string property1)
-            {
-                Property1 = property1;
-            }
-
-            public MyImmutableClassWithTwoCtors(string property1, int property2)
-            {
-                Property1 = property1;
-                Property2 = property2;
-            }
-        }
-
-        public class CustomConstructorResolver : IConstructorResolver
-        {
-            public ConstructorInfo Resolve(Type type)
-            {
-                if (type == typeof(MyImmutableClassWithTwoCtors))
-                {
-                    return type.GetConstructors().Single(x => x.GetParameters().Length == 2);
-                }
-
-                return null;
-            }
-        }
-
-        public class MyHalfImmutableClass1
-        {
-            public string Property1 { get; }
-            public int Property2 { get; set; }
-
-            public MyHalfImmutableClass1(string property1)
-            {
-                Property1 = property1;
-            }
-        }
-
-        public class MyHalfImmutableClass2
-        {
-            public string Property1 { get; set; }
-            public int Property2 { get; set; }
-
-            public MyHalfImmutableClass2(string property1)
-            {
-                Property1 = property1;
-            }
-        }
-
-        public class MyNestedImmutableClass
-        {
-            public string Property1 { get; }
-            public int Property2 { get; }
-            public MyNestedImmutableClass Property3 { get; }
-
-            public MyNestedImmutableClass(string property1, int property2, MyNestedImmutableClass property3)
-            {
-                Property1 = property1;
-                Property2 = property2;
-                Property3 = property3;
-            }
-        }
-
-        public class MyCustomTypeHandler : ICustomTypeHandler
-        {
-            public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
-            {
-                if (command.Instance is MyImmutableClass imm)
-                {
-                    callback.ChainAppendPrefix()
-                            .ChainAppend("MyImmutableClass.Create(")
-                            .ChainAppendFormattedString(imm.Property1)
-                            .ChainAppend(", ")
-                            .ChainAppend(imm.Property2)
-                            .ChainAppend(')')
-                            .ChainAppendSuffix();
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public class ExpandoObjectHandler : ICustomTypeHandler
-        {
-            private readonly string _variableName;
-
-            public ExpandoObjectHandler(string variableName)
-            {
-                _variableName = variableName;
-            }
-
-            public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
-            {
-                if (command.Instance is ExpandoObject expandoObject)
-                {
-                    callback.AppendLine($"dynamic {_variableName} = new System.Dynamic.ExpandoObject();");
-                    foreach (var keyValuePair in expandoObject)
-                    {
-                        callback.Append(new string(' ', command.Level * 4));
-                        callback.Append($"{_variableName}.{keyValuePair.Key} = ");
-                        callback.ProcessRecursive(keyValuePair.Value, keyValuePair.Value?.GetType(), command.Level);
-                        callback.AppendLine(";");
-                    }
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        public class MyBaseClass
-        {
-        }
-
-        public class MyOverrideClass : MyBaseClass
-        {
-        }
-    }
-
-    public enum MyEnumeration
-    {
-        First,
-        Second
     }
 }
