@@ -8,10 +8,15 @@ var input = new { Property1 = "test", Property2 = 2 };
 var dumper = new CsharpExpressionDumper
 (
     Default.ObjectHandlers,
-    customTypeHandlers.Concat(Default.CustomTypeHandlers),
-    Default.TypeNameFormatters,
-    Default.ConstructorResolvers,
-    Default.ReadOnlyPropertyResolvers
+    Default.CustomTypeHandlers,
+    new DefaultCsharpExpressionDumperCallback
+    (
+        Default.CustomTypeHandlers,
+        Default.TypeNameFormatters,
+        Default.ConstructorResolvers,
+        Default.ReadOnlyPropertyResolvers,
+        Default.ObjectHandlerPropertyFilters
+    )
 );
 
 var sourceCode = dumper.Dump(input, input.GetType());
