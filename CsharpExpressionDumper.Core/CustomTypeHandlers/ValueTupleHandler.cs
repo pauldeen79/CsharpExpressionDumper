@@ -13,11 +13,6 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                 && command.InstanceType.GetGenericTypeDefinition()?.FullName.StartsWith("System.ValueTuple`") == true)
             {
                 var genericArguments = command.InstanceType.GetGenericArguments();
-                if (genericArguments.Length < 2)
-                {
-                    return false;
-                }
-
                 AppendInitialization(callback, genericArguments);
 
                 var t = command.Instance.GetType();

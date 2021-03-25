@@ -13,10 +13,6 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                 && command.InstanceType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
             {
                 var genericArguments = command.InstanceType.GetGenericArguments();
-                if (genericArguments.Length != 2)
-                {
-                    return false;
-                }
 
                 callback.ChainAppendPrefix()
                         .ChainAppend("new System.Collections.Generic.KeyValuePair<")

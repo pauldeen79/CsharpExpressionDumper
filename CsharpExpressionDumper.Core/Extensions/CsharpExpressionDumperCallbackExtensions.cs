@@ -10,11 +10,6 @@ namespace CsharpExpressionDumper.Core.Extensions
             callback.ProcessRecursive(instance, type, level);
             return callback;
         }
-        public static ICsharpExpressionDumperCallback ChainAppendSingleValue(this ICsharpExpressionDumperCallback callback, object value)
-        {
-            callback.AppendSingleValue(value);
-            return callback;
-        }
         public static ICsharpExpressionDumperCallback ChainAppendPrefix(this ICsharpExpressionDumperCallback callback)
         {
             callback.AppendPrefix();

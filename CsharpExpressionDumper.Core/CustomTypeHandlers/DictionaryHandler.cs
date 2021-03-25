@@ -15,10 +15,6 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                 && new[] { typeof(IDictionary<,>), typeof(Dictionary<,>) }.Contains(command.InstanceType.GetGenericTypeDefinition()))
             {
                 var genericArguments = command.InstanceType.GetGenericArguments();
-                if (genericArguments.Length != 2)
-                {
-                    return false;
-                }
 
                 callback.ChainAppendPrefix()
                         .ChainAppend("new System.Collections.Generic.Dictionary<")

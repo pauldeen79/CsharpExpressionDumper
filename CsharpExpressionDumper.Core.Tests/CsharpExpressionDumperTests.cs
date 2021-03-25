@@ -968,7 +968,7 @@ input.Property2 = 3;
                .WithMessage("There is no object handler which supports object of type [System.String]");
         }
 
-        private string Dump<T>(T input, params ICustomTypeHandler[] customTypeHandlers)
+        private string Dump(object input, params ICustomTypeHandler[] customTypeHandlers)
         {
             var sut = new CsharpExpressionDumper
             (
@@ -983,10 +983,10 @@ input.Property2 = 3;
                     Default.ObjectHandlerPropertyFilters
                 )
             );
-            return sut.Dump(input, typeof(T));
+            return sut.Dump(input);
         }
 
-        private string Dump<T>(T input, IConstructorResolver[] constructorResolvers)
+        private string Dump(object input, IConstructorResolver[] constructorResolvers)
         {
             var sut = new CsharpExpressionDumper
             (
@@ -1001,10 +1001,10 @@ input.Property2 = 3;
                     Default.ObjectHandlerPropertyFilters
                 )
             );
-            return sut.Dump(input, typeof(T));
+            return sut.Dump(input);
         }
 
-        private string Dump<T>(T input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
+        private string Dump(object input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
         {
             var sut = new CsharpExpressionDumper
             (
@@ -1019,7 +1019,7 @@ input.Property2 = 3;
                     objectHandlerPropertyFilters
                 )
             );
-            return sut.Dump(input, typeof(T));
+            return sut.Dump(input);
         }
     }
 }
