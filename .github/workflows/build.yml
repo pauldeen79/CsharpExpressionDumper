@@ -58,6 +58,7 @@ jobs:
             echo "Publishing @$f"
             curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
           done
+        shell: bash
   #deploy:
   #  needs: build
   #  if: github.event_name == 'release'
@@ -82,5 +83,6 @@ jobs:
   #        do
   #          curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
   #        done
+  #      shell: bash
   #    - name: Push to NuGet Feed
   #      run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
