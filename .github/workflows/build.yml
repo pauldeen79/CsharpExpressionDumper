@@ -35,13 +35,13 @@ jobs:
         run: dotnet test -c Release
       - name: Pack
         if: matrix.os == 'ubuntu-latest'
-        run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID
+        run: dotnet pack -v normal -c Release -o ./artifacts --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID
       - name: Upload Artifact
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v2
         with:
           name: nupkg
-          path: ./src/*/bin/Release/*.nupkg
+          path: ./artifacts/*.nupkg
   prerelease:
     needs: build
     #if: github.ref == 'refs/heads/main'
@@ -55,7 +55,7 @@ jobs:
         run: |
           for f in ./nupkg/*.nupkg
           do
-            echo "Publishing @$f"
+            echo "Publishing $f"
             curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
           done
         shell: bash
