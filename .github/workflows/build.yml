@@ -13,7 +13,7 @@ env:
   # GitHub Packages Feed settings
   GITHUB_FEED: https://nuget.pkg.github.com/pauldeen79/
   GITHUB_USER: pauldeen79
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.FEED_TOKEN }}
   # Official NuGet Feed settings
   # NUGET_FEED: https://api.nuget.org/v3/index.json
   # NUGET_KEY: ${{ secrets.NUGET_KEY }}
