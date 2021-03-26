@@ -55,7 +55,7 @@ jobs:
         run: |
           for f in ./nupkg/*.nupkg
           do
-            curl -vX PUT -u "pauldeen79:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
+            curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
           done
   #deploy:
   #  needs: build
@@ -79,7 +79,7 @@ jobs:
   #      run: |
   #        for f in ./nupkg/*.nupkg
   #        do
-  #          curl -vX PUT -u "pauldeen79:${{ secrets.GITHUB_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
+  #          curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
   #        done
   #    - name: Push to NuGet Feed
   #      run: dotnet nuget push ./nupkg/*.nupkg --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
