@@ -88,6 +88,6 @@ jobs:
         run: |
           for f in ./nupkg/*.nupkg
           do
-            dotnet nuget push @$f --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
+            dotnet nuget push $f --source $NUGET_FEED --skip-duplicate --api-key $NUGET_KEY
           done
         shell: bash
