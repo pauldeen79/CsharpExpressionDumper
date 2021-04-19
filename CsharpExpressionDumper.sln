@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpExpressionDumper.Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpExpressionDumper.Core.Tests", "src\CsharpExpressionDumper.Core.Tests\CsharpExpressionDumper.Core.Tests.csproj", "{835E5DA3-857A-412F-B04C-9ECF82B83078}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpExpressionDumper.Abstractions", "src\CsharpExpressionDumper.Abstractions\CsharpExpressionDumper.Abstractions.csproj", "{34E00669-E213-4C2D-94DC-46A61FC032B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsharpExpressionDumper.Abstractions", "src\CsharpExpressionDumper.Abstractions\CsharpExpressionDumper.Abstractions.csproj", "{34E00669-E213-4C2D-94DC-46A61FC032B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0669CAEF-246B-4032-A3BC-A8E8FCF90F29}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
