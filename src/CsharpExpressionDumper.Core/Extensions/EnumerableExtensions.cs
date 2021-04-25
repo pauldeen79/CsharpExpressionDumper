@@ -19,7 +19,7 @@ namespace CsharpExpressionDumper.Core.Extensions
         }
 
         public static TResult ProcessUntilSuccess<TInput, TResult>(this IEnumerable<TInput> instance, Func<TInput, TResult> processDelegate)
-            where TResult : class
+            where TResult : class?
         {
             foreach (var item in instance)
             {
@@ -30,7 +30,9 @@ namespace CsharpExpressionDumper.Core.Extensions
                 }
             }
 
+#pragma warning disable CS8603 // Possible null reference return. Can't solve this in C# 8.0 :-(
             return default;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }

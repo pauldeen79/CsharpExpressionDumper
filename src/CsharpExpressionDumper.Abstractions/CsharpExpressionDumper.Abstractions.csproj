@@ -5,6 +5,8 @@
     <RepositoryUrl>https://github.com/pauldeen79/CsharpExpressionDumper</RepositoryUrl>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

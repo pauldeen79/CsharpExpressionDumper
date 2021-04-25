@@ -13,7 +13,8 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance is IEnumerable enumerable)
+            if (command.Instance is IEnumerable enumerable
+                && command.InstanceType != null)
             {
                 var items = enumerable.Cast<object>().ToArray();
                 var typeSuffix = GetTypeSuffix(items, command.Instance);
@@ -42,7 +43,7 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
             return false;
         }
 
-        private Type GetTypeSuffix(object[] items, object instance)
+        private Type? GetTypeSuffix(object[] items, object instance)
         {
             if (TypeIsEmpty(items, instance))
             {
@@ -78,7 +79,7 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 
         private void AppendInitialization(CustomTypeHandlerCommand command,
                                           ICsharpExpressionDumperCallback callback,
-                                          Type typeSuffix)
+                                          Type? typeSuffix)
         {
             if (IsGenericCollection(command.InstanceType))
             {
@@ -110,14 +111,16 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 
         private void AppendCustomInitialization(CustomTypeHandlerCommand command,
                                                 ICsharpExpressionDumperCallback callback,
-                                                Type typeSuffix,
+                                                Type? typeSuffix,
                                                 string collectionTypeName)
         {
             callback.ChainAppendPrefix()
                     .ChainAppend("new ")
                     .ChainAppend(collectionTypeName)
                     .ChainAppend('<')
+#pragma warning disable CS8602 // Dereference of a possibly null reference. False positive, this has already been checked in the public method above.
                     .ChainAppendTypeName(command.InstanceType.GetGenericArguments()[0])
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     .ChainAppend(">(new");
 
             if (typeSuffix != null)
@@ -159,16 +162,16 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                 || IsGenericReadOnlyCollection(command.InstanceType)
                 || IsGenericList(command.InstanceType);
 
-        private static bool IsGenericCollection(Type t)
-            => t.IsGenericType
+        private static bool IsGenericCollection(Type? t)
+            => t != null && t.IsGenericType
                 && t.GetGenericTypeDefinition() == typeof(Collection<>);
 
-        private static bool IsGenericReadOnlyCollection(Type t)
-            => t.IsGenericType
+        private static bool IsGenericReadOnlyCollection(Type? t)
+            => t != null && t.IsGenericType
                 && t.GetGenericTypeDefinition() == typeof(ReadOnlyCollection<>);
 
-        private static bool IsGenericList(Type t)
-            => t.IsGenericType
+        private static bool IsGenericList(Type? t)
+            => t != null && t.IsGenericType
                 && t.GetGenericTypeDefinition() == typeof(List<>);
     }
 }

@@ -8,7 +8,8 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
         {
-            if (command.InstanceType?.IsEnum == true)
+            if (command.Instance != null
+                && command.InstanceType?.IsEnum == true)
             {
                 callback.ChainAppendPrefix()
                         .ChainAppendTypeName(command.InstanceType)
