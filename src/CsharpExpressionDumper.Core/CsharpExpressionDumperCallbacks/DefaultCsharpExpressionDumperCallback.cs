@@ -11,10 +11,10 @@ namespace CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks
 {
     public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
     {
-        public Action<object, Type, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; }
-        public StringBuilder Builder { get; set; }
-        private string Prefix { get; set; }
-        private string Suffix { get; set; }
+        public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; } = new Action<object?, Type?, StringBuilder, int>((_1, _2, _3, _4) => { });
+        public StringBuilder Builder { get; set; } = new StringBuilder();
+        private string Prefix { get; set; } = "";
+        private string Suffix { get; set; } = "";
         private readonly IEnumerable<ICustomTypeHandler> _typeHandlers;
         private readonly IEnumerable<ITypeNameFormatter> _typeNameFormatters;
         private readonly IEnumerable<IConstructorResolver> _constructorResolvers;
@@ -86,7 +86,7 @@ namespace CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks
                 Builder = Builder
             };
 
-        public void ProcessRecursive(object instance, Type type, int level)
+        public void ProcessRecursive(object? instance, Type? type, int level)
             => ProcessRecursiveCallbackDelegate.Invoke
                (
                    instance,
@@ -104,10 +104,10 @@ namespace CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks
         public bool IsPropertyValid(ObjectHandlerCommand command, PropertyInfo propertyInfo)
             => _objectHandlerPropertyFilters.All(x => x.IsValid(command, propertyInfo));
 
-        public ConstructorInfo ResolveConstructor(Type type)
+        public ConstructorInfo? ResolveConstructor(Type type)
             => _constructorResolvers.ProcessUntilSuccess(x => x.Resolve(type));
 
-        public PropertyInfo ResolveReadOnlyProperty(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument)
+        public PropertyInfo? ResolveReadOnlyProperty(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument)
             => _readOnlyPropertyResolvers.ProcessUntilSuccess(x => x.Process(properties, ctor, argument));
     }
 }

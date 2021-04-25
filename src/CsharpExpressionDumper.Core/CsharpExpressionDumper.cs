@@ -23,21 +23,21 @@ namespace CsharpExpressionDumper.Core
             _instanceCallback = instanceCallback ?? throw new ArgumentNullException(nameof(instanceCallback));
         }
 
-        public string Dump(object instance, Type type = null)
+        public string Dump(object instance, Type? type = null)
         {
             var builder = new StringBuilder();
             DoProcessRecursive(instance, type, builder, 0);
             return builder.ToString();
         }
 
-        private void DoProcessRecursive(object instance, Type type, StringBuilder builder, int level)
+        private void DoProcessRecursive(object? instance, Type? type, StringBuilder builder, int level)
         {
             var instanceType = type ?? instance?.GetType();
             _instanceCallback.ProcessRecursiveCallbackDelegate = DoProcessRecursive;
             _instanceCallback.Builder = builder;
             var instanceCommand = new CustomTypeHandlerCommand(instance, instanceType, level);
             var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceCommand, _instanceCallback));
-            if (!instanceIsCustom)
+            if (!instanceIsCustom && instanceType != null)
             {
                 var isAnonymousType = instanceType.IsAnonymousType();
                 _instanceCallback.Append("new ");

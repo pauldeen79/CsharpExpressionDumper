@@ -5,7 +5,7 @@ namespace CsharpExpressionDumper.Core.Extensions
 {
     public static class CsharpExpressionDumperCallbackExtensions
     {
-        public static ICsharpExpressionDumperCallback ChainProcessRecursive(this ICsharpExpressionDumperCallback callback, object instance, Type type, int level)
+        public static ICsharpExpressionDumperCallback ChainProcessRecursive(this ICsharpExpressionDumperCallback callback, object? instance, Type? type, int level)
         {
             callback.ProcessRecursive(instance, type, level);
             return callback;

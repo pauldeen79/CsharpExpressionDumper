@@ -90,7 +90,7 @@ namespace CsharpExpressionDumper.Core.ObjectHandlers
                                                      ICsharpExpressionDumperCallback callback,
                                                      int level,
                                                      bool first,
-                                                     ConstructorInfo ctor,
+                                                     ConstructorInfo? ctor,
                                                      PropertyInfo[] properties,
                                                      List<string> processedProperties)
         {

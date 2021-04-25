@@ -8,7 +8,7 @@ namespace CsharpExpressionDumper.Core.TypeNameFormatters
     {
         public string Format(Type type)
         {
-            return type?.FullName.FixTypeName();
+            return type.FullName.FixTypeName();
         }
     }
 }

@@ -9,7 +9,8 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
         {
-            if (command.InstanceType?.IsGenericType == true
+            if (command.Instance != null
+                && command.InstanceType?.IsGenericType == true
                 && command.InstanceType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
             {
                 var genericArguments = command.InstanceType.GetGenericArguments();

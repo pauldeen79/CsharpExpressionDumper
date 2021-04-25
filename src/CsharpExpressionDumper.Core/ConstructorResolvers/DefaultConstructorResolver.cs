@@ -6,7 +6,7 @@ namespace CsharpExpressionDumper.Core.ConstructorResolvers
 {
     public class DefaultConstructorResolver : IConstructorResolver
     {
-        public ConstructorInfo Resolve(Type type)
+        public ConstructorInfo? Resolve(Type type)
         {
             var ctors = type.GetConstructors();
             if (ctors.Length == 1)

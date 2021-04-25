@@ -9,11 +9,6 @@
         /// <returns></returns>
         public static string FixTypeName(this string instance)
         {
-            if (instance == null)
-            {
-                return null;
-            }
-
             int startIndex;
             while (true)
             {
