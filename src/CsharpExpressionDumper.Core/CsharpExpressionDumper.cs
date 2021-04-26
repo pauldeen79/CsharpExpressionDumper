@@ -1,10 +1,9 @@
-﻿using CsharpExpressionDumper.Abstractions;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.Abstractions.Commands;
 using CsharpExpressionDumper.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CsharpExpressionDumper.Core
 {
@@ -18,8 +17,8 @@ namespace CsharpExpressionDumper.Core
                                       IEnumerable<ICustomTypeHandler> customTypeHandlers,
                                       ICsharpExpressionDumperCallback instanceCallback)
         {
-            _objectHandlers = new List<IObjectHandler>(objectHandlers ?? Enumerable.Empty<IObjectHandler>());
-            _customTypeHandlers = new List<ICustomTypeHandler>(customTypeHandlers ?? Enumerable.Empty<ICustomTypeHandler>());
+            _objectHandlers = new List<IObjectHandler>(objectHandlers);
+            _customTypeHandlers = new List<ICustomTypeHandler>(customTypeHandlers);
             _instanceCallback = instanceCallback;
         }
 
