@@ -1,14 +1,14 @@
 ﻿using System;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class GuidHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance is Guid guid)
+            if (request.Instance is Guid guid)
             {
                 callback.AppendSingleValue($@"new System.Guid(""{guid}"")");
                 return true;

@@ -2,14 +2,14 @@
 using System.Linq;
 using System.Reflection;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.ObjectHandlers
 {
     public class DefaultObjectHandler : IObjectHandler
     {
-        public bool ProcessInstance(ObjectHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool ProcessInstance(ObjectHandlerRequest command, ICsharpExpressionDumperCallback callback)
         {
             if (command.Instance == null)
             {
@@ -55,7 +55,7 @@ namespace CsharpExpressionDumper.Core.ObjectHandlers
             return first;
         }
 
-        private static void AppendFinalize(ObjectHandlerCommand command,
+        private static void AppendFinalize(ObjectHandlerRequest command,
                                            ICsharpExpressionDumperCallback callback,
                                            int level,
                                            bool first,
@@ -86,7 +86,7 @@ namespace CsharpExpressionDumper.Core.ObjectHandlers
             }
         }
 
-        private static bool AppendReadOnlyProperties(ObjectHandlerCommand command,
+        private static bool AppendReadOnlyProperties(ObjectHandlerRequest command,
                                                      ICsharpExpressionDumperCallback callback,
                                                      int level,
                                                      bool first,

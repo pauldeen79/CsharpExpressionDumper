@@ -1,5 +1,5 @@
 ﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using System;
 using System.Reflection;
 
@@ -7,7 +7,7 @@ namespace CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters
 {
     public class SkipDefaultValues : IObjectHandlerPropertyFilter
     {
-        public bool IsValid(ObjectHandlerCommand command, PropertyInfo propertyInfo)
+        public bool IsValid(ObjectHandlerRequest command, PropertyInfo propertyInfo)
         {
             var defaultValue = propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) == null
                 ? Activator.CreateInstance(propertyInfo.PropertyType)

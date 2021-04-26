@@ -1,5 +1,5 @@
 ﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 using System;
 
@@ -7,22 +7,22 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class ValueTupleHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance != null
-                && command.InstanceType?.IsGenericType == true
-                && command.InstanceType.GetGenericTypeDefinition()?.FullName.StartsWith("System.ValueTuple`") == true)
+            if (request.Instance != null
+                && request.InstanceType?.IsGenericType == true
+                && request.InstanceType.GetGenericTypeDefinition()?.FullName.StartsWith("System.ValueTuple`") == true)
             {
-                var genericArguments = command.InstanceType.GetGenericArguments();
+                var genericArguments = request.InstanceType.GetGenericArguments();
                 AppendInitialization(callback, genericArguments);
 
-                var t = command.Instance.GetType();
+                var t = request.Instance.GetType();
                 var first = true;
                 for (int i = 1; i <= genericArguments.Length; i++)
                 {
                     first = AppendSeparator(callback, first);
-                    var item = t.GetField($"Item{i}").GetValue(command.Instance);
-                    callback.ProcessRecursive(item, item?.GetType(), command.Level);
+                    var item = t.GetField($"Item{i}").GetValue(request.Instance);
+                    callback.ProcessRecursive(item, item?.GetType(), request.Level);
                 }
 
                 callback.ChainAppend(")")

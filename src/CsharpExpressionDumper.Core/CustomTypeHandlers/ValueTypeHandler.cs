@@ -1,16 +1,16 @@
 ﻿using System.Globalization;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class ValueTypeHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.InstanceType?.IsValueType == true)
+            if (request.InstanceType?.IsValueType == true)
             {
-                callback.AppendSingleValue(string.Format(CultureInfo.InvariantCulture, "{0}", command.Instance));
+                callback.AppendSingleValue(string.Format(CultureInfo.InvariantCulture, "{0}", request.Instance));
                 return true;
             }
 

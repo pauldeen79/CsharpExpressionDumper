@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class KeyValuePairHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance != null
-                && command.InstanceType?.IsGenericType == true
-                && command.InstanceType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+            if (request.Instance != null
+                && request.InstanceType?.IsGenericType == true
+                && request.InstanceType.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
             {
-                var genericArguments = command.InstanceType.GetGenericArguments();
+                var genericArguments = request.InstanceType.GetGenericArguments();
 
                 callback.ChainAppendPrefix()
                         .ChainAppend("new System.Collections.Generic.KeyValuePair<")
@@ -23,13 +23,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                         .ChainAppend(">")
                         .ChainAppend("(");
 
-                var t = command.Instance.GetType();
-                var key = t.GetProperty("Key").GetValue(command.Instance);
-                var value = t.GetProperty("Value").GetValue(command.Instance);
+                var t = request.Instance.GetType();
+                var key = t.GetProperty("Key").GetValue(request.Instance);
+                var value = t.GetProperty("Value").GetValue(request.Instance);
 
-                callback.ChainProcessRecursive(key, key?.GetType(), command.Level)
+                callback.ChainProcessRecursive(key, key?.GetType(), request.Level)
                         .ChainAppend(", ")
-                        .ChainProcessRecursive(value, value?.GetType(), command.Level)
+                        .ChainProcessRecursive(value, value?.GetType(), request.Level)
                         .ChainAppend(")")
                         .ChainAppendSuffix();
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CsharpExpressionDumper.Abstractions.Commands
+namespace CsharpExpressionDumper.Abstractions.Requests
 {
-    public class ObjectHandlerCommand
+    public class ObjectHandlerRequest
     {
         public object? Instance { get; }
         public Type? InstanceType { get; }
@@ -10,7 +10,7 @@ namespace CsharpExpressionDumper.Abstractions.Commands
         public Type? Type { get; }
         public bool IsAnonymousType { get; }
 
-        public ObjectHandlerCommand(object? instance,
+        public ObjectHandlerRequest(object? instance,
                                     Type? instanceType,
                                     int level,
                                     Type? type,

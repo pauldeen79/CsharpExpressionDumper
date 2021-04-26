@@ -4,22 +4,22 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class EnumerableHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance is IEnumerable enumerable
-                && command.InstanceType != null)
+            if (request.Instance is IEnumerable enumerable
+                && request.InstanceType != null)
             {
                 var items = enumerable.Cast<object>().ToArray();
-                var typeSuffix = GetTypeSuffix(items, command.Instance);
-                AppendInitialization(command, callback, typeSuffix);
-                var level = command.Level + 1;
+                var typeSuffix = GetTypeSuffix(items, request.Instance);
+                AppendInitialization(request, callback, typeSuffix);
+                var level = request.Level + 1;
                 foreach (var item in items)
                 {
                     callback.ChainAppend(new string(' ', level * 4))
@@ -28,7 +28,7 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                 }
                 level--;
                 callback.Append(new string(' ', level * 4));
-                if (IsGenericCollectionOrDerrivedType(command))
+                if (IsGenericCollectionOrDerrivedType(request))
                 {
                     callback.Append("} )");
                 }
@@ -77,21 +77,21 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
             return null;
         }
 
-        private void AppendInitialization(CustomTypeHandlerCommand command,
+        private void AppendInitialization(CustomTypeHandlerRequest request,
                                           ICsharpExpressionDumperCallback callback,
                                           Type? typeSuffix)
         {
-            if (IsGenericCollection(command.InstanceType))
+            if (IsGenericCollection(request.InstanceType))
             {
-                AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.ObjectModel.Collection");
+                AppendCustomInitialization(request, callback, typeSuffix, "System.Collections.ObjectModel.Collection");
             }
-            else if (IsGenericReadOnlyCollection(command.InstanceType))
+            else if (IsGenericReadOnlyCollection(request.InstanceType))
             {
-                AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.ObjectModel.ReadOnlyCollection");
+                AppendCustomInitialization(request, callback, typeSuffix, "System.Collections.ObjectModel.ReadOnlyCollection");
             }
-            else if (IsGenericList(command.InstanceType))
+            else if (IsGenericList(request.InstanceType))
             {
-                AppendCustomInitialization(command, callback, typeSuffix, "System.Collections.Generic.List");
+                AppendCustomInitialization(request, callback, typeSuffix, "System.Collections.Generic.List");
             }
             else
             {
@@ -105,11 +105,11 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                 }
                 callback.AppendLine("[]");
             }
-            callback.ChainAppend(new string(' ', command.Level * 4))
+            callback.ChainAppend(new string(' ', request.Level * 4))
                     .ChainAppendLine("{");
         }
 
-        private void AppendCustomInitialization(CustomTypeHandlerCommand command,
+        private void AppendCustomInitialization(CustomTypeHandlerRequest request,
                                                 ICsharpExpressionDumperCallback callback,
                                                 Type? typeSuffix,
                                                 string collectionTypeName)
@@ -119,7 +119,7 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                     .ChainAppend(collectionTypeName)
                     .ChainAppend('<')
 #pragma warning disable CS8602 // Dereference of a possibly null reference. False positive, this has already been checked in the public method above.
-                    .ChainAppendTypeName(command.InstanceType.GetGenericArguments()[0])
+                    .ChainAppendTypeName(request.InstanceType.GetGenericArguments()[0])
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
                     .ChainAppend(">(new");
 
@@ -157,10 +157,10 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                     typeof(ObservableCollection<>)
                 }.Contains(instanceType.GetGenericTypeDefinition());
 
-        private static bool IsGenericCollectionOrDerrivedType(CustomTypeHandlerCommand command)
-            => IsGenericCollection(command.InstanceType)
-                || IsGenericReadOnlyCollection(command.InstanceType)
-                || IsGenericList(command.InstanceType);
+        private static bool IsGenericCollectionOrDerrivedType(CustomTypeHandlerRequest request)
+            => IsGenericCollection(request.InstanceType)
+                || IsGenericReadOnlyCollection(request.InstanceType)
+                || IsGenericList(request.InstanceType);
 
         private static bool IsGenericCollection(Type? t)
             => t != null && t.IsGenericType

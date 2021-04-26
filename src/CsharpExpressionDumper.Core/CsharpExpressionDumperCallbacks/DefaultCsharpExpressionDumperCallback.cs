@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks
@@ -95,13 +95,10 @@ namespace CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks
                    level
                );
 
-        public bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, string prefix, string suffix)
-        {
-            var propertyCallback = CreateNestedCallback(prefix, suffix);
-            return _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, propertyCallback));
-        }
+        public bool IsPropertyCustom(CustomTypeHandlerRequest propertyCommand, string prefix, string suffix)
+            => _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, CreateNestedCallback(prefix, suffix)));
 
-        public bool IsPropertyValid(ObjectHandlerCommand command, PropertyInfo propertyInfo)
+        public bool IsPropertyValid(ObjectHandlerRequest command, PropertyInfo propertyInfo)
             => _objectHandlerPropertyFilters.All(x => x.IsValid(command, propertyInfo));
 
         public ConstructorInfo? ResolveConstructor(Type type)

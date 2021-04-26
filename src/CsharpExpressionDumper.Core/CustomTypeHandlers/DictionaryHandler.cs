@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class DictionaryHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.InstanceType?.IsGenericType == true
-                && new[] { typeof(IDictionary<,>), typeof(Dictionary<,>) }.Contains(command.InstanceType.GetGenericTypeDefinition()))
+            if (request.InstanceType?.IsGenericType == true
+                && new[] { typeof(IDictionary<,>), typeof(Dictionary<,>) }.Contains(request.InstanceType.GetGenericTypeDefinition()))
             {
-                var genericArguments = command.InstanceType.GetGenericArguments();
+                var genericArguments = request.InstanceType.GetGenericArguments();
 
                 callback.ChainAppendPrefix()
                         .ChainAppend("new System.Collections.Generic.Dictionary<")
@@ -22,11 +22,11 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
                         .ChainAppend(", ")
                         .ChainAppendTypeName(genericArguments[1])
                         .ChainAppendLine(">")
-                        .ChainAppend(new string(' ', command.Level * 4))
+                        .ChainAppend(new string(' ', request.Level * 4))
                         .ChainAppendLine("{");
 
-                var level = command.Level + 1;
-                if (command.Instance is IEnumerable enumerable)
+                var level = request.Level + 1;
+                if (request.Instance is IEnumerable enumerable)
                 {
                     foreach (var kvp in enumerable)
                     {

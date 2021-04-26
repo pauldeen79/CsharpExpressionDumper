@@ -1,4 +1,4 @@
-﻿using CsharpExpressionDumper.Abstractions.Commands;
+﻿using CsharpExpressionDumper.Abstractions.Requests;
 using System;
 using System.Reflection;
 using System.Text;
@@ -18,8 +18,8 @@ namespace CsharpExpressionDumper.Abstractions
         void AppendLine();
         void AppendFormattedString(string value);
         void AppendTypeName(Type type);
-        bool IsPropertyCustom(CustomTypeHandlerCommand propertyCommand, string prefix, string suffix);
-        bool IsPropertyValid(ObjectHandlerCommand command, PropertyInfo propertyInfo);
+        bool IsPropertyCustom(CustomTypeHandlerRequest propertyCommand, string prefix, string suffix);
+        bool IsPropertyValid(ObjectHandlerRequest command, PropertyInfo propertyInfo);
         ConstructorInfo? ResolveConstructor(Type type);
         PropertyInfo? ResolveReadOnlyProperty(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument);
     }
