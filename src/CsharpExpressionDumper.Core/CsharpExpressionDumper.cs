@@ -20,7 +20,7 @@ namespace CsharpExpressionDumper.Core
         {
             _objectHandlers = new List<IObjectHandler>(objectHandlers ?? Enumerable.Empty<IObjectHandler>());
             _customTypeHandlers = new List<ICustomTypeHandler>(customTypeHandlers ?? Enumerable.Empty<ICustomTypeHandler>());
-            _instanceCallback = instanceCallback ?? throw new ArgumentNullException(nameof(instanceCallback));
+            _instanceCallback = instanceCallback;
         }
 
         public string Dump(object instance, Type? type = null)

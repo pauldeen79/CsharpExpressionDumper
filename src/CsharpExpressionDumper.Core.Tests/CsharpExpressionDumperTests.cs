@@ -9,28 +9,12 @@ using CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks;
 using CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters;
 using CsharpExpressionDumper.Core.Tests.TestData;
 using FluentAssertions;
-using Moq;
 using Xunit;
 
 namespace CsharpExpressionDumper.Core.Tests
 {
     public partial class CsharpExpressionDumperTests
     {
-        [Fact]
-        public void Ctor_Throws_ArgumentNullException_On_Null_Arguments()
-        {
-            //TODO: Add support in TestHelpers (CrossCutting.Common) so we can perform this test with the generic TestHelpers class.
-            this.Invoking(_ => new CsharpExpressionDumper(Enumerable.Empty<IObjectHandler>(), Enumerable.Empty<ICustomTypeHandler>(), null))
-                .Should().Throw<ArgumentNullException>()
-                .And.ParamName.Should().Be("instanceCallback");
-
-            this.Invoking(_ => new CsharpExpressionDumper(null, Enumerable.Empty<ICustomTypeHandler>(), new Mock<ICsharpExpressionDumperCallback>().Object))
-                .Should().NotThrow<ArgumentNullException>();
-
-            this.Invoking(_ => new CsharpExpressionDumper(Enumerable.Empty<IObjectHandler>(), null, new Mock<ICsharpExpressionDumperCallback>().Object))
-                .Should().NotThrow<ArgumentNullException>();
-        }
-
         [Fact]
         public void Can_Dump_String_To_Csharp()
         {
