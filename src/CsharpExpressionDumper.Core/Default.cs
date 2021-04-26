@@ -13,48 +13,48 @@ namespace CsharpExpressionDumper.Core
     {
         public static IEnumerable<IObjectHandler> ObjectHandlers
             => _objectHandlers ?? (_objectHandlers = new IObjectHandler[]
-                {
-                    new DefaultObjectHandler(),
-                });
+            {
+                new DefaultObjectHandler(),
+            });
 
         public static IEnumerable<ICustomTypeHandler> CustomTypeHandlers
             => _customTypeHandlers ?? (_customTypeHandlers = new ICustomTypeHandler[]
-                {
-                    new NullHandler(),
-                    new DateTimeHandler(),
-                    new TimeSpanHandler(),
-                    new EnumHandler(),
-                    new BooleanHandler(),
-                    new CharHandler(),
-                    new GuidHandler(),
-                    new TypeHandler(),
-                    new UriHandler(),
-                    new VersionHandler(),
-                    new KeyValuePairHandler(),
-                    new ValueTupleHandler(),
-                    new ValueTypeHandler(),
-                    new StringHandler(),
-                    new DictionaryHandler(),
-                    new EnumerableHandler(),
-                });
+            {
+                new NullHandler(),
+                new DateTimeHandler(),
+                new TimeSpanHandler(),
+                new EnumHandler(),
+                new BooleanHandler(),
+                new CharHandler(),
+                new GuidHandler(),
+                new TypeHandler(),
+                new UriHandler(),
+                new VersionHandler(),
+                new KeyValuePairHandler(),
+                new ValueTupleHandler(),
+                new ValueTypeHandler(),
+                new StringHandler(),
+                new DictionaryHandler(),
+                new EnumerableHandler(),
+            });
 
         public static IEnumerable<IConstructorResolver> ConstructorResolvers
             => _constructorResolvers ?? (_constructorResolvers = new IConstructorResolver[]
-                {
-                    new DefaultConstructorResolver(),
-                });
+            {
+                new DefaultConstructorResolver(),
+            });
 
         public static IEnumerable<IReadOnlyPropertyResolver> ReadOnlyPropertyResolvers
             => _readOnlyPropertyResolvers ?? (_readOnlyPropertyResolvers = new IReadOnlyPropertyResolver[]
-                {
-                    new DefaultReadOnlyPropertyResolver()
-                });
+            {
+                new DefaultReadOnlyPropertyResolver()
+            });
 
         public static IEnumerable<ITypeNameFormatter> TypeNameFormatters
             => _typeNameFormatters ?? (_typeNameFormatters = new ITypeNameFormatter[]
-                {
-                    new DefaultTypeNameFormatter()
-                });
+            {
+                new DefaultTypeNameFormatter()
+            });
 
         public static IEnumerable<IObjectHandlerPropertyFilter> ObjectHandlerPropertyFilters
             => _objectHandlerPropertyFilters ?? (_objectHandlerPropertyFilters = Array.Empty<IObjectHandlerPropertyFilter>());
