@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 
 namespace CsharpExpressionDumper.Core.Extensions
 {
     public static class ObjectHandlerCommandExtensions
     {
-        public static void ProcessWritableProperties(this ObjectHandlerCommand command,
+        public static void ProcessWritableProperties(this ObjectHandlerRequest command,
                                                      ICsharpExpressionDumperCallback callback,
                                                      IEnumerable<PropertyInfo> properties)
         {
@@ -22,7 +22,7 @@ namespace CsharpExpressionDumper.Core.Extensions
                 var propertyValue = property.GetValue(command.Instance);
                 var propertyType = propertyValue?.GetType();
                 callback.Append(new string(' ', level * 4));
-                var propertyCommand = new CustomTypeHandlerCommand(propertyValue, propertyType, level);
+                var propertyCommand = new CustomTypeHandlerRequest(propertyValue, propertyType, level);
                 var propertyIsCustom = callback.IsPropertyCustom(propertyCommand, $"{property.Name} = ", ",");
                 if (!propertyIsCustom)
                 {

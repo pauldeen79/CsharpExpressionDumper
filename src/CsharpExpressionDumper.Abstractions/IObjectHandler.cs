@@ -1,10 +1,10 @@
-﻿using CsharpExpressionDumper.Abstractions.Commands;
+﻿using CsharpExpressionDumper.Abstractions.Requests;
 
 namespace CsharpExpressionDumper.Abstractions
 {
     public interface IObjectHandler
     {
-        bool ProcessInstance(ObjectHandlerCommand command,
+        bool ProcessInstance(ObjectHandlerRequest command,
                              ICsharpExpressionDumperCallback callback);
     }
 }

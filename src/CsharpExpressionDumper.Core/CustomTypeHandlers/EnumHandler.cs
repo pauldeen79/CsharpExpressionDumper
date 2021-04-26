@@ -1,20 +1,20 @@
 ﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class EnumHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance != null
-                && command.InstanceType?.IsEnum == true)
+            if (request.Instance != null
+                && request.InstanceType?.IsEnum == true)
             {
                 callback.ChainAppendPrefix()
-                        .ChainAppendTypeName(command.InstanceType)
+                        .ChainAppendTypeName(request.InstanceType)
                         .ChainAppend('.')
-                        .ChainAppend(command.Instance)
+                        .ChainAppend(request.Instance)
                         .ChainAppendSuffix();
                 return true;
             }

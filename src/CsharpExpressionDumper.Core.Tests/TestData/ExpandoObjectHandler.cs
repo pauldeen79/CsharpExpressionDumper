@@ -1,5 +1,5 @@
 ﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using System.Dynamic;
 
 namespace CsharpExpressionDumper.Core.Tests.TestData
@@ -13,16 +13,16 @@ namespace CsharpExpressionDumper.Core.Tests.TestData
             _variableName = variableName;
         }
 
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance is ExpandoObject expandoObject)
+            if (request.Instance is ExpandoObject expandoObject)
             {
                 callback.AppendLine($"dynamic {_variableName} = new System.Dynamic.ExpandoObject();");
                 foreach (var keyValuePair in expandoObject)
                 {
-                    callback.Append(new string(' ', command.Level * 4));
+                    callback.Append(new string(' ', request.Level * 4));
                     callback.Append($"{_variableName}.{keyValuePair.Key} = ");
-                    callback.ProcessRecursive(keyValuePair.Value, keyValuePair.Value?.GetType(), command.Level);
+                    callback.ProcessRecursive(keyValuePair.Value, keyValuePair.Value?.GetType(), request.Level);
                     callback.AppendLine(";");
                 }
                 return true;

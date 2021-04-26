@@ -1,5 +1,5 @@
 ﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
@@ -8,9 +8,9 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         private const string Quote = "\"";
 
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance is string stringValue)
+            if (request.Instance is string stringValue)
             {
                 callback.ChainAppendPrefix()
                         .ChainAppend('@')

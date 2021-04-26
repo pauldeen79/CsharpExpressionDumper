@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace CsharpExpressionDumper.Abstractions.Commands
+namespace CsharpExpressionDumper.Abstractions.Requests
 {
-    public class CustomTypeHandlerCommand
+    public class CustomTypeHandlerRequest
     {
         public object? Instance { get; }
         public Type? InstanceType { get; }
         public int Level { get; }
 
-        public CustomTypeHandlerCommand(object? instance,
+        public CustomTypeHandlerRequest(object? instance,
                                         Type? instanceType,
                                         int level)
         {

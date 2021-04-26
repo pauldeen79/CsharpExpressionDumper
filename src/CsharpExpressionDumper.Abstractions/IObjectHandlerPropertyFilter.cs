@@ -1,10 +1,10 @@
-﻿using CsharpExpressionDumper.Abstractions.Commands;
+﻿using CsharpExpressionDumper.Abstractions.Requests;
 using System.Reflection;
 
 namespace CsharpExpressionDumper.Abstractions
 {
     public interface IObjectHandlerPropertyFilter
     {
-        bool IsValid(ObjectHandlerCommand command, PropertyInfo propertyInfo);
+        bool IsValid(ObjectHandlerRequest command, PropertyInfo propertyInfo);
     }
 }

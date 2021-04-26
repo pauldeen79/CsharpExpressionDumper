@@ -1,14 +1,14 @@
 ﻿using System;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class TimeSpanHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance is TimeSpan timeSpan)
+            if (request.Instance is TimeSpan timeSpan)
             {
                 callback.AppendSingleValue($"new System.TimeSpan({timeSpan.Days}, {timeSpan.Hours}, {timeSpan.Minutes}, {timeSpan.Seconds}, {timeSpan.Milliseconds})");
                 return true;

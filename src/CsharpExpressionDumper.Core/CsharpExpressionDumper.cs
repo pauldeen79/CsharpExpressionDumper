@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core
@@ -34,7 +34,7 @@ namespace CsharpExpressionDumper.Core
             var instanceType = type ?? instance?.GetType();
             _instanceCallback.ProcessRecursiveCallbackDelegate = DoProcessRecursive;
             _instanceCallback.Builder = builder;
-            var instanceCommand = new CustomTypeHandlerCommand(instance, instanceType, level);
+            var instanceCommand = new CustomTypeHandlerRequest(instance, instanceType, level);
             var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceCommand, _instanceCallback));
             if (!instanceIsCustom && instanceType != null)
             {
@@ -46,7 +46,7 @@ namespace CsharpExpressionDumper.Core
                     _instanceCallback.AppendTypeName(instanceType);
                 }
 
-                var objectHandlerCommand = new ObjectHandlerCommand(instance, instanceType, level, type, isAnonymousType);
+                var objectHandlerCommand = new ObjectHandlerRequest(instance, instanceType, level, type, isAnonymousType);
                 var success = _objectHandlers.ProcessUntilSuccess(x => x.ProcessInstance(objectHandlerCommand, _instanceCallback));
                 if (!success)
                 {

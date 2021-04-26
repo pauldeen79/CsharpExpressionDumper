@@ -1,13 +1,13 @@
 ﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Commands;
+using CsharpExpressionDumper.Abstractions.Requests;
 
 namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 {
     public class NullHandler : ICustomTypeHandler
     {
-        public bool Process(CustomTypeHandlerCommand command, ICsharpExpressionDumperCallback callback)
+        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (command.Instance == null)
+            if (request.Instance == null)
             {
                 callback.AppendSingleValue("null");
                 return true;
