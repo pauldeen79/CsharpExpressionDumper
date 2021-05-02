@@ -721,6 +721,23 @@ namespace CsharpExpressionDumper.Core.Tests
         }
 
         [Fact]
+        public void Can_Dump_Class_With_DictionaryBasedClass_To_Csharp()
+        {
+            // Arrange
+            var input = new MyDictionaryBasedClass("custom1", 32);
+            input.Add("Key1", "string value");
+            input.Add("Key2", 78);
+
+            // Act
+            var actual = Dump(input, new[] { new MyDictionaryBasedClassHandler("x") });
+
+            // Assert
+            actual.Should().Be(@"var x = new MyDictionaryBasedClass(@""custom1"", 32);
+x.Add(@""Key1"", @""string value"");
+x.Add(@""Key2"", 78);");
+        }
+
+        [Fact]
         public void Can_Dump_AnonyousObject_To_Csharp()
         {
             // Arrange
