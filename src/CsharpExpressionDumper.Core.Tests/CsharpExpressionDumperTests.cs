@@ -6,15 +6,28 @@ using System.Linq;
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.Core.ConstructorResolvers;
 using CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks;
+using CsharpExpressionDumper.Core.Extensions;
 using CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters;
+using CsharpExpressionDumper.Core.ObjectHandlers;
+using CsharpExpressionDumper.Core.ReadOnlyPropertyResolvers;
 using CsharpExpressionDumper.Core.Tests.TestData;
+using CsharpExpressionDumper.Core.TypeNameFormatters;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace CsharpExpressionDumper.Core.Tests
 {
-    public partial class CsharpExpressionDumperTests
+    public sealed class CsharpExpressionDumperTests : IDisposable
     {
+        private ServiceProvider? _serviceProvider;
+        private readonly IServiceCollection _serviceCollection;
+
+        public CsharpExpressionDumperTests()
+        {
+            _serviceCollection = new ServiceCollection();
+        }
+
         [Fact]
         public void Can_Dump_String_To_Csharp()
         {
@@ -965,19 +978,13 @@ input.Property2 = 3;
         public void Dump_Throws_InvalidOperationExcepion_When_No_ObjectHandler_Supports_The_Object_Instance()
         {
             // Arrange
-            var sut = new CsharpExpressionDumper
-            (
-                Enumerable.Empty<IObjectHandler>(),
-                Enumerable.Empty<ICustomTypeHandler>(),
-                new DefaultCsharpExpressionDumperCallback
-                (
-                    Enumerable.Empty<ICustomTypeHandler>(),
-                    Default.TypeNameFormatters,
-                    Default.ConstructorResolvers,
-                    Default.ReadOnlyPropertyResolvers,
-                    Default.ObjectHandlerPropertyFilters
-                )
-            );
+            _serviceCollection.AddTransient<ICsharpExpressionDumper, CsharpExpressionDumper>();
+            _serviceCollection.AddTransient<ICsharpExpressionDumperCallback, DefaultCsharpExpressionDumperCallback>();
+            _serviceCollection.AddSingleton<IConstructorResolver, DefaultConstructorResolver>();
+            _serviceCollection.AddSingleton<IReadOnlyPropertyResolver, DefaultReadOnlyPropertyResolver>();
+            _serviceCollection.AddSingleton<ITypeNameFormatter, DefaultTypeNameFormatter>();
+            _serviceProvider = _serviceCollection.BuildServiceProvider();
+            var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
 
             // Act & Assert
             sut.Invoking(x => x.Dump("hello world"))
@@ -985,58 +992,42 @@ input.Property2 = 3;
                .WithMessage("There is no object handler which supports object of type [System.String]");
         }
 
-        private static string Dump(object? input, params ICustomTypeHandler[] customTypeHandlers)
+        private string Dump(object? input, params ICustomTypeHandler[] customTypeHandlers)
         {
-            var sut = new CsharpExpressionDumper
-            (
-                Default.ObjectHandlers,
-                customTypeHandlers.Concat(Default.CustomTypeHandlers),
-                new DefaultCsharpExpressionDumperCallback
-                (
-                    customTypeHandlers.Concat(Default.CustomTypeHandlers),
-                    Default.TypeNameFormatters,
-                    Default.ConstructorResolvers,
-                    Default.ReadOnlyPropertyResolvers,
-                    Default.ObjectHandlerPropertyFilters
-                )
-            );
+            foreach (var customTypeHandler in customTypeHandlers)
+            {
+                _serviceCollection.AddSingleton(customTypeHandler);
+            }
+            _serviceProvider = _serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+            var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
             return sut.Dump(input);
         }
 
-        private static string Dump(object? input, IConstructorResolver[] constructorResolvers)
+        private string Dump(object? input, IConstructorResolver[] constructorResolvers)
         {
-            var sut = new CsharpExpressionDumper
-            (
-                Default.ObjectHandlers,
-                Default.CustomTypeHandlers,
-                new DefaultCsharpExpressionDumperCallback
-                (
-                    Default.CustomTypeHandlers,
-                    Default.TypeNameFormatters,
-                    constructorResolvers,
-                    Default.ReadOnlyPropertyResolvers,
-                    Default.ObjectHandlerPropertyFilters
-                )
-            );
+            foreach (var constructorResolver in constructorResolvers)
+            {
+                _serviceCollection.AddSingleton(constructorResolver);
+            }
+            _serviceProvider = _serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+            var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
             return sut.Dump(input);
         }
 
-        private static string Dump(object? input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
+        private string Dump(object? input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
         {
-            var sut = new CsharpExpressionDumper
-            (
-                Default.ObjectHandlers,
-                Default.CustomTypeHandlers,
-                new DefaultCsharpExpressionDumperCallback
-                (
-                    Default.CustomTypeHandlers,
-                    Default.TypeNameFormatters,
-                    Default.ConstructorResolvers,
-                    Default.ReadOnlyPropertyResolvers,
-                    objectHandlerPropertyFilters
-                )
-            );
+            foreach (var objectHandlerPropertyFilter in objectHandlerPropertyFilters)
+            {
+                _serviceCollection.AddSingleton(objectHandlerPropertyFilter);
+            }
+            _serviceProvider = _serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+            var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
             return sut.Dump(input);
+        }
+
+        public void Dispose()
+        {
+            _serviceProvider?.Dispose();
         }
     }
 }
