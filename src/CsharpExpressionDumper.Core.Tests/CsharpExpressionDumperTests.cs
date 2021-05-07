@@ -73,7 +73,7 @@ namespace CsharpExpressionDumper.Core.Tests
         public void Can_Dump_Null_To_Csharp()
         {
             // Act
-            var actual = Dump((object)null);
+            var actual = Dump(null);
 
             // Assert
             actual.Should().Be("null");
@@ -985,7 +985,7 @@ input.Property2 = 3;
                .WithMessage("There is no object handler which supports object of type [System.String]");
         }
 
-        private string Dump(object input, params ICustomTypeHandler[] customTypeHandlers)
+        private static string Dump(object? input, params ICustomTypeHandler[] customTypeHandlers)
         {
             var sut = new CsharpExpressionDumper
             (
@@ -1003,7 +1003,7 @@ input.Property2 = 3;
             return sut.Dump(input);
         }
 
-        private string Dump(object input, IConstructorResolver[] constructorResolvers)
+        private static string Dump(object? input, IConstructorResolver[] constructorResolvers)
         {
             var sut = new CsharpExpressionDumper
             (
@@ -1021,7 +1021,7 @@ input.Property2 = 3;
             return sut.Dump(input);
         }
 
-        private string Dump(object input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
+        private static string Dump(object? input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
         {
             var sut = new CsharpExpressionDumper
             (

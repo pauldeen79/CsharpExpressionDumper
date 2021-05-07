@@ -1,9 +1,9 @@
-﻿using FluentAssertions;
-using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Core.ObjectHandlers;
-using Xunit;
-using Moq;
+﻿using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.Abstractions.Requests;
+using CsharpExpressionDumper.Core.ObjectHandlers;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers
 {
@@ -59,8 +59,8 @@ namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers
 
         public class MyImmutableClass
         {
-            public object Property1 { get; }
-            public MyImmutableClass(object property1)
+            public object? Property1 { get; }
+            public MyImmutableClass(object? property1)
             {
                 Property1 = property1;
             }
@@ -68,7 +68,7 @@ namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers
 
         public class MyPocoClass
         {
-            public object Property1 { get; set; }
+            public object? Property1 { get; set; }
         }
     }
 }

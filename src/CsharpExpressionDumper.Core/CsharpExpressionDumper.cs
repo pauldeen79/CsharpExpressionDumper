@@ -7,7 +7,7 @@ using CsharpExpressionDumper.Core.Extensions;
 
 namespace CsharpExpressionDumper.Core
 {
-    public class CsharpExpressionDumper
+    public class CsharpExpressionDumper : ICsharpExpressionDumper
     {
         private readonly IReadOnlyCollection<IObjectHandler> _objectHandlers;
         private readonly IReadOnlyCollection<ICustomTypeHandler> _customTypeHandlers;
@@ -22,7 +22,7 @@ namespace CsharpExpressionDumper.Core
             _instanceCallback = instanceCallback;
         }
 
-        public string Dump(object instance, Type? type = null)
+        public string Dump(object? instance, Type? type = null)
         {
             var builder = new StringBuilder();
             DoProcessRecursive(instance, type, builder, 0);

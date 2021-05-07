@@ -66,7 +66,9 @@ namespace CsharpExpressionDumper.Core.Tests.TestData
 
         public bool Remove(string key) => _state.Remove(key);
 
+#pragma warning disable CS8601 // Possible null reference assignment.
         public bool TryGetValue(string key, out object value) => _state.TryGetValue(key, out value);
+#pragma warning restore CS8601 // Possible null reference assignment.
 
         public void Add(KeyValuePair<string, object> item) => _state.Add(item);
 

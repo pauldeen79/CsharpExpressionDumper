@@ -2,7 +2,7 @@
 {
     public class MyClassWithReadOnlyProperty
     {
-        public string Property1 { get; set; }
+        public string? Property1 { get; set; }
         public int Property2 { get; }
 
         public MyClassWithReadOnlyProperty()
