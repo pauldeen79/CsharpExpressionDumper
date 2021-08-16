@@ -3,21 +3,13 @@ Generates c# initialization code from object instances
 
 Example:
 ```C#
+//using Microsoft.Extensions.DependencyInjection;
+
 var input = new { Property1 = "test", Property2 = 2 };
 
-var dumper = new CsharpExpressionDumper
-(
-    Default.ObjectHandlers,
-    Default.CustomTypeHandlers,
-    new DefaultCsharpExpressionDumperCallback
-    (
-        Default.CustomTypeHandlers,
-        Default.TypeNameFormatters,
-        Default.ConstructorResolvers,
-        Default.ReadOnlyPropertyResolvers,
-        Default.ObjectHandlerPropertyFilters
-    )
-);
+var serviceCollection = new ServiceCollection();
+var serviceProvider = serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+var dumper = serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
 
 var sourceCode = dumper.Dump(input, input.GetType());
 // generates: new { Property1 = "test", Property2 = 2 }
