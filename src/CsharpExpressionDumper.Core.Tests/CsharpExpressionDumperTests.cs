@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
-using System.Linq;
 using CsharpExpressionDumper.Abstractions;
 using CsharpExpressionDumper.Core.ConstructorResolvers;
 using CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks;
 using CsharpExpressionDumper.Core.Extensions;
 using CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters;
-using CsharpExpressionDumper.Core.ObjectHandlers;
 using CsharpExpressionDumper.Core.ReadOnlyPropertyResolvers;
 using CsharpExpressionDumper.Core.Tests.TestData;
 using CsharpExpressionDumper.Core.TypeNameFormatters;
