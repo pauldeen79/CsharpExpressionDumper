@@ -10,19 +10,19 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
 
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is string stringValue)
+            if (!(request.Instance is string stringValue))
             {
-                callback.ChainAppendPrefix()
-                        .ChainAppend('@')
-                        .ChainAppend(Quote)
-                        .ChainAppend(Format(stringValue))
-                        .ChainAppend(Quote)
-                        .ChainAppendSuffix();
-
-                return true;
+                return false;
             }
+            
+            callback.ChainAppendPrefix()
+                    .ChainAppend('@')
+                    .ChainAppend(Quote)
+                    .ChainAppend(Format(stringValue))
+                    .ChainAppend(Quote)
+                    .ChainAppendSuffix();
 
-            return false;
+            return true;
         }
 
         private static string Format(string stringValue)

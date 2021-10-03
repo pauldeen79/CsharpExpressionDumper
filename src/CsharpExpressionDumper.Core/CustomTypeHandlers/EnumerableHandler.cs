@@ -13,34 +13,34 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is IEnumerable enumerable
-                && request.InstanceType != null)
+            if (!(request.Instance is IEnumerable enumerable)
+                || request.InstanceType == null)
             {
-                var items = enumerable.Cast<object>().ToArray();
-                var typeSuffix = GetTypeSuffix(items, request.Instance);
-                AppendInitialization(request, callback, typeSuffix);
-                var level = request.Level + 1;
-                foreach (var item in items)
-                {
-                    callback.ChainAppend(new string(' ', level * 4))
-                            .ChainProcessRecursive(item, item.GetType(), level)
-                            .ChainAppendLine(",");
-                }
-                level--;
-                callback.Append(new string(' ', level * 4));
-                if (IsGenericCollectionOrDerrivedType(request))
-                {
-                    callback.Append("} )");
-                }
-                else
-                {
-                    callback.Append("}");
-                }
-                callback.AppendSuffix();
-                return true;
+                return false;
             }
-
-            return false;
+            
+            var items = enumerable.Cast<object>().ToArray();
+            var typeSuffix = GetTypeSuffix(items, request.Instance);
+            AppendInitialization(request, callback, typeSuffix);
+            var level = request.Level + 1;
+            foreach (var item in items)
+            {
+                callback.ChainAppend(new string(' ', level * 4))
+                        .ChainProcessRecursive(item, item.GetType(), level)
+                        .ChainAppendLine(",");
+            }
+            level--;
+            callback.Append(new string(' ', level * 4));
+            if (IsGenericCollectionOrDerrivedType(request))
+            {
+                callback.Append("} )");
+            }
+            else
+            {
+                callback.Append("}");
+            }
+            callback.AppendSuffix();
+            return true;
         }
 
         private Type? GetTypeSuffix(object[] items, object instance)

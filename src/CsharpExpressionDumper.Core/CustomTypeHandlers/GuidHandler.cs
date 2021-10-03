@@ -8,13 +8,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is Guid guid)
+            if (!(request.Instance is Guid guid))
             {
-                callback.AppendSingleValue($@"new System.Guid(""{guid}"")");
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue($@"new System.Guid(""{guid}"")");
+            return true;
         }
     }
 }

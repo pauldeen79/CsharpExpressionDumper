@@ -7,13 +7,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is bool b)
+            if (!(request.Instance is bool b))
             {
-                callback.AppendSingleValue(DisplayBoolean(b));
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue(DisplayBoolean(b));
+            return true;
         }
 
         private static string DisplayBoolean(bool booleanValue)

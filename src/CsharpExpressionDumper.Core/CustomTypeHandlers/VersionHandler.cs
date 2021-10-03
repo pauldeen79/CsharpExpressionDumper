@@ -8,13 +8,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is Version version)
+            if (!(request.Instance is Version version))
             {
-                callback.AppendSingleValue($"new System.Version({version.Major}, {version.Minor}, {version.Build}, {version.Revision})");
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue($"new System.Version({version.Major}, {version.Minor}, {version.Build}, {version.Revision})");
+            return true;
         }
     }
 }

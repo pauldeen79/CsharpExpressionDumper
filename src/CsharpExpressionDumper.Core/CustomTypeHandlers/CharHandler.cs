@@ -7,13 +7,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is char c)
+            if (!(request.Instance is char c))
             {
-                callback.AppendSingleValue($"'{c}'");
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue($"'{c}'");
+            return true;
         }
     }
 }

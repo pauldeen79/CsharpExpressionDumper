@@ -8,13 +8,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is Uri uri)
+            if (!(request.Instance is Uri uri))
             {
-                callback.AppendSingleValue($@"new System.Uri(""{uri.AbsoluteUri}"")");
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue($@"new System.Uri(""{uri.AbsoluteUri}"")");
+            return true;
         }
     }
 }

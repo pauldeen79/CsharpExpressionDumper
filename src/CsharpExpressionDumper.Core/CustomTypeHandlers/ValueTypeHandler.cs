@@ -8,13 +8,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.InstanceType?.IsValueType == true)
+            if ((request.InstanceType?.IsValueType) != true)
             {
-                callback.AppendSingleValue(string.Format(CultureInfo.InvariantCulture, "{0}", request.Instance));
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue(string.Format(CultureInfo.InvariantCulture, "{0}", request.Instance));
+            return true;
         }
     }
 }

@@ -9,17 +9,17 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is Type t)
+            if (!(request.Instance is Type t))
             {
-                callback.ChainAppendPrefix()
-                        .ChainAppend("typeof(")
-                        .ChainAppendTypeName(t)
-                        .ChainAppend(")");
-
-                return true;
+                return false;
             }
+            
+            callback.ChainAppendPrefix()
+                    .ChainAppend("typeof(")
+                    .ChainAppendTypeName(t)
+                    .ChainAppend(")");
 
-            return false;
+            return true;
         }
     }
 }

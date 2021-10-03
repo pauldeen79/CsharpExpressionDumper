@@ -8,13 +8,13 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance is DateTime dateTime)
+            if (!(request.Instance is DateTime dateTime))
             {
-                callback.AppendSingleValue($"new System.DateTime({dateTime.Year}, {dateTime.Month}, {dateTime.Day}, {dateTime.Hour}, {dateTime.Minute}, {dateTime.Second}, {dateTime.Millisecond}, DateTimeKind.{dateTime.Kind})");
-                return true;
+                return false;
             }
-
-            return false;
+            
+            callback.AppendSingleValue($"new System.DateTime({dateTime.Year}, {dateTime.Month}, {dateTime.Day}, {dateTime.Hour}, {dateTime.Minute}, {dateTime.Second}, {dateTime.Millisecond}, DateTimeKind.{dateTime.Kind})");
+            return true;
         }
     }
 }

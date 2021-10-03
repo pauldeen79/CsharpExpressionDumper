@@ -8,18 +8,18 @@ namespace CsharpExpressionDumper.Core.CustomTypeHandlers
     {
         public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
         {
-            if (request.Instance != null
-                && request.InstanceType?.IsEnum == true)
+            if (request.Instance == null
+                || (request.InstanceType?.IsEnum) != true)
             {
-                callback.ChainAppendPrefix()
-                        .ChainAppendTypeName(request.InstanceType)
-                        .ChainAppend('.')
-                        .ChainAppend(request.Instance)
-                        .ChainAppendSuffix();
-                return true;
+                return false;
             }
 
-            return false;
+            callback.ChainAppendPrefix()
+                    .ChainAppendTypeName(request.InstanceType)
+                    .ChainAppend('.')
+                    .ChainAppend(request.Instance)
+                    .ChainAppendSuffix();
+            return true;
         }
     }
 }
