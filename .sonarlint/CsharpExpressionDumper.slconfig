@@ -1,0 +1,15 @@
+{
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "pauldeen79",
+    "Name": "pauldeen79"
+  },
+  "ProjectKey": "pauldeen79_CsharpExpressionDumper",
+  "ProjectName": "CsharpExpressionDumper",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AXhZfo6en_M4LyoxHL-X",
+      "ProfileTimestamp": "2021-10-27T09:08:11Z"
+    }
+  }
+}
