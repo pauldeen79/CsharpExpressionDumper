@@ -201,7 +201,7 @@
     <Rule Id="S3263" Action="Warning" />
     <Rule Id="S3264" Action="Warning" />
     <Rule Id="S3265" Action="Warning" />
-    <Rule Id="S3267" Action="Warning" />
+    <Rule Id="S3267" Action="Info" />
     <Rule Id="S3329" Action="Warning" />
     <Rule Id="S3343" Action="Warning" />
     <Rule Id="S3346" Action="Warning" />
