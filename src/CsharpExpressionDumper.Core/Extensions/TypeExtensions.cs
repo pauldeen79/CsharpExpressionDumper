@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace CsharpExpressionDumper.Core.Extensions;
 
-namespace CsharpExpressionDumper.Core.Extensions
+public static class TypeExtensions
 {
-    public static class TypeExtensions
-    {
-        public static bool IsAnonymousType(this Type instance)
-            => instance.FullName.Contains("AnonymousType");
-    }
+    public static bool IsAnonymousType(this Type instance)
+        => instance.FullName.Contains("AnonymousType");
 }

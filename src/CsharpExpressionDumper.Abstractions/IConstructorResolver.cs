@@ -1,10 +1,6 @@
-﻿using System;
-using System.Reflection;
+﻿namespace CsharpExpressionDumper.Abstractions;
 
-namespace CsharpExpressionDumper.Abstractions
+public interface IConstructorResolver
 {
-    public interface IConstructorResolver
-    {
-        ConstructorInfo? Resolve(Type type);
-    }
+    ConstructorInfo? Resolve(Type type);
 }

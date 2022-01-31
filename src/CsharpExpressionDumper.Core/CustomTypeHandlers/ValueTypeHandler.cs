@@ -1,20 +1,15 @@
-﻿using System.Globalization;
-using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Requests;
+﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-namespace CsharpExpressionDumper.Core.CustomTypeHandlers
+public class ValueTypeHandler : ICustomTypeHandler
 {
-    public class ValueTypeHandler : ICustomTypeHandler
+    public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
+        if ((request.InstanceType?.IsValueType) != true)
         {
-            if ((request.InstanceType?.IsValueType) != true)
-            {
-                return false;
-            }
-            
-            callback.AppendSingleValue(string.Format(CultureInfo.InvariantCulture, "{0}", request.Instance));
-            return true;
+            return false;
         }
+
+        callback.AppendSingleValue(string.Format(CultureInfo.InvariantCulture, "{0}", request.Instance));
+        return true;
     }
 }

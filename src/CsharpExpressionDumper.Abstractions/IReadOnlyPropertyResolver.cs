@@ -1,9 +1,6 @@
-﻿using System.Reflection;
+﻿namespace CsharpExpressionDumper.Abstractions;
 
-namespace CsharpExpressionDumper.Abstractions
+public interface IReadOnlyPropertyResolver
 {
-    public interface IReadOnlyPropertyResolver
-    {
-        PropertyInfo Process(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument);
-    }
+    PropertyInfo Process(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument);
 }

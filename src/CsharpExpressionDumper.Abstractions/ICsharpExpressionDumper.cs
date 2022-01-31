@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace CsharpExpressionDumper.Abstractions;
 
-namespace CsharpExpressionDumper.Abstractions
+public interface ICsharpExpressionDumper
 {
-    public interface ICsharpExpressionDumper
-    {
-        string Dump(object? instance, Type? type = null);
-    }
+    string Dump(object? instance, Type? type = null);
 }

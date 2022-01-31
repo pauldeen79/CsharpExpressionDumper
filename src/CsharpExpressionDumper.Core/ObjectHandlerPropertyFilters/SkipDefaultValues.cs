@@ -1,28 +1,22 @@
-﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Requests;
-using System;
-using System.Reflection;
+﻿namespace CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters;
 
-namespace CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters
+public class SkipDefaultValues : IObjectHandlerPropertyFilter
 {
-    public class SkipDefaultValues : IObjectHandlerPropertyFilter
+    public bool IsValid(ObjectHandlerRequest command, PropertyInfo propertyInfo)
     {
-        public bool IsValid(ObjectHandlerRequest command, PropertyInfo propertyInfo)
+        var defaultValue = propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) == null
+            ? Activator.CreateInstance(propertyInfo.PropertyType)
+            : null;
+
+        var actualValue = propertyInfo.GetValue(command.Instance);
+
+        if (defaultValue == null && actualValue == null)
         {
-            var defaultValue = propertyInfo.PropertyType.IsValueType && Nullable.GetUnderlyingType(propertyInfo.PropertyType) == null
-                ? Activator.CreateInstance(propertyInfo.PropertyType)
-                : null;
-            
-            var actualValue = propertyInfo.GetValue(command.Instance);
-
-            if (defaultValue == null && actualValue == null)
-            {
-                return false;
-            }
-
-            return defaultValue == null
-                || actualValue == null
-                || !actualValue.Equals(defaultValue);
+            return false;
         }
+
+        return defaultValue == null
+            || actualValue == null
+            || !actualValue.Equals(defaultValue);
     }
 }

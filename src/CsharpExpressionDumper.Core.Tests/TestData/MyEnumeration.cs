@@ -1,8 +1,7 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.TestData
+﻿namespace CsharpExpressionDumper.Core.Tests.TestData;
+
+public enum MyEnumeration
 {
-    public enum MyEnumeration
-    {
-        First,
-        Second
-    }
+    First,
+    Second
 }

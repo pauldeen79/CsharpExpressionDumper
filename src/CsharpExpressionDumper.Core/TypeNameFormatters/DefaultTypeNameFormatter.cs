@@ -1,11 +1,6 @@
-﻿using System;
-using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Core.Extensions;
+﻿namespace CsharpExpressionDumper.Core.TypeNameFormatters;
 
-namespace CsharpExpressionDumper.Core.TypeNameFormatters
+public class DefaultTypeNameFormatter : ITypeNameFormatter
 {
-    public class DefaultTypeNameFormatter : ITypeNameFormatter
-    {
-        public string Format(Type type) => type.FullName.FixTypeName();
-    }
+    public string Format(Type type) => type.FullName.FixTypeName();
 }
