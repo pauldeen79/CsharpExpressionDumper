@@ -1,6 +1,5 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.TestData
+﻿namespace CsharpExpressionDumper.Core.Tests.TestData;
+
+public class MyOverrideClass : MyBaseClass
 {
-    public class MyOverrideClass : MyBaseClass
-    {
-    }
 }

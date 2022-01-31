@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace CsharpExpressionDumper.Core.Tests.TestData;
 
-namespace CsharpExpressionDumper.Core.Tests.TestData
+public class MyClassWithIDictionary
 {
-    public class MyClassWithIDictionary
-    {
-        public IDictionary<string, object>? Property1 { get; set; }
-    }
+    public IDictionary<string, object>? Property1 { get; set; }
 }

@@ -1,10 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿namespace CsharpExpressionDumper.Core.Tests.TestData;
 
-namespace CsharpExpressionDumper.Core.Tests.TestData
+public class MyClassWithFlatClassReadOnlyCollection
 {
-    public class MyClassWithFlatClassReadOnlyCollection
-    {
-        public string? Property1 { get; set; }
-        public ReadOnlyCollection<MyFlatClass>? Property2 { get; set; }
-    }
+    public string? Property1 { get; set; }
+    public ReadOnlyCollection<MyFlatClass>? Property2 { get; set; }
 }

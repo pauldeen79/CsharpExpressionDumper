@@ -1,25 +1,19 @@
-﻿using System;
-using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Requests;
-using CsharpExpressionDumper.Core.Extensions;
+﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-namespace CsharpExpressionDumper.Core.CustomTypeHandlers
+public class TypeHandler : ICustomTypeHandler
 {
-    public class TypeHandler : ICustomTypeHandler
+    public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
+        if (!(request.Instance is Type t))
         {
-            if (!(request.Instance is Type t))
-            {
-                return false;
-            }
-            
-            callback.ChainAppendPrefix()
-                    .ChainAppend("typeof(")
-                    .ChainAppendTypeName(t)
-                    .ChainAppend(")");
-
-            return true;
+            return false;
         }
+
+        callback.ChainAppendPrefix()
+                .ChainAppend("typeof(")
+                .ChainAppendTypeName(t)
+                .ChainAppend(")");
+
+        return true;
     }
 }

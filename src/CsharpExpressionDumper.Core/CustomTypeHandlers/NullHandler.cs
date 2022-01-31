@@ -1,19 +1,15 @@
-﻿using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Requests;
+﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-namespace CsharpExpressionDumper.Core.CustomTypeHandlers
+public class NullHandler : ICustomTypeHandler
 {
-    public class NullHandler : ICustomTypeHandler
+    public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
+        if (request.Instance != null)
         {
-            if (request.Instance != null)
-            {
-                return false;
-            }
-            
-            callback.AppendSingleValue("null");
-            return true;
+            return false;
         }
+
+        callback.AppendSingleValue("null");
+        return true;
     }
 }

@@ -16,7 +16,7 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: sonarscan-dotnet
-        uses: highbyte/sonarscan-dotnet@2.0
+        uses: highbyte/sonarscan-dotnet@v2.1.2
         with:
           sonarProjectKey: pauldeen79_CsharpExpressionDumper
           sonarProjectName: CsharpExpressionDumper

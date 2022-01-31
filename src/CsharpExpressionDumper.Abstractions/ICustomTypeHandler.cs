@@ -1,9 +1,6 @@
-﻿using CsharpExpressionDumper.Abstractions.Requests;
+﻿namespace CsharpExpressionDumper.Abstractions;
 
-namespace CsharpExpressionDumper.Abstractions
+public interface ICustomTypeHandler
 {
-    public interface ICustomTypeHandler
-    {
-        bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback);
-    }
+    bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback);
 }

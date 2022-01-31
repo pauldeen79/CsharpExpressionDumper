@@ -1,20 +1,15 @@
-﻿using System;
-using CsharpExpressionDumper.Abstractions;
-using CsharpExpressionDumper.Abstractions.Requests;
+﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-namespace CsharpExpressionDumper.Core.CustomTypeHandlers
+public class UriHandler : ICustomTypeHandler
 {
-    public class UriHandler : ICustomTypeHandler
+    public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
+        if (!(request.Instance is Uri uri))
         {
-            if (!(request.Instance is Uri uri))
-            {
-                return false;
-            }
-            
-            callback.AppendSingleValue($@"new System.Uri(""{uri.AbsoluteUri}"")");
-            return true;
+            return false;
         }
+
+        callback.AppendSingleValue($@"new System.Uri(""{uri.AbsoluteUri}"")");
+        return true;
     }
 }
