@@ -55,4 +55,20 @@ public static class StringExtensions
             .Replace("+", ".")
             .Replace("&", "");
     }
+
+    public static string GetClassName(this string fullyQualifiedClassName)
+    {
+        var idx = fullyQualifiedClassName.LastIndexOf(".");
+        return idx == -1
+            ? fullyQualifiedClassName
+            : fullyQualifiedClassName.Substring(idx + 1);
+    }
+
+    public static string GetNamespaceWithDefault(this string fullyQualifiedClassName, string defaultValue = "")
+    {
+        var idx = fullyQualifiedClassName.LastIndexOf(".");
+        return idx == -1
+            ? defaultValue
+            : fullyQualifiedClassName.Substring(0, idx);
+    }
 }

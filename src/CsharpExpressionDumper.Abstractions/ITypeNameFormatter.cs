@@ -2,5 +2,5 @@
 
 public interface ITypeNameFormatter
 {
-    string Format(Type type);
+    string? Format(Type type);
 }

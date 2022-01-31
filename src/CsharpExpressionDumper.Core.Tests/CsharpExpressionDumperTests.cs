@@ -5,10 +5,7 @@ public sealed class CsharpExpressionDumperTests : IDisposable
     private ServiceProvider? _serviceProvider;
     private readonly IServiceCollection _serviceCollection;
 
-    public CsharpExpressionDumperTests()
-    {
-        _serviceCollection = new ServiceCollection();
-    }
+    public CsharpExpressionDumperTests() => _serviceCollection = new ServiceCollection();
 
     [Fact]
     public void Can_Dump_String_To_Csharp()
@@ -960,6 +957,23 @@ input.Property2 = 3;
     }
 
     [Fact]
+    public void Can_Dump_Class_With_Custom_TypeNameFormatter()
+    {
+        // Arrange
+        var input = new MyImmutableClass("test", 3);
+
+        // Act
+        var actual = Dump(input, new[] { new MyCustomTypeFormatter() });
+
+        // Assert
+        actual.Should().Be(@"new MYIMMUTABLECLASS
+(
+    property1: @""test"",
+    property2: 3
+)");
+    }
+
+    [Fact]
     public void Can_Filter_Empty_Property_Values_On_Dump()
     {
         // Arrange
@@ -993,33 +1007,36 @@ input.Property2 = 3;
 
     private string Dump(object? input, params ICustomTypeHandler[] customTypeHandlers)
     {
-        foreach (var customTypeHandler in customTypeHandlers)
-        {
-            _serviceCollection.AddSingleton(customTypeHandler);
-        }
-        _serviceProvider = _serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+        _serviceProvider = _serviceCollection
+            .AddCsharpExpressionDumper(x => customTypeHandlers.ToList().ForEach(handler => x.AddSingleton(handler)))
+            .BuildServiceProvider();
         var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
         return sut.Dump(input);
     }
 
     private string Dump(object? input, IConstructorResolver[] constructorResolvers)
     {
-        foreach (var constructorResolver in constructorResolvers)
-        {
-            _serviceCollection.AddSingleton(constructorResolver);
-        }
-        _serviceProvider = _serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+        _serviceProvider = _serviceCollection
+            .AddCsharpExpressionDumper(x => constructorResolvers.ToList().ForEach(resolver => x.AddSingleton(resolver)))
+            .BuildServiceProvider();
         var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
         return sut.Dump(input);
     }
 
     private string Dump(object? input, IObjectHandlerPropertyFilter[] objectHandlerPropertyFilters)
     {
-        foreach (var objectHandlerPropertyFilter in objectHandlerPropertyFilters)
-        {
-            _serviceCollection.AddSingleton(objectHandlerPropertyFilter);
-        }
-        _serviceProvider = _serviceCollection.AddCsharpExpressionDumper().BuildServiceProvider();
+        _serviceProvider = _serviceCollection
+            .AddCsharpExpressionDumper(x => objectHandlerPropertyFilters.ToList().ForEach(filter => x.AddSingleton(filter)))
+            .BuildServiceProvider();
+        var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
+        return sut.Dump(input);
+    }
+
+    private string Dump(object? input, ITypeNameFormatter[] typenameFormatters)
+    {
+        _serviceProvider = _serviceCollection
+            .AddCsharpExpressionDumper(x => typenameFormatters.ToList().ForEach(formatter => x.AddSingleton(formatter)))
+            .BuildServiceProvider();
         var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
         return sut.Dump(input);
     }
