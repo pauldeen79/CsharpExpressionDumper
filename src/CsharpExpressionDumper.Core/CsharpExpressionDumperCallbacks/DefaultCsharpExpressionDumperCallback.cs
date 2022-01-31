@@ -2,7 +2,8 @@
 
 public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
 {
-    public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; } = new Action<object?, Type?, StringBuilder, int>((_1, _2, _3, _4) => { });
+    public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; }
+        = new Action<object?, Type?, StringBuilder, int>((_1, _2, _3, _4) => { });
     public StringBuilder Builder { get; set; } = new StringBuilder();
     private string Prefix { get; set; } = "";
     private string Suffix { get; set; } = "";
@@ -79,12 +80,12 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public void ProcessRecursive(object? instance, Type? type, int level)
         => ProcessRecursiveCallbackDelegate.Invoke
-           (
-               instance,
-               type,
-               Builder,
-               level
-           );
+        (
+            instance,
+            type,
+            Builder,
+            level
+        );
 
     public bool IsPropertyCustom(CustomTypeHandlerRequest propertyCommand, string prefix, string suffix)
         => _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, CreateNestedCallback(prefix, suffix)));
