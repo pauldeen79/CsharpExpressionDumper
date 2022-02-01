@@ -1,13 +1,13 @@
 ﻿namespace CsharpExpressionDumper.Core.Extensions;
 
-public static class StringExtensions
+internal static class StringExtensions
 {
     /// <summary>
     /// Fixes the name of the type.
     /// </summary>
     /// <param name="instance">The type name to fix.</param>
     /// <returns></returns>
-    public static string FixTypeName(this string instance)
+    internal static string FixTypeName(this string instance)
     {
         int startIndex;
         while (true)
@@ -56,7 +56,7 @@ public static class StringExtensions
             .Replace("&", "");
     }
 
-    public static string GetClassName(this string fullyQualifiedClassName)
+    internal static string GetClassName(this string fullyQualifiedClassName)
     {
         var idx = fullyQualifiedClassName.LastIndexOf(".");
         return idx == -1
@@ -64,7 +64,7 @@ public static class StringExtensions
             : fullyQualifiedClassName.Substring(idx + 1);
     }
 
-    public static string GetNamespaceWithDefault(this string fullyQualifiedClassName, string defaultValue = "")
+    internal static string GetNamespaceWithDefault(this string fullyQualifiedClassName, string defaultValue = "")
     {
         var idx = fullyQualifiedClassName.LastIndexOf(".");
         return idx == -1
