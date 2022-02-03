@@ -117,9 +117,9 @@ public class EnumerableHandler : ICustomTypeHandler
                 .ChainAppend(collectionTypeName)
                 .ChainAppend('<')
 #pragma warning disable CS8602 // Dereference of a possibly null reference. False positive, this has already been checked in the public method above.
-                    .ChainAppendTypeName(request.InstanceType.GetGenericArguments()[0])
+                .ChainAppendTypeName(request.InstanceType.GetGenericArguments()[0])
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-                    .ChainAppend(">(new");
+                .ChainAppend(">(new");
 
         if (typeSuffix != null)
         {
@@ -144,16 +144,14 @@ public class EnumerableHandler : ICustomTypeHandler
             && items.Select(x => x.GetType()).Distinct().Count() <= 1;
 
     private static bool TypeIsGenericSequence(Type instanceType)
-        => instanceType.IsGenericType && new[]
-        {
-            typeof(IEnumerable<>),
-            typeof(ICollection<>),
-            typeof(IReadOnlyCollection<>),
-            typeof(Collection<>),
-            typeof(List<>),
-            typeof(ReadOnlyCollection<>),
-            typeof(ObservableCollection<>)
-        }.Contains(instanceType.GetGenericTypeDefinition());
+         => instanceType.IsGenericType && new[]
+         {
+            "Enumerable",
+            "Collection",
+            "List",
+            "Array"
+         }.Any(x => instanceType.GetGenericTypeDefinition().FullName.Contains(x));
+
 
     private static bool IsGenericCollectionOrDerrivedType(CustomTypeHandlerRequest request)
         => IsGenericCollection(request.InstanceType)
