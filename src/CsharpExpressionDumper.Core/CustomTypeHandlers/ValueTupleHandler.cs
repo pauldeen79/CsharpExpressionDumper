@@ -46,7 +46,9 @@ public class ValueTupleHandler : ICustomTypeHandler
     private static void AppendInitialization(ICsharpExpressionDumperCallback callback, Type[] genericArguments)
     {
         callback.ChainAppendPrefix()
-                .ChainAppend("new System.ValueTuple<");
+                .ChainAppend("new ")
+                .ChainAppendTypeName(typeof(ValueTuple<>))
+                .ChainAppend("<");
 
         var first = true;
         foreach (var itemType in genericArguments)
@@ -55,7 +57,6 @@ public class ValueTupleHandler : ICustomTypeHandler
             callback.AppendTypeName(itemType);
         }
 
-        callback.ChainAppend(">")
-                .ChainAppend("(");
+        callback.ChainAppend(">(");
     }
 }
