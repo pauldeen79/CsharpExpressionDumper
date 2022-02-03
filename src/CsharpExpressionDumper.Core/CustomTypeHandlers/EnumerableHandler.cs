@@ -2,6 +2,10 @@
 
 public class EnumerableHandler : ICustomTypeHandler
 {
+    private readonly IEnumerable<ITypeNameFormatter> _typeNameFormatters;
+
+    public EnumerableHandler(IEnumerable<ITypeNameFormatter> typeNameFormatters) => _typeNameFormatters = typeNameFormatters;
+
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
         if (!(request.Instance is IEnumerable enumerable)
@@ -74,15 +78,15 @@ public class EnumerableHandler : ICustomTypeHandler
     {
         if (IsGenericCollection(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, "System.Collections.ObjectModel.Collection");
+            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(typeof(Collection<>)));
         }
         else if (IsGenericReadOnlyCollection(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, "System.Collections.ObjectModel.ReadOnlyCollection");
+            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(typeof(ReadOnlyCollection<>)));
         }
         else if (IsGenericList(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, "System.Collections.Generic.List");
+            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(typeof(List<>)));
         }
         else
         {
@@ -98,6 +102,20 @@ public class EnumerableHandler : ICustomTypeHandler
         }
         callback.ChainAppend(new string(' ', request.Level * 4))
                 .ChainAppendLine("{");
+    }
+
+    private string GetCollectionTypeName(Type type)
+    {
+        foreach (var formatter in _typeNameFormatters)
+        {
+            var result = formatter.Format(type);
+            if (result != null)
+            {
+                return result;
+            }
+        }
+
+        return type.FullName.FixTypeName();
     }
 
     private void AppendCustomInitialization(CustomTypeHandlerRequest request,
@@ -139,13 +157,13 @@ public class EnumerableHandler : ICustomTypeHandler
     private static bool TypeIsGenericSequence(Type instanceType)
         => instanceType.IsGenericType && new[]
         {
-                typeof(IEnumerable<>),
-                typeof(ICollection<>),
-                typeof(IReadOnlyCollection<>),
-                typeof(Collection<>),
-                typeof(List<>),
-                typeof(ReadOnlyCollection<>),
-                typeof(ObservableCollection<>)
+            typeof(IEnumerable<>),
+            typeof(ICollection<>),
+            typeof(IReadOnlyCollection<>),
+            typeof(Collection<>),
+            typeof(List<>),
+            typeof(ReadOnlyCollection<>),
+            typeof(ObservableCollection<>)
         }.Contains(instanceType.GetGenericTypeDefinition());
 
     private static bool IsGenericCollectionOrDerrivedType(CustomTypeHandlerRequest request)

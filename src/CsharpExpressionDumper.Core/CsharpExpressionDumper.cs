@@ -27,8 +27,8 @@ public class CsharpExpressionDumper : ICsharpExpressionDumper
         var instanceType = type ?? instance?.GetType();
         _instanceCallback.ProcessRecursiveCallbackDelegate = DoProcessRecursive;
         _instanceCallback.Builder = builder;
-        var instanceCommand = new CustomTypeHandlerRequest(instance, instanceType, level);
-        var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceCommand, _instanceCallback));
+        var instanceRequest = new CustomTypeHandlerRequest(instance, instanceType, level);
+        var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceRequest, _instanceCallback));
         if (!instanceIsCustom && instanceType != null)
         {
             var isAnonymousType = instanceType.IsAnonymousType();
