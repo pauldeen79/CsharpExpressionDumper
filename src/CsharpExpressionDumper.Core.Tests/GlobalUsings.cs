@@ -16,6 +16,7 @@ global using CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters;
 global using CsharpExpressionDumper.Core.ObjectHandlers;
 global using CsharpExpressionDumper.Core.ReadOnlyPropertyResolvers;
 global using CsharpExpressionDumper.Core.Tests.TestData;
+global using CsharpExpressionDumper.Core.Tests.TestFixtures;
 global using CsharpExpressionDumper.Core.TypeNameFormatters;
 global using FluentAssertions;
 global using Microsoft.Extensions.DependencyInjection;

@@ -9,9 +9,9 @@ public class EnumerableHandlerTests
         var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var sut = new EnumerableHandler(typeNameFormatters);
         var instance = new List<string> { "a", "b", "c" };
-        var request = CreateRequest(instance);
+        var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
-        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+        var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
         var actual = sut.Process(request, callback);
@@ -34,9 +34,9 @@ public class EnumerableHandlerTests
         var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "System.Collections.Generic" }) };
         var sut = new EnumerableHandler(typeNameFormatters);
         var instance = new List<string> { "a", "b", "c" };
-        var request = CreateRequest(instance);
+        var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
-        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+        var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
         var actual = sut.Process(request, callback);
@@ -59,9 +59,9 @@ public class EnumerableHandlerTests
         var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var sut = new EnumerableHandler(typeNameFormatters);
         var instance = new string[] { "a", "b", "c" };
-        var request = CreateRequest(instance);
+        var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
-        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+        var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
         var actual = sut.Process(request, callback);
@@ -84,9 +84,9 @@ public class EnumerableHandlerTests
         var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var sut = new EnumerableHandler(typeNameFormatters);
         var instance = new CustomList<string> { "a", "b", "c" };
-        var request = CreateRequest(instance);
+        var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
-        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+        var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
         var actual = sut.Process(request, callback);
@@ -109,9 +109,9 @@ public class EnumerableHandlerTests
         var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests" }) };
         var sut = new EnumerableHandler(typeNameFormatters);
         var instance = new CustomList<string> { "a", "b", "c" };
-        var request = CreateRequest(instance);
+        var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
-        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+        var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
         var actual = sut.Process(request, callback);
@@ -125,24 +125,6 @@ public class EnumerableHandlerTests
     @""b"",
     @""c"",
 } )");
-    }
-    private static CustomTypeHandlerRequest CreateRequest(object? instance)
-        => new CustomTypeHandlerRequest(instance, instance?.GetType(), 0);
-
-    private static DefaultCsharpExpressionDumperCallback CreateCallback(ICustomTypeHandler[] typeHandlers,
-                                                                        ITypeNameFormatter[] typeNameFormatters)
-    {
-        var callback = new DefaultCsharpExpressionDumperCallback
-        (
-            typeHandlers,
-            typeNameFormatters,
-            Enumerable.Empty<IConstructorResolver>(),
-            Enumerable.Empty<IReadOnlyPropertyResolver>(),
-            Enumerable.Empty<IObjectHandlerPropertyFilter>()
-        );
-        //little hacky... this initializes the ProcessRecursiveCallbackDelegate property on the callback class
-        callback.ProcessRecursiveCallbackDelegate = new Action<object?, Type?, StringBuilder, int>((instance, type, builder, level) => typeHandlers.ProcessUntilSuccess(x => x.Process(new CustomTypeHandlerRequest(instance, type, level), callback)));
-        return callback;
     }
 
     private class CustomList<T> : List<T>
