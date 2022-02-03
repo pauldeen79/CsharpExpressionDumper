@@ -6,11 +6,11 @@ public class DictionaryHandlerTests
     public void Can_Process_Generic_Dictionary()
     {
         // Arrange
-        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
-        var sut = new DictionaryHandler(typeNameFormatters);
+        var sut = new DictionaryHandler();
         var instance = new Dictionary<string, string> { { "k1", "a" }, { "k2", "b" }, { "k3", "c" } };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
@@ -31,11 +31,11 @@ public class DictionaryHandlerTests
     public void Can_Process_Generic_Dictionary_With_Abbreviated_TypeNames()
     {
         // Arrange
-        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "System.Collections.Generic" }) };
-        var sut = new DictionaryHandler(typeNameFormatters);
+        var sut = new DictionaryHandler();
         var instance = new Dictionary<string, string> { { "k1", "a" }, { "k2", "b" }, { "k3", "c" } };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "System.Collections.Generic" }) };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act

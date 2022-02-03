@@ -2,10 +2,6 @@
 
 public class EnumerableHandler : ICustomTypeHandler
 {
-    private readonly IEnumerable<ITypeNameFormatter> _typeNameFormatters;
-
-    public EnumerableHandler(IEnumerable<ITypeNameFormatter> typeNameFormatters) => _typeNameFormatters = typeNameFormatters;
-
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
         if (!(request.Instance is IEnumerable enumerable)
@@ -79,7 +75,7 @@ public class EnumerableHandler : ICustomTypeHandler
     {
         if (TypeIsGenericSequence(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(instanceType.GetGenericTypeDefinition()));
+            AppendCustomInitialization(request, callback, typeSuffix, instanceType.GetGenericTypeDefinition());
         }
         else
         {
@@ -97,17 +93,14 @@ public class EnumerableHandler : ICustomTypeHandler
                 .ChainAppendLine("{");
     }
 
-    private string GetCollectionTypeName(Type type)
-        => _typeNameFormatters.ProcessUntilSuccess(x => x.Format(type)) ?? type.FullName.FixTypeName();
-
     private void AppendCustomInitialization(CustomTypeHandlerRequest request,
                                             ICsharpExpressionDumperCallback callback,
                                             Type? typeSuffix,
-                                            string collectionTypeName)
+                                            Type collectionType)
     {
         callback.ChainAppendPrefix()
                 .ChainAppend("new ")
-                .ChainAppend(collectionTypeName)
+                .ChainAppendTypeName(collectionType)
                 .ChainAppend('<')
 #pragma warning disable CS8602 // Dereference of a possibly null reference. False positive, this has already been checked in the public method above.
                 .ChainAppendTypeName(request.InstanceType.GetGenericArguments()[0])

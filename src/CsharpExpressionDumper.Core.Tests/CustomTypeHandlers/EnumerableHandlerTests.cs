@@ -6,11 +6,11 @@ public class EnumerableHandlerTests
     public void Can_Process_Generic_List()
     {
         // Arrange
-        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
-        var sut = new EnumerableHandler(typeNameFormatters);
+        var sut = new EnumerableHandler();
         var instance = new List<string> { "a", "b", "c" };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
@@ -31,11 +31,11 @@ public class EnumerableHandlerTests
     public void Can_Process_Generic_List_With_Abbreviated_TypeNames()
     {
         // Arrange
-        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "System.Collections.Generic" }) };
-        var sut = new EnumerableHandler(typeNameFormatters);
+        var sut = new EnumerableHandler();
         var instance = new List<string> { "a", "b", "c" };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "System.Collections.Generic" }) };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
@@ -56,11 +56,11 @@ public class EnumerableHandlerTests
     public void Can_Process_Array()
     {
         // Arrange
-        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
-        var sut = new EnumerableHandler(typeNameFormatters);
+        var sut = new EnumerableHandler();
         var instance = new string[] { "a", "b", "c" };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
@@ -81,11 +81,11 @@ public class EnumerableHandlerTests
     public void Can_Process_Custom_GenericList_Type()
     {
         // Arrange
-        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
-        var sut = new EnumerableHandler(typeNameFormatters);
+        var sut = new EnumerableHandler();
         var instance = new CustomList<string> { "a", "b", "c" };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act
@@ -106,11 +106,11 @@ public class EnumerableHandlerTests
     public void Can_Process_Custom_GenericList_Type_With_Abbreviated_TypeNames()
     {
         // Arrange
-        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests" }) };
-        var sut = new EnumerableHandler(typeNameFormatters);
+        var sut = new EnumerableHandler();
         var instance = new CustomList<string> { "a", "b", "c" };
         var request = TestHelpers.CreateCustomTypeHandlerRequest(instance);
         var typeHandlers = new[] { new StringHandler() };
+        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests" }) };
         var callback = TestHelpers.CreateCallback(typeHandlers, typeNameFormatters);
 
         // Act

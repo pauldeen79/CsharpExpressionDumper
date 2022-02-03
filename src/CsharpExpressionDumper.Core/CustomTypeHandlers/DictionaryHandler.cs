@@ -2,10 +2,6 @@
 
 public class DictionaryHandler : ICustomTypeHandler
 {
-    private readonly IEnumerable<ITypeNameFormatter> _typeNameFormatters;
-
-    public DictionaryHandler(IEnumerable<ITypeNameFormatter> typeNameFormatters) => _typeNameFormatters = typeNameFormatters;
-
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
         if ((request.InstanceType?.IsGenericType) != true
@@ -18,7 +14,7 @@ public class DictionaryHandler : ICustomTypeHandler
 
         callback.ChainAppendPrefix()
                 .ChainAppend("new ")
-                .ChainAppend(GetCollectionTypeName(request.InstanceType.GetGenericTypeDefinition()))
+                .ChainAppendTypeName(request.InstanceType.GetGenericTypeDefinition())
                 .ChainAppend("<")
                 .ChainAppendTypeName(genericArguments[0])
                 .ChainAppend(", ")
@@ -52,8 +48,4 @@ public class DictionaryHandler : ICustomTypeHandler
 
         return true;
     }
-
-    private string GetCollectionTypeName(Type type)
-        => _typeNameFormatters.ProcessUntilSuccess(x => x.Format(type)) ?? type.FullName.FixTypeName();
-
 }
