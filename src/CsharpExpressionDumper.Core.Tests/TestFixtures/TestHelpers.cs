@@ -5,8 +5,8 @@ internal static class TestHelpers
     internal static CustomTypeHandlerRequest CreateCustomTypeHandlerRequest(object? instance)
         => new CustomTypeHandlerRequest(instance, instance?.GetType(), 0);
 
-    internal static DefaultCsharpExpressionDumperCallback CreateCallback(ICustomTypeHandler[] typeHandlers,
-                                                                         ITypeNameFormatter[] typeNameFormatters)
+    internal static DefaultCsharpExpressionDumperCallback CreateCallback(IEnumerable<ICustomTypeHandler> typeHandlers,
+                                                                         IEnumerable<ITypeNameFormatter> typeNameFormatters)
     {
         var callback = new DefaultCsharpExpressionDumperCallback
         (

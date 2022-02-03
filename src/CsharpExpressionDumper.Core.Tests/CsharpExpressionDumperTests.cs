@@ -121,7 +121,7 @@ public sealed class CsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("new System.DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)");
+        actual.Should().Be("new System.DateTime(2000, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Unspecified)");
     }
 
     [Fact]
