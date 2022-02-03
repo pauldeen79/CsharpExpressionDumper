@@ -9,7 +9,11 @@ public class TimeSpanHandler : ICustomTypeHandler
             return false;
         }
 
-        callback.AppendSingleValue($"new System.TimeSpan({timeSpan.Days}, {timeSpan.Hours}, {timeSpan.Minutes}, {timeSpan.Seconds}, {timeSpan.Milliseconds})");
+        callback.ChainAppendPrefix()
+                .ChainAppend($"new ")
+                .ChainAppendTypeName(typeof(TimeSpan))
+                .ChainAppend($"({timeSpan.Days}, {timeSpan.Hours}, {timeSpan.Minutes}, {timeSpan.Seconds}, {timeSpan.Milliseconds})")
+                .ChainAppendPrefix();
         return true;
     }
 }

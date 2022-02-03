@@ -13,7 +13,9 @@ public class DictionaryHandler : ICustomTypeHandler
         var genericArguments = request.InstanceType.GetGenericArguments();
 
         callback.ChainAppendPrefix()
-                .ChainAppend("new System.Collections.Generic.Dictionary<")
+                .ChainAppend("new ")
+                .ChainAppendTypeName(request.InstanceType.GetGenericTypeDefinition())
+                .ChainAppend("<")
                 .ChainAppendTypeName(genericArguments[0])
                 .ChainAppend(", ")
                 .ChainAppendTypeName(genericArguments[1])

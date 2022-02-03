@@ -44,8 +44,8 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public void AppendSingleValue(object value)
         => Builder.Append(Prefix)
-                   .Append(value)
-                   .Append(Suffix);
+                  .Append(value)
+                  .Append(Suffix);
 
     public void AppendSuffix()
         => Append(Suffix);

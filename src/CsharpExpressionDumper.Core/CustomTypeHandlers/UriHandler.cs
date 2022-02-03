@@ -9,7 +9,11 @@ public class UriHandler : ICustomTypeHandler
             return false;
         }
 
-        callback.AppendSingleValue($@"new System.Uri(""{uri.AbsoluteUri}"")");
+        callback.ChainAppendPrefix()
+                .ChainAppend("new ")
+                .ChainAppendTypeName(typeof(Uri))
+                .ChainAppend($@"(""{uri.AbsoluteUri}"")")
+                .ChainAppendSuffix();
         return true;
     }
 }

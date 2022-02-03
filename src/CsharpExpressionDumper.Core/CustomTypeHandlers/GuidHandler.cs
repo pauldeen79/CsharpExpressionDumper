@@ -9,7 +9,13 @@ public class GuidHandler : ICustomTypeHandler
             return false;
         }
 
-        callback.AppendSingleValue($@"new System.Guid(""{guid}"")");
+        callback.ChainAppendPrefix()
+                .ChainAppend($"new ")
+                .ChainAppendTypeName(typeof(Guid))
+                .ChainAppend("(\"")
+                .ChainAppend(guid)
+                .ChainAppend("\")")
+                .ChainAppendSuffix();
         return true;
     }
 }
