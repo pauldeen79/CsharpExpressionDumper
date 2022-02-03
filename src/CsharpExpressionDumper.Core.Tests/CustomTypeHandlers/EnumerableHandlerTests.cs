@@ -52,8 +52,33 @@ public class EnumerableHandlerTests
 } )");
     }
 
-    private static CustomTypeHandlerRequest CreateRequest(List<string> instance)
-        => new CustomTypeHandlerRequest(instance, instance.GetType(), 0);
+    [Fact]
+    public void Can_Process_Array()
+    {
+        // Arrange
+        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
+        var sut = new EnumerableHandler(typeNameFormatters);
+        var instance = new string[] { "a", "b", "c" };
+        var request = CreateRequest(instance);
+        var typeHandlers = new[] { new StringHandler() };
+        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+
+        // Act
+        var actual = sut.Process(request, callback);
+        var code = callback.Builder.ToString();
+
+        // Assert
+        actual.Should().BeTrue();
+        code.Should().Be(@"new[]
+{
+    @""a"",
+    @""b"",
+    @""c"",
+}");
+    }
+
+    private static CustomTypeHandlerRequest CreateRequest(object? instance)
+        => new CustomTypeHandlerRequest(instance, instance?.GetType(), 0);
 
     private static DefaultCsharpExpressionDumperCallback CreateCallback(ICustomTypeHandler[] typeHandlers,
                                                                         ITypeNameFormatter[] typeNameFormatters)
