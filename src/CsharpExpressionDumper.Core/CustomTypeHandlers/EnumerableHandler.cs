@@ -16,7 +16,7 @@ public class EnumerableHandler : ICustomTypeHandler
 
         var items = enumerable.Cast<object>().ToArray();
         var typeSuffix = GetTypeSuffix(items, request.Instance);
-        AppendInitialization(request, callback, typeSuffix);
+        AppendInitialization(request, callback, request.InstanceType, typeSuffix);
         var level = request.Level + 1;
         foreach (var item in items)
         {
@@ -74,11 +74,12 @@ public class EnumerableHandler : ICustomTypeHandler
 
     private void AppendInitialization(CustomTypeHandlerRequest request,
                                       ICsharpExpressionDumperCallback callback,
+                                      Type instanceType,
                                       Type? typeSuffix)
     {
         if (TypeIsGenericSequence(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(request.InstanceType.GetGenericTypeDefinition()));
+            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(instanceType.GetGenericTypeDefinition()));
         }
         else
         {
