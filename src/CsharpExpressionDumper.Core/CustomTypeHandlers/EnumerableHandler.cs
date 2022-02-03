@@ -105,18 +105,7 @@ public class EnumerableHandler : ICustomTypeHandler
     }
 
     private string GetCollectionTypeName(Type type)
-    {
-        foreach (var formatter in _typeNameFormatters)
-        {
-            var result = formatter.Format(type);
-            if (result != null)
-            {
-                return result;
-            }
-        }
-
-        return type.FullName.FixTypeName();
-    }
+        => _typeNameFormatters.ProcessUntilSuccess(x => x.Format(type)) ?? type.FullName.FixTypeName();
 
     private void AppendCustomInitialization(CustomTypeHandlerRequest request,
                                             ICsharpExpressionDumperCallback callback,
