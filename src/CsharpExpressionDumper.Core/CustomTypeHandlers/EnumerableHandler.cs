@@ -26,7 +26,7 @@ public class EnumerableHandler : ICustomTypeHandler
         }
         level--;
         callback.Append(new string(' ', level * 4));
-        if (IsGenericCollectionOrDerrivedType(request))
+        if (TypeIsGenericSequence(request.InstanceType))
         {
             callback.Append("} )");
         }
@@ -76,17 +76,9 @@ public class EnumerableHandler : ICustomTypeHandler
                                       ICsharpExpressionDumperCallback callback,
                                       Type? typeSuffix)
     {
-        if (IsGenericCollection(request.InstanceType))
+        if (TypeIsGenericSequence(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(typeof(Collection<>)));
-        }
-        else if (IsGenericReadOnlyCollection(request.InstanceType))
-        {
-            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(typeof(ReadOnlyCollection<>)));
-        }
-        else if (IsGenericList(request.InstanceType))
-        {
-            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(typeof(List<>)));
+            AppendCustomInitialization(request, callback, typeSuffix, GetCollectionTypeName(request.InstanceType.GetGenericTypeDefinition()));
         }
         else
         {
@@ -143,30 +135,12 @@ public class EnumerableHandler : ICustomTypeHandler
         => items.Length != 0
             && items.Select(x => x.GetType()).Distinct().Count() <= 1;
 
-    private static bool TypeIsGenericSequence(Type instanceType)
-         => instanceType.IsGenericType && new[]
+    private static bool TypeIsGenericSequence(Type? instanceType)
+         => instanceType != null && instanceType.IsGenericType && new[]
          {
             "Enumerable",
             "Collection",
             "List",
             "Array"
          }.Any(x => instanceType.GetGenericTypeDefinition().FullName.Contains(x));
-
-
-    private static bool IsGenericCollectionOrDerrivedType(CustomTypeHandlerRequest request)
-        => IsGenericCollection(request.InstanceType)
-            || IsGenericReadOnlyCollection(request.InstanceType)
-            || IsGenericList(request.InstanceType);
-
-    private static bool IsGenericCollection(Type? t)
-        => t != null && t.IsGenericType
-            && t.GetGenericTypeDefinition() == typeof(Collection<>);
-
-    private static bool IsGenericReadOnlyCollection(Type? t)
-        => t != null && t.IsGenericType
-            && t.GetGenericTypeDefinition() == typeof(ReadOnlyCollection<>);
-
-    private static bool IsGenericList(Type? t)
-        => t != null && t.IsGenericType
-            && t.GetGenericTypeDefinition() == typeof(List<>);
 }

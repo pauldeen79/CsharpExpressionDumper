@@ -28,7 +28,7 @@ public class EnumerableHandlerTests
     }
 
     [Fact]
-    public void Can_Process_Generic_List_With_Abbreviated_TypeName()
+    public void Can_Process_Generic_List_With_Abbreviated_TypeNames()
     {
         // Arrange
         var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "System.Collections.Generic" }) };
@@ -77,6 +77,55 @@ public class EnumerableHandlerTests
 }");
     }
 
+    [Fact]
+    public void Can_Process_Custom_GenericList_Type()
+    {
+        // Arrange
+        var typeNameFormatters = new[] { new DefaultTypeNameFormatter() };
+        var sut = new EnumerableHandler(typeNameFormatters);
+        var instance = new CustomList<string> { "a", "b", "c" };
+        var request = CreateRequest(instance);
+        var typeHandlers = new[] { new StringHandler() };
+        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+
+        // Act
+        var actual = sut.Process(request, callback);
+        var code = callback.Builder.ToString();
+
+        // Assert
+        actual.Should().BeTrue();
+        code.Should().Be(@"new CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests.CustomList<System.String>(new[]
+{
+    @""a"",
+    @""b"",
+    @""c"",
+} )");
+    }
+
+    [Fact]
+    public void Can_Process_Custom_GenericList_Type_With_Abbreviated_TypeNames()
+    {
+        // Arrange
+        var typeNameFormatters = new[] { new SkipNamespacesTypeNameFormatter(new[] { "System", "CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests" }) };
+        var sut = new EnumerableHandler(typeNameFormatters);
+        var instance = new CustomList<string> { "a", "b", "c" };
+        var request = CreateRequest(instance);
+        var typeHandlers = new[] { new StringHandler() };
+        var callback = CreateCallback(typeHandlers, typeNameFormatters);
+
+        // Act
+        var actual = sut.Process(request, callback);
+        var code = callback.Builder.ToString();
+
+        // Assert
+        actual.Should().BeTrue();
+        code.Should().Be(@"new CustomList<String>(new[]
+{
+    @""a"",
+    @""b"",
+    @""c"",
+} )");
+    }
     private static CustomTypeHandlerRequest CreateRequest(object? instance)
         => new CustomTypeHandlerRequest(instance, instance?.GetType(), 0);
 
@@ -94,5 +143,20 @@ public class EnumerableHandlerTests
         //little hacky... this initializes the ProcessRecursiveCallbackDelegate property on the callback class
         callback.ProcessRecursiveCallbackDelegate = new Action<object?, Type?, StringBuilder, int>((instance, type, builder, level) => typeHandlers.ProcessUntilSuccess(x => x.Process(new CustomTypeHandlerRequest(instance, type, level), callback)));
         return callback;
+    }
+
+    private class CustomList<T> : List<T>
+    {
+        public CustomList()
+        {
+        }
+
+        public CustomList(IEnumerable<T> collection) : base(collection)
+        {
+        }
+
+        public CustomList(int capacity) : base(capacity)
+        {
+        }
     }
 }
