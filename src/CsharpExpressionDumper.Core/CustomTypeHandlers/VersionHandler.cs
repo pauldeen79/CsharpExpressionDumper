@@ -9,7 +9,11 @@ public class VersionHandler : ICustomTypeHandler
             return false;
         }
 
-        callback.AppendSingleValue($"new System.Version({version.Major}, {version.Minor}, {version.Build}, {version.Revision})");
+        callback.ChainAppendPrefix()
+                .ChainAppend("new ")
+                .ChainAppendTypeName(typeof(Version))
+                .ChainAppend($"({version.Major}, {version.Minor}, {version.Build}, {version.Revision})")
+                .ChainAppendSuffix();
         return true;
     }
 }
