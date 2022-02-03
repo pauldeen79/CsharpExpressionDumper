@@ -14,7 +14,9 @@ public class KeyValuePairHandler : ICustomTypeHandler
         var genericArguments = request.InstanceType.GetGenericArguments();
 
         callback.ChainAppendPrefix()
-                .ChainAppend("new System.Collections.Generic.KeyValuePair<")
+                .ChainAppend("new ")
+                .ChainAppendTypeName(typeof(KeyValuePair<,>))
+                .ChainAppend("<")
                 .ChainAppendTypeName(genericArguments[0])
                 .ChainAppend(", ")
                 .ChainAppendTypeName(genericArguments[1])
