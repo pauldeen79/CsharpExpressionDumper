@@ -16,7 +16,6 @@ public class DateTimeHandler : ICustomTypeHandler
             .ChainAppendTypeName(typeof(DateTimeKind))
             .ChainAppend($".{dateTime.Kind})")
             .ChainAppendSuffix();
-
         return true;
     }
 }
