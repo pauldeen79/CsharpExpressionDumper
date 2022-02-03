@@ -10,12 +10,12 @@ public class DateTimeHandler : ICustomTypeHandler
         }
 
         callback.ChainAppendPrefix()
-            .ChainAppend($"new ")
-            .ChainAppendTypeName(typeof(DateTime))
-            .ChainAppend($"({dateTime.Year}, {dateTime.Month}, {dateTime.Day}, {dateTime.Hour}, {dateTime.Minute}, {dateTime.Second}, {dateTime.Millisecond}, ")
-            .ChainAppendTypeName(typeof(DateTimeKind))
-            .ChainAppend($".{dateTime.Kind})")
-            .ChainAppendSuffix();
+                .ChainAppend($"new ")
+                .ChainAppendTypeName(typeof(DateTime))
+                .ChainAppend($"({dateTime.Year}, {dateTime.Month}, {dateTime.Day}, {dateTime.Hour}, {dateTime.Minute}, {dateTime.Second}, {dateTime.Millisecond}, ")
+                .ChainAppendTypeName(typeof(DateTimeKind))
+                .ChainAppend($".{dateTime.Kind})")
+                .ChainAppendSuffix();
         return true;
     }
 }

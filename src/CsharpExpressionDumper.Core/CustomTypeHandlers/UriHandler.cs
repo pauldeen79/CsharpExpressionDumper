@@ -10,10 +10,10 @@ public class UriHandler : ICustomTypeHandler
         }
 
         callback.ChainAppendPrefix()
-            .ChainAppend("new ")
-            .ChainAppendTypeName(typeof(Uri))
-            .ChainAppend($@"(""{uri.AbsoluteUri}"")")
-            .ChainAppendSuffix();
+                .ChainAppend("new ")
+                .ChainAppendTypeName(typeof(Uri))
+                .ChainAppend($@"(""{uri.AbsoluteUri}"")")
+                .ChainAppendSuffix();
         return true;
     }
 }

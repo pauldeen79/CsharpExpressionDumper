@@ -10,10 +10,10 @@ public class TimeSpanHandler : ICustomTypeHandler
         }
 
         callback.ChainAppendPrefix()
-            .ChainAppend($"new ")
-            .ChainAppendTypeName(typeof(TimeSpan))
-            .ChainAppend($"({timeSpan.Days}, {timeSpan.Hours}, {timeSpan.Minutes}, {timeSpan.Seconds}, {timeSpan.Milliseconds})")
-            .ChainAppendPrefix();
+                .ChainAppend($"new ")
+                .ChainAppendTypeName(typeof(TimeSpan))
+                .ChainAppend($"({timeSpan.Days}, {timeSpan.Hours}, {timeSpan.Minutes}, {timeSpan.Seconds}, {timeSpan.Milliseconds})")
+                .ChainAppendPrefix();
         return true;
     }
 }

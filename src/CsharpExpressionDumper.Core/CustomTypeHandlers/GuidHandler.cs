@@ -10,12 +10,12 @@ public class GuidHandler : ICustomTypeHandler
         }
 
         callback.ChainAppendPrefix()
-            .ChainAppend($"new ")
-            .ChainAppendTypeName(typeof(Guid))
-            .ChainAppend("(\"")
-            .ChainAppend(guid)
-            .ChainAppend("\")")
-            .ChainAppendSuffix();
+                .ChainAppend($"new ")
+                .ChainAppendTypeName(typeof(Guid))
+                .ChainAppend("(\"")
+                .ChainAppend(guid)
+                .ChainAppend("\")")
+                .ChainAppendSuffix();
         return true;
     }
 }
