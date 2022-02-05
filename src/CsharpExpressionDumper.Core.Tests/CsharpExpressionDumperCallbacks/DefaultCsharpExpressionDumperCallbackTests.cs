@@ -3,7 +3,7 @@
 public class DefaultCsharpExpressionDumperCallbackTests
 {
     [Fact]
-    public void AppendTypeName_Throws_When_No_TypeNameFormatter_Returns_A_NonEmpty_Result()
+    public void AppendTypeName_Returns_Value_Unchanged_When_No_TypeNameFormatter_Returns_A_NonEmpty_Result()
     {
         // Arrange
         var sut = new DefaultCsharpExpressionDumperCallback(Enumerable.Empty<ICustomTypeHandler>(),
@@ -12,9 +12,10 @@ public class DefaultCsharpExpressionDumperCallbackTests
                                                             Enumerable.Empty<IReadOnlyPropertyResolver>(),
                                                             Enumerable.Empty<IObjectHandlerPropertyFilter>());
 
-        // Act & Assert
-        sut.Invoking(x => x.AppendTypeName(typeof(string)))
-           .Should().ThrowExactly<ArgumentException>()
-           .WithMessage("Typename of type [System.String] could not be formatted");
+        // Act
+        sut.AppendTypeName(typeof(string));
+
+        // Assert
+        sut.Builder.ToString().Should().Be("System.String");
     }
 }

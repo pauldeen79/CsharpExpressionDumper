@@ -52,7 +52,7 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public void AppendTypeName(Type type)
     {
-        var typeName = _typeNameFormatters.ProcessUntilSuccess(x => x.Format(type));
+        var typeName = _typeNameFormatters.Aggregate(type.FullName.FixTypeName(), (seed, func) => func.Format(seed) ?? seed);
 
         if (typeName == null)
         {

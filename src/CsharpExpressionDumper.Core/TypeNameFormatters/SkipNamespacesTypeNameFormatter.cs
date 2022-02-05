@@ -7,15 +7,13 @@ public class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
     public SkipNamespacesTypeNameFormatter(IEnumerable<string> namspacesToAbbreviate)
         => _namespacesToAbbreviate = namspacesToAbbreviate.ToArray();
 
-    public string? Format(Type type)
+    public string? Format(string currentValue)
     {
-        var result = type.FullName.FixTypeName();
-
         foreach (var ns in _namespacesToAbbreviate)
         {
-            if (result.GetNamespaceWithDefault() == ns)
+            if (currentValue.GetNamespaceWithDefault() == ns)
             {
-                return result.GetClassName();
+                return currentValue.GetClassName();
             }
         }
 
