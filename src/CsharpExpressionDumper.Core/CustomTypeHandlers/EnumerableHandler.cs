@@ -132,9 +132,9 @@ public class EnumerableHandler : ICustomTypeHandler
     private static bool TypeIsGenericSequence(Type? instanceType)
          => instanceType != null && instanceType.IsGenericType && new[]
          {
-            "Enumerable",
-            "Collection",
-            "List",
-            "Array"
+            "Enumerable`",
+            "Collection`",
+            "List`",
+            "Array`"
          }.Any(x => instanceType.GetGenericTypeDefinition().FullName.Contains(x));
 }
