@@ -2,9 +2,9 @@
 
 public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
 {
-    public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; }
+    public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; private set; }
         = new Action<object?, Type?, StringBuilder, int>((_1, _2, _3, _4) => { });
-    public StringBuilder Builder { get; set; } = new StringBuilder();
+    public StringBuilder Builder { get; private set; } = new StringBuilder();
     private string Prefix { get; set; } = "";
     private string Suffix { get; set; } = "";
     private readonly IEnumerable<ICustomTypeHandler> _typeHandlers;
@@ -34,7 +34,7 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public void AppendLine(object value)
         => Builder.Append(value)
-                   .AppendLine();
+                  .AppendLine();
 
     public void AppendLine()
         => Builder.AppendLine();
@@ -98,4 +98,10 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public PropertyInfo? ResolveReadOnlyProperty(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument)
         => _readOnlyPropertyResolvers.ProcessUntilSuccess(x => x.Process(properties, ctor, argument));
+
+    public void Initialize(Action<object?, Type?, StringBuilder, int> processRecursiveCallbackDelegate, StringBuilder builder)
+    {
+        ProcessRecursiveCallbackDelegate = processRecursiveCallbackDelegate;
+        Builder = builder;
+    }
 }

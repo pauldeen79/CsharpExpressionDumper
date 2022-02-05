@@ -17,7 +17,11 @@ internal static class TestHelpers
             Enumerable.Empty<IObjectHandlerPropertyFilter>()
         );
         //little hacky... this initializes the ProcessRecursiveCallbackDelegate property on the callback class
-        callback.ProcessRecursiveCallbackDelegate = new Action<object?, Type?, StringBuilder, int>((instance, type, builder, level) => typeHandlers.ProcessUntilSuccess(x => x.Process(new CustomTypeHandlerRequest(instance, type, level), callback)));
+        callback.Initialize
+        (
+            new Action<object?, Type?, StringBuilder, int>((instance, type, builder, level) => typeHandlers.ProcessUntilSuccess(x => x.Process(new CustomTypeHandlerRequest(instance, type, level), callback))),
+            new StringBuilder()
+        );
         return callback;
     }
 }
