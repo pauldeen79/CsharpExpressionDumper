@@ -9,14 +9,10 @@ public class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
 
     public string? Format(string currentValue)
     {
-        foreach (var ns in _namespacesToAbbreviate)
-        {
-            if (currentValue.GetNamespaceWithDefault() == ns)
-            {
-                return currentValue.GetClassName();
-            }
-        }
-
-        return default; // let the default type name formatter handle this
+        var currentNamespace = currentValue.GetNamespaceWithDefault();
+        var shouldAbbreviate = _namespacesToAbbreviate.Any(x => x == currentNamespace);
+        return shouldAbbreviate
+            ? currentValue.GetClassName()
+            : default;
     }
 }
