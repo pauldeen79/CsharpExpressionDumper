@@ -5,31 +5,32 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCsharpExpressionDumper(this IServiceCollection instance)
         => instance.AddCsharpExpressionDumper(_ => { });
     
-    public static IServiceCollection AddCsharpExpressionDumper(this IServiceCollection instance, Action<IServiceCollection> customConfigurationAction)
+    public static IServiceCollection AddCsharpExpressionDumper(this IServiceCollection instance,
+                                                               Action<IServiceCollection> customConfigurationAction)
     {
         instance.AddTransient<ICsharpExpressionDumper, CsharpExpressionDumper>();
         instance.AddTransient<ICsharpExpressionDumperCallback, DefaultCsharpExpressionDumperCallback>();
-        instance.AddSingleton<IObjectHandler, DefaultObjectHandler>();
-        instance.AddSingleton<IConstructorResolver, DefaultConstructorResolver>();
-        instance.AddSingleton<IReadOnlyPropertyResolver, DefaultReadOnlyPropertyResolver>();
+        instance.AddTransient<IObjectHandler, DefaultObjectHandler>();
+        instance.AddTransient<IConstructorResolver, DefaultConstructorResolver>();
+        instance.AddTransient<IReadOnlyPropertyResolver, DefaultReadOnlyPropertyResolver>();
         customConfigurationAction.Invoke(instance);
-        instance.AddSingleton<ITypeNameFormatter, DefaultTypeNameFormatter>();
-        instance.AddSingleton<ICustomTypeHandler, NullHandler>();
-        instance.AddSingleton<ICustomTypeHandler, DateTimeHandler>();
-        instance.AddSingleton<ICustomTypeHandler, TimeSpanHandler>();
-        instance.AddSingleton<ICustomTypeHandler, EnumHandler>();
-        instance.AddSingleton<ICustomTypeHandler, BooleanHandler>();
-        instance.AddSingleton<ICustomTypeHandler, CharHandler>();
-        instance.AddSingleton<ICustomTypeHandler, GuidHandler>();
-        instance.AddSingleton<ICustomTypeHandler, TypeHandler>();
-        instance.AddSingleton<ICustomTypeHandler, UriHandler>();
-        instance.AddSingleton<ICustomTypeHandler, VersionHandler>();
-        instance.AddSingleton<ICustomTypeHandler, KeyValuePairHandler>();
-        instance.AddSingleton<ICustomTypeHandler, ValueTupleHandler>();
-        instance.AddSingleton<ICustomTypeHandler, ValueTypeHandler>();
-        instance.AddSingleton<ICustomTypeHandler, StringHandler>();
-        instance.AddSingleton<ICustomTypeHandler, DictionaryHandler>();
-        instance.AddSingleton<ICustomTypeHandler, EnumerableHandler>();
+        instance.AddTransient<ITypeNameFormatter, DefaultTypeNameFormatter>();
+        instance.AddTransient<ICustomTypeHandler, NullHandler>();
+        instance.AddTransient<ICustomTypeHandler, DateTimeHandler>();
+        instance.AddTransient<ICustomTypeHandler, TimeSpanHandler>();
+        instance.AddTransient<ICustomTypeHandler, EnumHandler>();
+        instance.AddTransient<ICustomTypeHandler, BooleanHandler>();
+        instance.AddTransient<ICustomTypeHandler, CharHandler>();
+        instance.AddTransient<ICustomTypeHandler, GuidHandler>();
+        instance.AddTransient<ICustomTypeHandler, TypeHandler>();
+        instance.AddTransient<ICustomTypeHandler, UriHandler>();
+        instance.AddTransient<ICustomTypeHandler, VersionHandler>();
+        instance.AddTransient<ICustomTypeHandler, KeyValuePairHandler>();
+        instance.AddTransient<ICustomTypeHandler, ValueTupleHandler>();
+        instance.AddTransient<ICustomTypeHandler, ValueTypeHandler>();
+        instance.AddTransient<ICustomTypeHandler, StringHandler>();
+        instance.AddTransient<ICustomTypeHandler, DictionaryHandler>();
+        instance.AddTransient<ICustomTypeHandler, EnumerableHandler>();
         return instance;
     }
 }
