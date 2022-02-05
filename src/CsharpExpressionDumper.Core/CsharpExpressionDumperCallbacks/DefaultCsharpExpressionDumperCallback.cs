@@ -2,9 +2,9 @@
 
 public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
 {
-    public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; set; }
+    public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; private set; }
         = new Action<object?, Type?, StringBuilder, int>((_1, _2, _3, _4) => { });
-    public StringBuilder Builder { get; set; } = new StringBuilder();
+    public StringBuilder Builder { get; private set; } = new StringBuilder();
     private string Prefix { get; set; } = "";
     private string Suffix { get; set; } = "";
     private readonly IEnumerable<ICustomTypeHandler> _typeHandlers;
@@ -34,7 +34,7 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public void AppendLine(object value)
         => Builder.Append(value)
-                   .AppendLine();
+                  .AppendLine();
 
     public void AppendLine()
         => Builder.AppendLine();
@@ -51,16 +51,7 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
         => Append(Suffix);
 
     public void AppendTypeName(Type type)
-    {
-        var typeName = _typeNameFormatters.ProcessUntilSuccess(x => x.Format(type));
-
-        if (typeName == null)
-        {
-            throw new ArgumentException($"Typename of type [{type.FullName}] could not be formatted");
-        }
-
-        Append(typeName);
-    }
+        => Append(_typeNameFormatters.Aggregate(type.FullName.FixTypeName(), (seed, func) => func.Format(seed) ?? seed));
 
     private ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
         => new DefaultCsharpExpressionDumperCallback
@@ -79,13 +70,10 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
         };
 
     public void ProcessRecursive(object? instance, Type? type, int level)
-        => ProcessRecursiveCallbackDelegate.Invoke
-        (
-            instance,
-            type,
-            Builder,
-            level
-        );
+        => ProcessRecursiveCallbackDelegate.Invoke(instance,
+                                                   type,
+                                                   Builder,
+                                                   level);
 
     public bool IsPropertyCustom(CustomTypeHandlerRequest propertyCommand, string prefix, string suffix)
         => _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, CreateNestedCallback(prefix, suffix)));
@@ -98,4 +86,10 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
 
     public PropertyInfo? ResolveReadOnlyProperty(PropertyInfo[] properties, ConstructorInfo ctor, ParameterInfo argument)
         => _readOnlyPropertyResolvers.ProcessUntilSuccess(x => x.Process(properties, ctor, argument));
+
+    public void Initialize(Action<object?, Type?, StringBuilder, int> processRecursiveCallbackDelegate, StringBuilder builder)
+    {
+        ProcessRecursiveCallbackDelegate = processRecursiveCallbackDelegate;
+        Builder = builder;
+    }
 }

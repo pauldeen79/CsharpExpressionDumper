@@ -18,6 +18,7 @@ public class CsharpExpressionDumper : ICsharpExpressionDumper
     public string Dump(object? instance, Type? type = null)
     {
         var builder = new StringBuilder();
+        _instanceCallback.Initialize(DoProcessRecursive, builder);
         DoProcessRecursive(instance, type, builder, 0);
         return builder.ToString();
     }
@@ -25,8 +26,6 @@ public class CsharpExpressionDumper : ICsharpExpressionDumper
     private void DoProcessRecursive(object? instance, Type? type, StringBuilder builder, int level)
     {
         var instanceType = type ?? instance?.GetType();
-        _instanceCallback.ProcessRecursiveCallbackDelegate = DoProcessRecursive;
-        _instanceCallback.Builder = builder;
         var instanceRequest = new CustomTypeHandlerRequest(instance, instanceType, level);
         var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceRequest, _instanceCallback));
         if (!instanceIsCustom && instanceType != null)
