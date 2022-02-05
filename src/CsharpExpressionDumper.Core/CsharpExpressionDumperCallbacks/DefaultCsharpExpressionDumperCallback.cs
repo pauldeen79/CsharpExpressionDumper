@@ -51,16 +51,7 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
         => Append(Suffix);
 
     public void AppendTypeName(Type type)
-    {
-        var typeName = _typeNameFormatters.Aggregate(type.FullName.FixTypeName(), (seed, func) => func.Format(seed) ?? seed);
-
-        if (typeName == null)
-        {
-            throw new ArgumentException($"Typename of type [{type.FullName}] could not be formatted");
-        }
-
-        Append(typeName);
-    }
+        => Append(_typeNameFormatters.Aggregate(type.FullName.FixTypeName(), (seed, func) => func.Format(seed) ?? seed));
 
     private ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
         => new DefaultCsharpExpressionDumperCallback
@@ -79,13 +70,10 @@ public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCall
         };
 
     public void ProcessRecursive(object? instance, Type? type, int level)
-        => ProcessRecursiveCallbackDelegate.Invoke
-        (
-            instance,
-            type,
-            Builder,
-            level
-        );
+        => ProcessRecursiveCallbackDelegate.Invoke(instance,
+                                                   type,
+                                                   Builder,
+                                                   level);
 
     public bool IsPropertyCustom(CustomTypeHandlerRequest propertyCommand, string prefix, string suffix)
         => _typeHandlers.ProcessUntilSuccess(x => x.Process(propertyCommand, CreateNestedCallback(prefix, suffix)));
