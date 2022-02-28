@@ -1,7 +1,6 @@
 ﻿global using System;
 global using System.Collections;
 global using System.Collections.Generic;
-global using System.Collections.ObjectModel;
 global using System.Globalization;
 global using System.Linq;
 global using System.Reflection;
@@ -16,3 +15,4 @@ global using CsharpExpressionDumper.Core.ObjectHandlers;
 global using CsharpExpressionDumper.Core.ReadOnlyPropertyResolvers;
 global using CsharpExpressionDumper.Core.TypeNameFormatters;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.DependencyInjection.Extensions;
