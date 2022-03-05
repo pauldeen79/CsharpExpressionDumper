@@ -9,11 +9,17 @@ public static class ServiceCollectionExtensions
                                                                Action<IServiceCollection> customConfigurationAction)
     {
         instance.TryAddTransient<ICsharpExpressionDumper, CsharpExpressionDumper>();
-        instance.TryAddTransient<ICsharpExpressionDumperCallback, DefaultCsharpExpressionDumperCallback>();
-        instance.TryAddTransient<IObjectHandler, DefaultObjectHandler>();
+        customConfigurationAction.Invoke(instance);
+        if (!instance.Any(x => x.ImplementationType == typeof(DefaultCsharpExpressionDumperCallback)))
+        {
+            instance.TryAddTransient<ICsharpExpressionDumperCallback, DefaultCsharpExpressionDumperCallback>();
+        }
+        if (!instance.Any(x => x.ImplementationType == typeof(DefaultObjectHandler)))
+        {
+            instance.AddTransient<IObjectHandler, DefaultObjectHandler>();
+        }
         instance.TryAddTransient<IConstructorResolver, DefaultConstructorResolver>();
         instance.TryAddTransient<IReadOnlyPropertyResolver, DefaultReadOnlyPropertyResolver>();
-        customConfigurationAction.Invoke(instance);
         instance.TryAddTransient<ITypeNameFormatter, DefaultTypeNameFormatter>();
         if (!instance.Any(x => x.ImplementationType == typeof(NullHandler)))
         {
