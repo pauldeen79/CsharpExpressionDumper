@@ -974,6 +974,21 @@ input.Property2 = 3;
     }
 
     [Fact]
+    public void Can_Dump_Class_With_Custom_ObjectHandler()
+    {
+        // Arrange
+        var input = new MyBuilder().WithName("Test").AddValues("1", "2", "3");
+
+        // Act
+        var actual = Dump(input, new[] { new BuilderObjectHandler() });
+
+        // Assert
+        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestFixtures.MyBuilder()
+    .WithName(@""Test"")
+    .AddValues(@""1"", @""2"", @""3"")");
+    }
+
+    [Fact]
     public void Can_Filter_Empty_Property_Values_On_Dump()
     {
         // Arrange
@@ -1036,6 +1051,15 @@ input.Property2 = 3;
     {
         _serviceProvider = _serviceCollection
             .AddCsharpExpressionDumper(x => typenameFormatters.ToList().ForEach(formatter => x.AddSingleton(formatter)))
+            .BuildServiceProvider();
+        var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
+        return sut.Dump(input);
+    }
+
+    private string Dump(object? input, IObjectHandler[] objectHandlers)
+    {
+        _serviceProvider = _serviceCollection
+            .AddCsharpExpressionDumper(x => objectHandlers.ToList().ForEach(formatter => x.AddSingleton(formatter)))
             .BuildServiceProvider();
         var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
         return sut.Dump(input);

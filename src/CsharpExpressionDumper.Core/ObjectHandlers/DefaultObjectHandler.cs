@@ -9,14 +9,14 @@ public class DefaultObjectHandler : IObjectHandler
             return false;
         }
 
-        var level = command.Level + 1;
-        var first = true;
         var type = command.Type ?? command.InstanceType;
         if (type == null)
         {
             return false;
         }
 
+        var level = command.Level + 1;
+        var first = true;
         var ctor = callback.ResolveConstructor(type);
         var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
         var processedProperties = new List<string>();
