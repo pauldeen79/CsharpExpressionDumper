@@ -33,8 +33,6 @@ public class BuilderObjectHandler : IObjectHandler
             return false;
         }
 
-        AppendFinalize(command, callback, properties, processedProperties);
-
         return true;
     }
 
@@ -95,58 +93,5 @@ public class BuilderObjectHandler : IObjectHandler
         }
         processedProperties.Add(property.Name);
         return first;
-    }
-
-    private static void AppendFinalize(ObjectHandlerRequest command,
-                                       ICsharpExpressionDumperCallback callback,
-                                       PropertyInfo[] properties,
-                                       List<string> processedProperties)
-    {
-        var writableProperties = properties.Where
-        (
-            property =>
-                (command.IsAnonymousType || !property.IsReadOnly())
-                && !processedProperties.Contains(property.Name)
-                && callback.IsPropertyValid(command, property)
-        ).ToArray();
-
-        if (writableProperties.Length > 0)
-        {
-            ProcessWritableProperties(command, callback, writableProperties);
-        }
-    }
-
-    private static void ProcessWritableProperties(ObjectHandlerRequest command,
-                                                  ICsharpExpressionDumperCallback callback,
-                                                  IEnumerable<PropertyInfo> properties)
-    {
-        callback.ChainAppendLine()
-                .ChainAppend(new string(' ', command.Level * 4))
-                .ChainAppendLine("{");
-
-        var level = command.Level + 1;
-
-        foreach (var property in properties)
-        {
-            var propertyValue = property.GetValue(command.Instance);
-            var propertyType = propertyValue?.GetType();
-            callback.Append(new string(' ', level * 4));
-            var propertyCommand = new CustomTypeHandlerRequest(propertyValue, propertyType, level);
-            var propertyIsCustom = callback.IsPropertyCustom(propertyCommand, $"{property.Name} = ", ",");
-            if (!propertyIsCustom)
-            {
-                callback.ChainAppend(property.Name)
-                        .ChainAppend(" = ")
-                        .ChainProcessRecursive(propertyValue, propertyValue?.GetType(), level)
-                        .ChainAppend(",");
-            }
-
-            callback.AppendLine();
-        }
-
-        level--;
-
-        callback.ChainAppend(new string(' ', level * 4))
-                .ChainAppend("}");
     }
 }
