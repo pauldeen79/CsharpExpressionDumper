@@ -15,7 +15,7 @@ public class BuilderObjectHandler : IObjectHandler
         var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
         var processedProperties = new List<string>();
 
-        foreach (var property in properties)
+        foreach (var property in properties.Where(x => callback.IsPropertyValid(command, x)))
         {
             if (type.GetMethods().Any(x => x.Name == $"With{property.Name}"))
             {
@@ -33,8 +33,7 @@ public class BuilderObjectHandler : IObjectHandler
             return false;
         }
 
-        level--;
-        AppendFinalize(command, callback, level, first, properties, processedProperties);
+        AppendFinalize(command, callback, properties, processedProperties);
 
         return true;
     }
@@ -53,41 +52,53 @@ public class BuilderObjectHandler : IObjectHandler
             first = false;
         }
         var propertyValue = property.GetValue(command.Instance);
-        callback.ChainAppendLine()
-                .ChainAppend(new string(' ', level * 4))
-                .ChainAppend($".{methodPrefix}{property.Name}(");
 
+        var addedSomething = false;
         if (methodPrefix == "Add"
             && !(propertyValue is string)
             && propertyValue is IEnumerable enumerable)
         {
             var firstVal = true;
+            level++;
             foreach (var value in enumerable.OfType<object>())
             {
                 if (firstVal)
                 {
                     firstVal = false;
+                    addedSomething = true;
+                    callback.ChainAppendLine()
+                            .ChainAppend(new string(' ', (level - 1) * 4))
+                            .ChainAppend($".{methodPrefix}{property.Name}(")
+                            .ChainAppendLine()
+                            .ChainAppend(new string(' ', level * 4));
                 }
                 else
                 {
-                    callback.Append(", ");
+                    callback.ChainAppend(",")
+                            .ChainAppendLine()
+                            .ChainAppend(new string(' ', level * 4));
                 }
-                callback.ProcessRecursive(value, propertyValue?.GetType(), level);
+                callback.ProcessRecursive(value, value?.GetType(), level);
             }
         }
         else
         {
-            callback.ProcessRecursive(propertyValue, propertyValue?.GetType(), level);
+            addedSomething = true;
+            callback.ChainAppendLine()
+                    .ChainAppend(new string(' ', level * 4))
+                    .ChainAppend($".{methodPrefix}{property.Name}(")
+                    .ChainProcessRecursive(propertyValue, propertyValue?.GetType(), level);
         }
-        callback.Append(")");
+        if (addedSomething)
+        {
+            callback.Append(")");
+        }
         processedProperties.Add(property.Name);
         return first;
     }
 
     private static void AppendFinalize(ObjectHandlerRequest command,
                                        ICsharpExpressionDumperCallback callback,
-                                       int level,
-                                       bool first,
                                        PropertyInfo[] properties,
                                        List<string> processedProperties)
     {
@@ -98,15 +109,6 @@ public class BuilderObjectHandler : IObjectHandler
                 && !processedProperties.Contains(property.Name)
                 && callback.IsPropertyValid(command, property)
         ).ToArray();
-
-        if (!first)
-        {
-            callback.Append(new string(' ', level * 4));
-        }
-        else if (!command.IsAnonymousType && writableProperties.Length == 0)
-        {
-            callback.Append("()");
-        }
 
         if (writableProperties.Length > 0)
         {

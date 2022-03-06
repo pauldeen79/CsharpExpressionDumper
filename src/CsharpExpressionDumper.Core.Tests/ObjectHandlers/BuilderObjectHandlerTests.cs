@@ -10,6 +10,7 @@ public class BuilderObjectHandlerTests
         var instance = new MyBuilder().WithName("Test").AddValues("1", "2", "3");
         var command = new ObjectHandlerRequest(instance, typeof(MyBuilder), 0, typeof(MyBuilder), false);
         var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
+        callbackMock.Setup(x => x.IsPropertyValid(It.IsAny<ObjectHandlerRequest>(), It.IsAny<PropertyInfo>())).Returns(true);
 
         // Act
         var actual = sut.ProcessInstance(command, callbackMock.Object);
@@ -26,6 +27,7 @@ public class BuilderObjectHandlerTests
         object? instance = null;
         var command = new ObjectHandlerRequest(instance, null, 0, null, false);
         var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
+        callbackMock.Setup(x => x.IsPropertyValid(It.IsAny<ObjectHandlerRequest>(), It.IsAny<PropertyInfo>())).Returns(true);
 
         // Act
         var actual = sut.ProcessInstance(command, callbackMock.Object);

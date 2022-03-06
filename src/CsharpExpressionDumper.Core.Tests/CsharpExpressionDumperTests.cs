@@ -985,7 +985,10 @@ input.Property2 = 3;
         // Assert
         actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestFixtures.MyBuilder()
     .WithName(@""Test"")
-    .AddValues(@""1"", @""2"", @""3"")");
+    .AddValues(
+        @""1"",
+        @""2"",
+        @""3"")");
     }
 
     [Fact]
