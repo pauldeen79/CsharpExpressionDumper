@@ -102,9 +102,7 @@ public class EnumerableHandler : ICustomTypeHandler
                 .ChainAppend("new ")
                 .ChainAppendTypeName(collectionType)
                 .ChainAppend('<')
-#pragma warning disable CS8602 // Dereference of a possibly null reference. False positive, this has already been checked in the public method above.
-                .ChainAppendTypeName(request.InstanceType.GetGenericArguments()[0])
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                .ChainAppendTypeName(request.InstanceType!.GetGenericArguments()[0])
                 .ChainAppend(">(new");
 
         if (typeSuffix != null)

@@ -716,12 +716,12 @@ public sealed class CsharpExpressionDumperTests : IDisposable
     public void Can_Dump_Class_With_DictionaryBasedClass_To_Csharp()
     {
         // Arrange
-        var input = new MyDictionaryBasedClass("custom1", 32);
+        var input = new MyDictionary("custom1", 32);
         input.Add("Key1", "string value");
         input.Add("Key2", 78);
 
         // Act
-        var actual = Dump(input, new[] { new MyDictionaryBasedClassHandler("x") });
+        var actual = Dump(input, new[] { new MyDictionaryHandler("x") });
 
         // Assert
         actual.Should().Be(@"var x = new MyDictionaryBasedClass(@""custom1"", 32);

@@ -1,14 +1,14 @@
 ﻿namespace CsharpExpressionDumper.Core.Tests.TestData;
 
-public class MyDictionaryBasedClassHandler : ICustomTypeHandler
+public class MyDictionaryHandler : ICustomTypeHandler
 {
     private readonly string _variableName;
 
-    public MyDictionaryBasedClassHandler(string variableName) => _variableName = variableName;
+    public MyDictionaryHandler(string variableName) => _variableName = variableName;
 
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        if (request.Instance is MyDictionaryBasedClass myDictionaryBasedClass)
+        if (request.Instance is MyDictionary myDictionaryBasedClass)
         {
             callback.ChainAppend($"var {_variableName} = new MyDictionaryBasedClass(")
                     .ChainAppendFormattedString(myDictionaryBasedClass.Custom1)

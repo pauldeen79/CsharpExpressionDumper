@@ -1,7 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.Tests.TestData;
-#pragma warning disable CA1710 // Identifiers should have correct suffix
-public class MyDictionaryBasedClass : IDictionary<string, object>
-#pragma warning restore CA1710 // Identifiers should have correct suffix
+
+public class MyDictionary : IDictionary<string, object>
 {
     private readonly IDictionary<string, object> _state;
 
@@ -15,7 +14,7 @@ public class MyDictionaryBasedClass : IDictionary<string, object>
     /// or
     /// host
     /// </exception>
-    public MyDictionaryBasedClass(string custom1, int custom2)
+    public MyDictionary(string custom1, int custom2)
     {
         Custom1 = custom1;
         Custom2 = custom2;
@@ -58,9 +57,7 @@ public class MyDictionaryBasedClass : IDictionary<string, object>
 
     public bool Remove(string key) => _state.Remove(key);
 
-#pragma warning disable CS8601 // Possible null reference assignment.
-    public bool TryGetValue(string key, out object value) => _state.TryGetValue(key, out value);
-#pragma warning restore CS8601 // Possible null reference assignment.
+    public bool TryGetValue(string key, out object value) => _state.TryGetValue(key, out value!);
 
     public void Add(KeyValuePair<string, object> item) => _state.Add(item);
 
