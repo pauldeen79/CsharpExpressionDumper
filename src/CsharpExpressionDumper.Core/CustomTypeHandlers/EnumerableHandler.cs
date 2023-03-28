@@ -12,7 +12,7 @@ public class EnumerableHandler : ICustomTypeHandler
 
         var items = enumerable.Cast<object>().ToArray();
         var typeSuffix = GetTypeSuffix(items, request.Instance);
-        AppendInitialization(request, callback, request.InstanceType, typeSuffix);
+        AppendInitialization(request, callback, request.InstanceType, typeSuffix, items.Any());
         var level = request.Level + 1;
         foreach (var item in items)
         {
@@ -24,7 +24,14 @@ public class EnumerableHandler : ICustomTypeHandler
         callback.Append(new string(' ', level * 4));
         if (TypeIsGenericSequence(request.InstanceType))
         {
-            callback.Append("} )");
+            if (items.Any())
+            {
+                callback.Append("} )");
+            }
+            else
+            {
+                callback.Append(")");
+            }
         }
         else
         {
@@ -71,11 +78,12 @@ public class EnumerableHandler : ICustomTypeHandler
     private void AppendInitialization(CustomTypeHandlerRequest request,
                                       ICsharpExpressionDumperCallback callback,
                                       Type instanceType,
-                                      Type? typeSuffix)
+                                      Type? typeSuffix,
+                                      bool hasItems)
     {
         if (TypeIsGenericSequence(request.InstanceType))
         {
-            AppendCustomInitialization(request, callback, typeSuffix, instanceType.GetGenericTypeDefinition());
+            AppendCustomInitialization(request, callback, typeSuffix, instanceType.GetGenericTypeDefinition(), hasItems);
         }
         else
         {
@@ -89,28 +97,35 @@ public class EnumerableHandler : ICustomTypeHandler
             }
             callback.AppendLine("[]");
         }
-        callback.ChainAppend(new string(' ', request.Level * 4))
-                .ChainAppendLine("{");
+
+        if (hasItems || !TypeIsGenericSequence(request.InstanceType))
+        {
+            callback.ChainAppend(new string(' ', request.Level * 4))
+                    .ChainAppendLine("{");
+        }
     }
 
     private void AppendCustomInitialization(CustomTypeHandlerRequest request,
                                             ICsharpExpressionDumperCallback callback,
                                             Type? typeSuffix,
-                                            Type collectionType)
+                                            Type collectionType,
+                                            bool hasItems)
     {
         callback.ChainAppendPrefix()
                 .ChainAppend("new ")
                 .ChainAppendTypeName(collectionType)
                 .ChainAppend('<')
                 .ChainAppendTypeName(request.InstanceType!.GetGenericArguments()[0])
-                .ChainAppend(">(new");
-
-        if (typeSuffix != null)
+                .ChainAppend(hasItems ? ">(new" : ">(");
+        if (hasItems)
         {
-            callback.ChainAppend(" ")
-                    .ChainAppendTypeName(typeSuffix);
+            if (typeSuffix != null)
+            {
+                callback.ChainAppend(" ")
+                        .ChainAppendTypeName(typeSuffix);
+            }
+            callback.AppendLine("[]");
         }
-        callback.AppendLine("[]");
     }
 
     private static Type GetEnumerableGenericArgumentType(Type instanceType)

@@ -92,6 +92,19 @@ public sealed class CsharpExpressionDumperTests : IDisposable
     }
 
     [Fact]
+    public void Can_Dump_Decimal_To_Csharp()
+    {
+        // Arrange
+        var input = 2.5M;
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be(@"2.5M");
+    }
+
+    [Fact]
     public void Can_Dump_Boolean_To_Csharp()
     {
         // Act
@@ -225,19 +238,6 @@ public sealed class CsharpExpressionDumperTests : IDisposable
 
         // Assert
         actual.Should().Be("new System.Version(1, 2, 3, 4)");
-    }
-
-    [Fact]
-    public void Can_Dump_Decimal_To_Csharp()
-    {
-        // Arrange
-        var input = 2.5M;
-
-        // Act
-        var actual = Dump(input);
-
-        // Assert
-        actual.Should().Be(@"2.5M");
     }
 
     [Fact]
@@ -401,9 +401,7 @@ public sealed class CsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass>(new CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass[]
-{
-} )");
+        actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass>()");
     }
 
     [Fact]
