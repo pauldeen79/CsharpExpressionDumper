@@ -35,6 +35,7 @@ public static class ServiceCollectionExtensions
             instance.AddTransient<ICustomTypeHandler, VersionHandler>();
             instance.AddTransient<ICustomTypeHandler, KeyValuePairHandler>();
             instance.AddTransient<ICustomTypeHandler, ValueTupleHandler>();
+            instance.AddTransient<ICustomTypeHandler, DecimalTypeHandler>(); //important to register BEFORE ValueTypeHandler, because all value types will be handled by ValueTypeHandler while decimal needs special treatment
             instance.AddTransient<ICustomTypeHandler, ValueTypeHandler>();
             instance.AddTransient<ICustomTypeHandler, StringHandler>();
             instance.AddTransient<ICustomTypeHandler, DictionaryHandler>();

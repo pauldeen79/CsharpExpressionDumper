@@ -228,6 +228,19 @@ public sealed class CsharpExpressionDumperTests : IDisposable
     }
 
     [Fact]
+    public void Can_Dump_Decimal_To_Csharp()
+    {
+        // Arrange
+        var input = 2.5M;
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be(@"2.5M");
+    }
+
+    [Fact]
     public void Can_Dump_Tuple_2_To_Csharp()
     {
         // Arrange
