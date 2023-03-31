@@ -105,6 +105,19 @@ public sealed class CsharpExpressionDumperTests : IDisposable
     }
 
     [Fact]
+    public void Can_Dump_Float_To_Csharp()
+    {
+        // Arrange
+        var input = 2.5F;
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be(@"2.5F");
+    }
+
+    [Fact]
     public void Can_Dump_Boolean_To_Csharp()
     {
         // Act
