@@ -33,32 +33,32 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Test
         run: dotnet test -c Release
-      - name: Pack
-        if: matrix.os == 'ubuntu-latest'
-        run: dotnet pack -v normal -c Release -o ./artifacts --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID
+      #- name: Pack
+      #  if: matrix.os == 'ubuntu-latest'
+      #  run: dotnet pack -v normal -c Release -o ./artifacts --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID
       - name: Upload Artifact
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v2
         with:
           name: nupkg
           path: ./artifacts/*.nupkg
-  prerelease:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: nupkg
-      - name: Push to GitHub Feed
-        run: |
-          for f in ./nupkg/*.nupkg
-          do
-            echo "Publishing $f"
-            curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
-          done
-        shell: bash
+  #prerelease:
+  #  needs: build
+  #  if: github.ref == 'refs/heads/main'
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Download Artifact
+  #      uses: actions/download-artifact@v1
+  #      with:
+  #        name: nupkg
+  #    - name: Push to GitHub Feed
+  #      run: |
+  #        for f in ./nupkg/*.nupkg
+  #        do
+  #          echo "Publishing $f"
+  #          curl -vX PUT -u "pauldeen79:${{ secrets.FEED_TOKEN }}" -F package=@$f https://nuget.pkg.github.com/pauldeen79/
+  #        done
+  #      shell: bash
   deploy:
     needs: build
     if: github.event_name == 'release'
