@@ -732,7 +732,7 @@ public sealed class CsharpExpressionDumperTests : IDisposable
         input.Add("Key2", 78);
 
         // Act
-        var actual = Dump(input, new[] { new MyDictionaryHandler("x") });
+        var actual = Dump(input, new MyDictionaryHandler("x"));
 
         // Assert
         actual.Should().Be(@"var x = new MyDictionaryBasedClass(@""custom1"", 32);
