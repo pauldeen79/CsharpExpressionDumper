@@ -14,9 +14,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
       - name: sonarscan-dotnet
-        uses: highbyte/sonarscan-dotnet@v2.1.2
+        uses: highbyte/sonarscan-dotnet@v2.2.2
         with:
           sonarProjectKey: pauldeen79_CsharpExpressionDumper
           sonarProjectName: CsharpExpressionDumper

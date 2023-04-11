@@ -127,7 +127,7 @@ public class EnumerableHandlerTests
 } )");
     }
 
-    private class CustomList<T> : List<T>
+    private sealed class CustomList<T> : List<T>
     {
         public CustomList()
         {
