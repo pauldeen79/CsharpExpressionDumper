@@ -142,12 +142,14 @@ public class EnumerableHandler : ICustomTypeHandler
         => items.Length != 0
             && items.Select(x => x.GetType()).Distinct().Count() <= 1;
 
-    private static bool TypeIsGenericSequence(Type? instanceType)
-         => instanceType != null && instanceType.IsGenericType && new[]
+    private static readonly string[] _types = new[]
          {
             "Enumerable`",
             "Collection`",
             "List`",
             "Array`"
-         }.Any(x => instanceType.GetGenericTypeDefinition().FullName.Contains(x));
+         };
+
+    private static bool TypeIsGenericSequence(Type? instanceType)
+         => instanceType != null && instanceType.IsGenericType && Array.Exists(_types, x => instanceType.GetGenericTypeDefinition().FullName.Contains(x));
 }

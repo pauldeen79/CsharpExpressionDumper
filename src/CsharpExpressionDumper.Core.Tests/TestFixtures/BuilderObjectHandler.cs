@@ -17,11 +17,11 @@ public class BuilderObjectHandler : IObjectHandler
 
         foreach (var property in properties.Where(x => callback.IsPropertyValid(command, x)))
         {
-            if (type.GetMethods().Any(x => x.Name == $"With{property.Name}"))
+            if (Array.Exists(type.GetMethods(), x => x.Name == $"With{property.Name}"))
             {
                 first = ProcessBuilderMethod(command, callback, level, first, processedProperties, property, "With");
             }
-            else if (type.GetMethods().Any(x => x.Name == $"Add{property.Name}"))
+            else if (Array.Exists(type.GetMethods(), x => x.Name == $"Add{property.Name}"))
             {
                 first = ProcessBuilderMethod(command, callback, level, first, processedProperties, property, "Add");
             }

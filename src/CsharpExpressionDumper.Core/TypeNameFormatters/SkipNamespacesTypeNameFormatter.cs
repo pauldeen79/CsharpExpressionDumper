@@ -10,7 +10,7 @@ public class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
     public string? Format(string currentValue)
     {
         var currentNamespace = currentValue.GetNamespaceWithDefault();
-        var shouldAbbreviate = _namespacesToAbbreviate.Any(x => x == currentNamespace);
+        var shouldAbbreviate = Array.Exists(_namespacesToAbbreviate, x => x == currentNamespace);
         return shouldAbbreviate
             ? currentValue.GetClassName()
             : default;
