@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-public class CharHandler : ICustomTypeHandler
+internal class CharHandler : ICustomTypeHandler
 {
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {

@@ -6,6 +6,6 @@ public class DefaultReadOnlyPropertyResolver : IReadOnlyPropertyResolver
         => Array.Find
         (
             properties,
-            property => property.Name.Equals(argument.Name, StringComparison.InvariantCultureIgnoreCase)
+            property => property.Name.Equals(argument.Name, StringComparison.OrdinalIgnoreCase)
         );
 }

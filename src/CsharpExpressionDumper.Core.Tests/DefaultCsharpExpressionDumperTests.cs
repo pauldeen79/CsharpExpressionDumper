@@ -1,11 +1,11 @@
 ﻿namespace CsharpExpressionDumper.Core.Tests;
 
-public sealed class CsharpExpressionDumperTests : IDisposable
+public sealed class DefaultCsharpExpressionDumperTests : IDisposable
 {
     private ServiceProvider? _serviceProvider;
     private readonly IServiceCollection _serviceCollection;
 
-    public CsharpExpressionDumperTests() => _serviceCollection = new ServiceCollection();
+    public DefaultCsharpExpressionDumperTests() => _serviceCollection = new ServiceCollection();
 
     [Fact]
     public void Can_Dump_String_To_Csharp()
@@ -141,7 +141,7 @@ public sealed class CsharpExpressionDumperTests : IDisposable
     public void Can_Dump_DateTime_To_Csharp()
     {
         // Arrange
-        var input = new DateTime(2000, 1, 1);
+        var input = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
 
         // Act
         var actual = Dump(input);
@@ -1033,7 +1033,7 @@ input.Property2 = 3;
     public void Dump_Throws_InvalidOperationExcepion_When_No_ObjectHandler_Supports_The_Object_Instance()
     {
         // Arrange
-        _serviceCollection.AddTransient<ICsharpExpressionDumper, CsharpExpressionDumper>();
+        _serviceCollection.AddTransient<ICsharpExpressionDumper, DefaultCsharpExpressionDumper>();
         _serviceCollection.AddTransient<ICsharpExpressionDumperCallback, DefaultCsharpExpressionDumperCallback>();
         _serviceCollection.AddSingleton<IConstructorResolver, DefaultConstructorResolver>();
         _serviceCollection.AddSingleton<IReadOnlyPropertyResolver, DefaultReadOnlyPropertyResolver>();

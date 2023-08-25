@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.ConstructorResolvers;
 
-public class DefaultConstructorResolver : IConstructorResolver
+internal class DefaultConstructorResolver : IConstructorResolver
 {
     public ConstructorInfo? Resolve(Type type)
     {

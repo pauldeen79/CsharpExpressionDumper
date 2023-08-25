@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.ObjectHandlerPropertyFilters;
 
-public class SkipDefaultValues : IObjectHandlerPropertyFilter
+internal class SkipDefaultValues : IObjectHandlerPropertyFilter
 {
     public bool IsValid(ObjectHandlerRequest command, PropertyInfo propertyInfo)
     {

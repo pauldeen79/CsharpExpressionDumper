@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-public class StringHandler : ICustomTypeHandler
+internal class StringHandler : ICustomTypeHandler
 {
     private const string Quote = "\"";
 

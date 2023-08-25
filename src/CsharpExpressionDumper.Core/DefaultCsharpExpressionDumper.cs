@@ -1,12 +1,12 @@
 ﻿namespace CsharpExpressionDumper.Core;
 
-public class CsharpExpressionDumper : ICsharpExpressionDumper
+public class DefaultCsharpExpressionDumper : ICsharpExpressionDumper
 {
     private readonly IReadOnlyCollection<IObjectHandler> _objectHandlers;
     private readonly IReadOnlyCollection<ICustomTypeHandler> _customTypeHandlers;
     private readonly ICsharpExpressionDumperCallback _instanceCallback;
 
-    public CsharpExpressionDumper(IEnumerable<IObjectHandler> objectHandlers,
+    public DefaultCsharpExpressionDumper(IEnumerable<IObjectHandler> objectHandlers,
                                   IEnumerable<ICustomTypeHandler> customTypeHandlers,
                                   ICsharpExpressionDumperCallback instanceCallback)
     {

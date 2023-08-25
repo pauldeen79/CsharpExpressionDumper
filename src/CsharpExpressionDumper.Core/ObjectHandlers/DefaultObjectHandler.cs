@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.ObjectHandlers;
 
-public class DefaultObjectHandler : IObjectHandler
+internal class DefaultObjectHandler : IObjectHandler
 {
     public bool ProcessInstance(ObjectHandlerRequest command, ICsharpExpressionDumperCallback callback)
     {

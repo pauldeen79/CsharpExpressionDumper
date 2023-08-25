@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.Extensions;
 
-public static class EnumerableExtensions
+internal static class EnumerableExtensions
 {
     public static bool ProcessUntilSuccess<T>(this IEnumerable<T> instance, Func<T, bool> processDelegate)
         => instance.Any(x => processDelegate.Invoke(x));

@@ -122,34 +122,33 @@ dotnet_analyzer_diagnostic.severity = warning
 dotnet_analyzer_diagnostic.category-Style.severity = silent
 
 # Specific exclusions
+# Do not nest type x. Alternatively, change its accessibility so that it is not externally visible. (I'm using this in unit tests extensively)
+dotnet_diagnostic.CA1034.severity = none
+# Type 'x' is a static holder type but is neither static nor NotInheritable (I'm using this in unit tests extensively)
+dotnet_diagnostic.CA1052.severity = none
+# Method 'x' passes a literal string as parameter 'y' of a call to 'z'. Retrieve the following string(s) from a resource table instead: "a".
+dotnet_diagnostic.CA1303.severity = none
+dotnet_diagnostic.CA1304.severity = none
 dotnet_diagnostic.CA1305.severity = none
-dotnet_diagnostic.CA1309.severity = none
+dotnet_diagnostic.CA1308.severity = none
 dotnet_diagnostic.CA1310.severity = none
+dotnet_diagnostic.CA1311.severity = none
+#Remove the underscores from member name x (I'm using this in unit tests extensively)
 dotnet_diagnostic.CA1707.severity = none
+#Class name may not end with Dictionary
 dotnet_diagnostic.CA1711.severity = none
+#Language reserved words
 dotnet_diagnostic.CA1716.severity = none
-dotnet_diagnostic.CA1834.severity = none
-
-# Set specific code analysis rules to warning (none by default)
-# Do not hide base class methods
-dotnet_diagnostic.CA1061.severity = warning
-# Validate arguments of public methods
-#dotnet_diagnostic.CA1062.severity = warning
-# Implement IDisposable Correctly
-dotnet_diagnostic.CA1063.severity = warning
-#Avoid excessive complexity
-dotnet_diagnostic.CA1502.severity = warning
-#Avoid unmaintainable code
-dotnet_diagnostic.CA1505.severity = warning
-#Avoid excessive class coupling
-dotnet_diagnostic.CA1506.severity = warning
-#Use nameof to express symbol names
-dotnet_diagnostic.CA1507.severity = warning
 #Avoid dead conditional code (does not seem to work on using statement?)
 dotnet_diagnostic.CA1508.severity = none
-
-# CA1822: Mark members as static
+# CA1822: Mark members as static (does not seem to work flawlessly)
 dotnet_diagnostic.CA1822.severity = none
+# Do not use CA1062 (validate public arguments) on extension methods
+dotnet_code_quality.CA1062.exclude_extension_method_this_parameter = true
+# CA1716: Rename namespace x so that it no longer conflicts with the reserved language keyword 'y'. Using a reserved keyword as the name of a namespace makes it harder for consumers in other languages to use the namespace.
+#dotnet_diagnostic.CA1716.severity = none
+# SYSLIB1045 Use 'GeneratedRegexAttribute' to generate the regular expression implementation at compile-time.
+#dotnet_diagnostic.SYSLIB1045.severity = none
 
 ###############################
 # VB Coding Conventions       #
