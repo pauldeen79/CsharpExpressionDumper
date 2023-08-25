@@ -1,12 +1,12 @@
 ﻿namespace CsharpExpressionDumper.Core;
 
-public class CsharpExpressionDumper : ICsharpExpressionDumper
+public class DefaultCsharpExpressionDumper : ICsharpExpressionDumper
 {
     private readonly IReadOnlyCollection<IObjectHandler> _objectHandlers;
     private readonly IReadOnlyCollection<ICustomTypeHandler> _customTypeHandlers;
     private readonly ICsharpExpressionDumperCallback _instanceCallback;
 
-    public CsharpExpressionDumper(IEnumerable<IObjectHandler> objectHandlers,
+    public DefaultCsharpExpressionDumper(IEnumerable<IObjectHandler> objectHandlers,
                                   IEnumerable<ICustomTypeHandler> customTypeHandlers,
                                   ICsharpExpressionDumperCallback instanceCallback)
     {
@@ -28,7 +28,7 @@ public class CsharpExpressionDumper : ICsharpExpressionDumper
         var instanceType = type ?? instance?.GetType();
         var instanceRequest = new CustomTypeHandlerRequest(instance, instanceType, level);
         var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceRequest, _instanceCallback));
-        if (!instanceIsCustom && instanceType != null)
+        if (!instanceIsCustom && instanceType is not null)
         {
             var isAnonymousType = instanceType.IsAnonymousType();
             _instanceCallback.Append("new ");
@@ -42,7 +42,7 @@ public class CsharpExpressionDumper : ICsharpExpressionDumper
             var success = _objectHandlers.ProcessUntilSuccess(x => x.ProcessInstance(objectHandlerCommand, _instanceCallback));
             if (!success)
             {
-                throw new InvalidOperationException($"There is no object handler which supports object of type [{instanceType?.FullName}]");
+                throw new InvalidOperationException($"There is no object handler which supports object of type [{instanceType.FullName}]");
             }
         }
     }

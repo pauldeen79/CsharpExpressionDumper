@@ -1,10 +1,10 @@
 ﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-public class NullHandler : ICustomTypeHandler
+internal  class NullHandler : ICustomTypeHandler
 {
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        if (request.Instance != null)
+        if (request.Instance is not null)
         {
             return false;
         }

@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.CsharpExpressionDumperCallbacks;
 
-public class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
+internal class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCallback
 {
     public Action<object?, Type?, StringBuilder, int> ProcessRecursiveCallbackDelegate { get; private set; }
         = new Action<object?, Type?, StringBuilder, int>((_1, _2, _3, _4) => { });

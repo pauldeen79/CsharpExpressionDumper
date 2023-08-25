@@ -5,6 +5,7 @@
     <RepositoryUrl>https://github.com/pauldeen79/CsharpExpressionDumper</RepositoryUrl>
     <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
+    <AnalysisLevel>latest-All</AnalysisLevel>
   </PropertyGroup>
 
 </Project>

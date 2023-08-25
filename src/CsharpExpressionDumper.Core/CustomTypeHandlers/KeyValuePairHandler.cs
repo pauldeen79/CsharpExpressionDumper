@@ -1,10 +1,10 @@
 ﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-public class KeyValuePairHandler : ICustomTypeHandler
+internal class KeyValuePairHandler : ICustomTypeHandler
 {
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        if (request.Instance == null
+        if (request.Instance is null
             || (request.InstanceType?.IsGenericType) != true
             || request.InstanceType.GetGenericTypeDefinition() != typeof(KeyValuePair<,>))
         {

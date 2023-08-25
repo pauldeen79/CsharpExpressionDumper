@@ -3,13 +3,13 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCsharpExpressionDumper(this IServiceCollection instance)
-        => instance.AddCsharpExpressionDumper(_ => { });
+        => instance.AddCsharpExpressionDumper(null);
     
     public static IServiceCollection AddCsharpExpressionDumper(this IServiceCollection instance,
-                                                               Action<IServiceCollection> customConfigurationAction)
+                                                               Action<IServiceCollection>? customConfigurationAction)
     {
-        instance.TryAddTransient<ICsharpExpressionDumper, CsharpExpressionDumper>();
-        customConfigurationAction.Invoke(instance);
+        instance.TryAddTransient<ICsharpExpressionDumper, DefaultCsharpExpressionDumper>();
+        customConfigurationAction?.Invoke(instance);
         if (!instance.Any(x => x.ImplementationType == typeof(DefaultCsharpExpressionDumperCallback)))
         {
             instance.TryAddTransient<ICsharpExpressionDumperCallback, DefaultCsharpExpressionDumperCallback>();

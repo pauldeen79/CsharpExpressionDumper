@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.Extensions;
 
-public static class ObjectHandlerCommandExtensions
+internal static class ObjectHandlerCommandExtensions
 {
     public static void ProcessWritableProperties(this ObjectHandlerRequest command,
                                                  ICsharpExpressionDumperCallback callback,

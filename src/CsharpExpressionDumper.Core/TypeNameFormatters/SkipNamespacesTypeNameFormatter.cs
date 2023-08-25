@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.TypeNameFormatters;
 
-public class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
+internal class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
 {
     private readonly string[] _namespacesToAbbreviate;
 
