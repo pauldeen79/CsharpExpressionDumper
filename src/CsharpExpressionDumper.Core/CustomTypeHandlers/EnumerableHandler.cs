@@ -5,7 +5,7 @@ internal class EnumerableHandler : ICustomTypeHandler
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
         if (!(request.Instance is IEnumerable enumerable)
-            || request.InstanceType == null)
+            || request.InstanceType is null)
         {
             return false;
         }
@@ -64,7 +64,7 @@ internal class EnumerableHandler : ICustomTypeHandler
         if (instanceType.IsArray)
         {
             var genericEnumerableType = GetEnumerableGenericArgumentType(instanceType);
-            if (genericEnumerableType == null)
+            if (genericEnumerableType is null)
             {
                 return null;
             }
@@ -90,7 +90,7 @@ internal class EnumerableHandler : ICustomTypeHandler
             callback.ChainAppendPrefix()
                     .ChainAppend("new");
 
-            if (typeSuffix != null)
+            if (typeSuffix is not null)
             {
                 callback.ChainAppend(" ")
                         .ChainAppendTypeName(typeSuffix);
@@ -119,7 +119,7 @@ internal class EnumerableHandler : ICustomTypeHandler
                 .ChainAppend(hasItems ? ">(new" : ">(");
         if (hasItems)
         {
-            if (typeSuffix != null)
+            if (typeSuffix is not null)
             {
                 callback.ChainAppend(" ")
                         .ChainAppendTypeName(typeSuffix);
@@ -136,7 +136,7 @@ internal class EnumerableHandler : ICustomTypeHandler
         );
 
     private static bool TypeIsEmpty(object[] items, object instance)
-        => items == null || instance == null;
+        => items is null || instance is null;
 
     private static bool ItemsAreOfTheSameType(object[] items)
         => items.Length != 0

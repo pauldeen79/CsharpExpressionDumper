@@ -4,7 +4,7 @@ internal class ValueTupleHandler : ICustomTypeHandler
 {
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        if (request.Instance == null
+        if (request.Instance is null
             || (request.InstanceType?.IsGenericType) != true
             || (request.InstanceType.GetGenericTypeDefinition()?.FullName.StartsWith("System.ValueTuple`")) != true)
         {

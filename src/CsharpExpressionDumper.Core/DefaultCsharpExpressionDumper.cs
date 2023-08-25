@@ -28,7 +28,7 @@ public class DefaultCsharpExpressionDumper : ICsharpExpressionDumper
         var instanceType = type ?? instance?.GetType();
         var instanceRequest = new CustomTypeHandlerRequest(instance, instanceType, level);
         var instanceIsCustom = _customTypeHandlers.ProcessUntilSuccess(x => x.Process(instanceRequest, _instanceCallback));
-        if (!instanceIsCustom && instanceType != null)
+        if (!instanceIsCustom && instanceType is not null)
         {
             var isAnonymousType = instanceType.IsAnonymousType();
             _instanceCallback.Append("new ");
@@ -42,7 +42,7 @@ public class DefaultCsharpExpressionDumper : ICsharpExpressionDumper
             var success = _objectHandlers.ProcessUntilSuccess(x => x.ProcessInstance(objectHandlerCommand, _instanceCallback));
             if (!success)
             {
-                throw new InvalidOperationException($"There is no object handler which supports object of type [{instanceType?.FullName}]");
+                throw new InvalidOperationException($"There is no object handler which supports object of type [{instanceType.FullName}]");
             }
         }
     }

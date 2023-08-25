@@ -4,13 +4,13 @@ internal class DefaultObjectHandler : IObjectHandler
 {
     public bool ProcessInstance(ObjectHandlerRequest command, ICsharpExpressionDumperCallback callback)
     {
-        if (command.Instance == null)
+        if (command.Instance is null)
         {
             return false;
         }
 
         var type = command.Type ?? command.InstanceType;
-        if (type == null)
+        if (type is null)
         {
             return false;
         }
@@ -87,7 +87,7 @@ internal class DefaultObjectHandler : IObjectHandler
                                                  PropertyInfo[] properties,
                                                  List<string> processedProperties)
     {
-        if (!command.IsAnonymousType && ctor != null)
+        if (!command.IsAnonymousType && ctor is not null)
         {
             var arguments = ctor.GetParameters();
             if (arguments.Length > 0)
@@ -95,7 +95,7 @@ internal class DefaultObjectHandler : IObjectHandler
                 foreach (var argument in arguments)
                 {
                     var readOnlyProperty = callback.ResolveReadOnlyProperty(properties, ctor, argument);
-                    if (readOnlyProperty == null)
+                    if (readOnlyProperty is null)
                     {
                         continue;
                     }
