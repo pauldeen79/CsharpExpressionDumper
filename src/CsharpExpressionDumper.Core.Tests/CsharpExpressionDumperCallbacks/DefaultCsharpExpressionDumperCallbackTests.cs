@@ -2,12 +2,13 @@
 
 public class DefaultCsharpExpressionDumperCallbackTests
 {
-    [Fact]
-    public void AppendTypeName_Returns_Value_Unchanged_When_No_TypeNameFormatter_Returns_A_NonEmpty_Result()
+    [Theory, AutoMockData]
+    public void AppendTypeName_Returns_Value_Unchanged_When_No_TypeNameFormatter_Returns_A_NonEmpty_Result([Frozen] ITypeNameFormatter typeNameFormatter)
     {
         // Arrange
+        typeNameFormatter.Format(Arg.Any<string>()).Returns(default(string));
         var sut = new DefaultCsharpExpressionDumperCallback(Enumerable.Empty<ICustomTypeHandler>(),
-                                                            new[] { new Mock<ITypeNameFormatter>().Object },
+                                                            new[] { typeNameFormatter },
                                                             Enumerable.Empty<IConstructorResolver>(),
                                                             Enumerable.Empty<IReadOnlyPropertyResolver>(),
                                                             Enumerable.Empty<IObjectHandlerPropertyFilter>());
@@ -40,10 +41,10 @@ public class DefaultCsharpExpressionDumperCallbackTests
     public void AppendTypeName_Returns_Updated_Value_When_TypeNameFormatter_Returns_A_NonEmpty_Result()
     {
         // Arrange
-        var typeNameFormatterMock = new Mock<ITypeNameFormatter>();
-        typeNameFormatterMock.Setup(x => x.Format("System.String")).Returns("string");
+        var typeNameFormatterMock = Substitute.For<ITypeNameFormatter>();
+        typeNameFormatterMock.Format("System.String").Returns("string");
         var sut = new DefaultCsharpExpressionDumperCallback(Enumerable.Empty<ICustomTypeHandler>(),
-                                                            new[] { typeNameFormatterMock.Object },
+                                                            new[] { typeNameFormatterMock },
                                                             Enumerable.Empty<IConstructorResolver>(),
                                                             Enumerable.Empty<IReadOnlyPropertyResolver>(),
                                                             Enumerable.Empty<IObjectHandlerPropertyFilter>());

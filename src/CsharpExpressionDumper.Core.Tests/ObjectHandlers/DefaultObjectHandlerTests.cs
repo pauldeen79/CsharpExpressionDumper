@@ -9,10 +9,10 @@ public class DefaultObjectHandlerTests
         var sut = new DefaultObjectHandler();
         var instance = new MyImmutableClass("test");
         var command = new ObjectHandlerRequest(instance, typeof(MyImmutableClass), 0, typeof(MyImmutableClass), false);
-        var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
+        var callback = Substitute.For<ICsharpExpressionDumperCallback>();
 
         // Act
-        var actual = sut.ProcessInstance(command, callbackMock.Object);
+        var actual = sut.ProcessInstance(command, callback);
 
         // Assert
         actual.Should().BeTrue();
@@ -25,10 +25,10 @@ public class DefaultObjectHandlerTests
         var sut = new DefaultObjectHandler();
         var instance = new MyPocoClass();
         var command = new ObjectHandlerRequest(instance, typeof(MyPocoClass), 0, typeof(MyPocoClass), false);
-        var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
+        var callback = Substitute.For<ICsharpExpressionDumperCallback>();
 
         // Act
-        var actual = sut.ProcessInstance(command, callbackMock.Object);
+        var actual = sut.ProcessInstance(command, callback);
 
         // Assert
         actual.Should().BeTrue();
@@ -41,10 +41,10 @@ public class DefaultObjectHandlerTests
         var sut = new DefaultObjectHandler();
         var instance = default(MyImmutableClass);
         var command = new ObjectHandlerRequest(instance, typeof(MyImmutableClass), 0, typeof(MyImmutableClass), false);
-        var callbackMock = new Mock<ICsharpExpressionDumperCallback>();
+        var callback = Substitute.For<ICsharpExpressionDumperCallback>();
 
         // Act
-        var actual = sut.ProcessInstance(command, callbackMock.Object);
+        var actual = sut.ProcessInstance(command, callback);
 
         // Assert
         actual.Should().BeFalse();
