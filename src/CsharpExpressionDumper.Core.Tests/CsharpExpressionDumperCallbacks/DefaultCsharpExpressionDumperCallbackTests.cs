@@ -1,11 +1,12 @@
 ﻿namespace CsharpExpressionDumper.Core.Tests.CsharpExpressionDumperCallbacks;
 
-public class DefaultCsharpExpressionDumperCallbackTests
+public class DefaultCsharpExpressionDumperCallbackTests : TestBase
 {
-    [Theory, AutoMockData]
-    public void AppendTypeName_Returns_Value_Unchanged_When_No_TypeNameFormatter_Returns_A_NonEmpty_Result([Frozen] ITypeNameFormatter typeNameFormatter)
+    [Fact]
+    public void AppendTypeName_Returns_Value_Unchanged_When_No_TypeNameFormatter_Returns_A_NonEmpty_Result()
     {
         // Arrange
+        var typeNameFormatter = Fixture.Freeze<ITypeNameFormatter>();
         typeNameFormatter.Format(Arg.Any<string>()).Returns(default(string));
         var sut = new DefaultCsharpExpressionDumperCallback(Enumerable.Empty<ICustomTypeHandler>(),
                                                             new[] { typeNameFormatter },
