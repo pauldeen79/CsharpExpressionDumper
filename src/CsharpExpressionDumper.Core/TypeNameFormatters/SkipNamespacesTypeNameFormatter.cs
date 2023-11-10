@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core.TypeNameFormatters;
 
-internal class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
+public class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
 {
     private readonly string[] _namespacesToAbbreviate;
 
@@ -9,8 +9,14 @@ internal class SkipNamespacesTypeNameFormatter : ITypeNameFormatter
 
     public string? Format(string currentValue)
     {
+        if (currentValue is null)
+        {
+            return null;
+        }
+
         var currentNamespace = currentValue.GetNamespaceWithDefault();
         var shouldAbbreviate = Array.Exists(_namespacesToAbbreviate, x => x == currentNamespace);
+
         return shouldAbbreviate
             ? currentValue.GetClassName()
             : default;
