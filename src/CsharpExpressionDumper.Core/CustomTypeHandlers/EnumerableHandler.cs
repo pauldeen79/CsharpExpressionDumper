@@ -12,7 +12,7 @@ internal class EnumerableHandler : ICustomTypeHandler
 
         var items = enumerable.Cast<object>().ToArray();
         var typeSuffix = GetTypeSuffix(items, request.Instance);
-        AppendInitialization(request, callback, request.InstanceType, typeSuffix, items.Any());
+        AppendInitialization(request, callback, request.InstanceType, typeSuffix, items.Length > 0);
         var level = request.Level + 1;
         foreach (var item in items)
         {
@@ -24,7 +24,7 @@ internal class EnumerableHandler : ICustomTypeHandler
         callback.Append(new string(' ', level * 4));
         if (TypeIsGenericSequence(request.InstanceType))
         {
-            if (items.Any())
+            if (items.Length > 0)
             {
                 callback.Append("} )");
             }
@@ -139,7 +139,7 @@ internal class EnumerableHandler : ICustomTypeHandler
         => items is null || instance is null;
 
     private static bool ItemsAreOfTheSameType(object[] items)
-        => items.Length != 0
+        => items.Length > 0
             && items.Select(x => x.GetType()).Distinct().Count() <= 1;
 
     private static readonly string[] _types = new[]

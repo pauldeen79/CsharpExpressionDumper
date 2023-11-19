@@ -53,7 +53,7 @@ internal class DefaultCsharpExpressionDumperCallback : ICsharpExpressionDumperCa
     public void AppendTypeName(Type type)
         => Append(_typeNameFormatters.Aggregate(type.FullName.FixTypeName(), (seed, func) => func.Format(seed) ?? seed));
 
-    private ICsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
+    private DefaultCsharpExpressionDumperCallback CreateNestedCallback(string prefix, string suffix)
         => new DefaultCsharpExpressionDumperCallback
         (
             _typeHandlers,
