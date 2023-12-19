@@ -1,6 +1,8 @@
 name: .NET Core
 on:
   push:
+    branches:
+      - main
   pull_request:
   release:
     types:
@@ -33,6 +35,11 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Test
         run: dotnet test -c Release
+      - name: Checking for external vulnerabilities
+        run: |
+          dotnet list package --vulnerable --include-transitive 2>&1 | tee vuln.log
+          echo "Analyze dotnet list package..."
+          ! grep -q -i "has the following vulnerable packages" vuln.log
       #- name: Pack
       #  if: matrix.os == 'ubuntu-latest'
       #  run: dotnet pack -v normal -c Release -o ./artifacts --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID
