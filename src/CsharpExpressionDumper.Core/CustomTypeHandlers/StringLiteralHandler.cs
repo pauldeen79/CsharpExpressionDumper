@@ -4,7 +4,7 @@ internal class StringLiteralHandler : ICustomTypeHandler
 {
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        if (!(request.Instance is StringLiteral literal))
+        if (!(request.Instance is IStringLiteral literal))
         {
             return false;
         }

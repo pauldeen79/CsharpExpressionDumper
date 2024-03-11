@@ -1,6 +1,6 @@
 ﻿namespace CsharpExpressionDumper.Core;
 
-public class StringLiteral
+public class StringLiteral : IStringLiteral
 {
     public StringLiteral(string value)
     {
