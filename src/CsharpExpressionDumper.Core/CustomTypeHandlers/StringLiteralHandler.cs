@@ -1,15 +1,15 @@
 ﻿namespace CsharpExpressionDumper.Core.CustomTypeHandlers;
 
-internal class NullHandler : ICustomTypeHandler
+internal class StringLiteralHandler : ICustomTypeHandler
 {
     public bool Process(CustomTypeHandlerRequest request, ICsharpExpressionDumperCallback callback)
     {
-        if (request.Instance is not null)
+        if (!(request.Instance is StringLiteral literal))
         {
             return false;
         }
 
-        callback.AppendSingleValue("null");
+        callback.AppendSingleValue(literal.Value);
         return true;
     }
 }

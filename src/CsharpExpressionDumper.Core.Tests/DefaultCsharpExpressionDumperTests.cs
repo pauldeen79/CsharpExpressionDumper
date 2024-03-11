@@ -1016,6 +1016,19 @@ input.Property2 = 3;
     }
 
     [Fact]
+    public void Can_Dump_StringLiteral()
+    {
+        // Arrange
+        var input = new StringLiteral("some value");
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be("some value");
+    }
+
+    [Fact]
     public void Can_Filter_Empty_Property_Values_On_Dump()
     {
         // Arrange

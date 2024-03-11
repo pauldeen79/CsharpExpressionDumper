@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         if (!instance.Any(x => x.ImplementationType == typeof(NullHandler)))
         {
             instance.AddTransient<ICustomTypeHandler, NullHandler>();
+            instance.AddTransient<ICustomTypeHandler, StringLiteralHandler>();
             instance.AddTransient<ICustomTypeHandler, DateTimeHandler>();
             instance.AddTransient<ICustomTypeHandler, TimeSpanHandler>();
             instance.AddTransient<ICustomTypeHandler, EnumHandler>();
