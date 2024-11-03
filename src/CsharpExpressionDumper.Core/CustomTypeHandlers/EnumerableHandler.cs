@@ -41,7 +41,7 @@ internal class EnumerableHandler : ICustomTypeHandler
         return true;
     }
 
-    private Type? GetTypeSuffix(object[] items, object instance)
+    private static Type? GetTypeSuffix(object[] items, object instance)
     {
         if (TypeIsEmpty(items, instance))
         {
@@ -75,11 +75,11 @@ internal class EnumerableHandler : ICustomTypeHandler
         return null;
     }
 
-    private void AppendInitialization(CustomTypeHandlerRequest request,
-                                      ICsharpExpressionDumperCallback callback,
-                                      Type instanceType,
-                                      Type? typeSuffix,
-                                      bool hasItems)
+    private static void AppendInitialization(CustomTypeHandlerRequest request,
+                                             ICsharpExpressionDumperCallback callback,
+                                             Type instanceType,
+                                             Type? typeSuffix,
+                                             bool hasItems)
     {
         if (TypeIsGenericSequence(request.InstanceType))
         {
@@ -105,7 +105,7 @@ internal class EnumerableHandler : ICustomTypeHandler
         }
     }
 
-    private void AppendCustomInitialization(CustomTypeHandlerRequest request,
+    private static void AppendCustomInitialization(CustomTypeHandlerRequest request,
                                             ICsharpExpressionDumperCallback callback,
                                             Type? typeSuffix,
                                             Type collectionType,
