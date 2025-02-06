@@ -1029,6 +1029,22 @@ input.Property2 = 3;
     }
 
     [Fact]
+    public void Can_Dump_Reserved_Keyword_Constructor_Argument()
+    {
+        // Arrange
+        var input = new MyClassWithReservedKeywordArgument("some namespace");
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithReservedKeywordArgument
+(
+    @namespace: @""some namespace""
+)");
+    }
+
+    [Fact]
     public void Can_Filter_Empty_Property_Values_On_Dump()
     {
         // Arrange
