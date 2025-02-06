@@ -1045,6 +1045,26 @@ input.Property2 = 3;
     }
 
     [Fact]
+    public void Can_Dump_Object_With_Enumerable_Argument()
+    {
+        // Arrange
+        var input = new MyClassWithEnumerableArgument(["value 1", "value 2"]);
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithEnumerableArgument
+(
+    values: new System.Collections.Generic.List<System.String>(new[]
+    {
+        @""value 1"",
+        @""value 2"",
+    } )
+)");
+    }
+
+    [Fact]
     public void Can_Filter_Empty_Property_Values_On_Dump()
     {
         // Arrange
