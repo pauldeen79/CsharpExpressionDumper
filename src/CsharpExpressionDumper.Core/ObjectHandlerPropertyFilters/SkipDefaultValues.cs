@@ -17,6 +17,7 @@ internal class SkipDefaultValues : IObjectHandlerPropertyFilter
 
         return defaultValue is null
             || actualValue is null
+            || (actualValue is IEnumerable e && !e.OfType<object>().Any())
             || !actualValue.Equals(defaultValue);
     }
 }
