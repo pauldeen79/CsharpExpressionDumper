@@ -13,6 +13,11 @@ internal class SkipDefaultValues : IObjectHandlerPropertyFilter
             return false;
         }
 
+        if (propertyInfo.PropertyType == typeof(string) && actualValue?.Equals(string.Empty) == true)
+        {
+            return false;
+        }
+
         return defaultValue is null
             || actualValue is null
             || (actualValue is IEnumerable e && !e.OfType<object>().Any())
