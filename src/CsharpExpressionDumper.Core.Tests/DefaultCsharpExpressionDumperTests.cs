@@ -388,6 +388,19 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
     }
 
     [Fact]
+    public void Can_Dump_ObservableCollection_To_Csharp()
+    {
+        // Arrange
+        var input = new ObservableCollection<object>();
+
+        // Act
+        var actual = Dump(input);
+
+        // Assert
+        actual.Should().Be(@"new System.Collections.ObjectModel.ObservableCollection<System.Object>()");
+    }
+
+    [Fact]
     public void Can_Dump_Filled_GenericListOfBaseClass_To_Csharp()
     {
         // Arrange
