@@ -17,7 +17,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("@\"hello\"");
+        actual.ShouldBe("@\"hello\"");
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("@\"\"\"hello\"\"\"");
+        actual.ShouldBe("@\"\"\"hello\"\"\"");
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"@""
+        actual.ShouldBe(@"@""
 """);
     }
 
@@ -58,7 +58,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("@\"@\"");
+        actual.ShouldBe("@\"@\"");
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(null);
 
         // Assert
-        actual.Should().Be("null");
+        actual.ShouldBe("null");
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(1);
 
         // Assert
-        actual.Should().Be("1");
+        actual.ShouldBe("1");
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(1.5);
 
         // Assert
-        actual.Should().Be("1.5");
+        actual.ShouldBe("1.5");
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"2.5M");
+        actual.ShouldBe(@"2.5M");
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"2.5F");
+        actual.ShouldBe(@"2.5F");
     }
 
     [Fact]
@@ -124,7 +124,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(true);
 
         // Assert
-        actual.Should().Be("true");
+        actual.ShouldBe("true");
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(MyEnumeration.First);
 
         // Assert
-        actual.Should().Be("CsharpExpressionDumper.Core.Tests.TestData.MyEnumeration.First");
+        actual.ShouldBe("CsharpExpressionDumper.Core.Tests.TestData.MyEnumeration.First");
     }
 
     [Fact]
@@ -147,7 +147,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("new System.DateTime(2000, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Unspecified)");
+        actual.ShouldBe("new System.DateTime(2000, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Unspecified)");
     }
 
     [Fact]
@@ -160,7 +160,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("new System.TimeSpan(1, 2, 3, 4, 5)");
+        actual.ShouldBe("new System.TimeSpan(1, 2, 3, 4, 5)");
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump('z');
 
         // Assert
-        actual.Should().Be("'z'");
+        actual.ShouldBe("'z'");
     }
 
     [Fact]
@@ -183,7 +183,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new[]
+        actual.ShouldBe(@"new[]
 {
     'a',
     'b',
@@ -198,7 +198,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(new Guid("9f1ffe01-c83b-436a-9c5c-3f1b82dcd616"));
 
         // Assert
-        actual.Should().Be(@"new System.Guid(""9f1ffe01-c83b-436a-9c5c-3f1b82dcd616"")");
+        actual.ShouldBe(@"new System.Guid(""9f1ffe01-c83b-436a-9c5c-3f1b82dcd616"")");
     }
 
     [Fact]
@@ -211,7 +211,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Collections.Generic.KeyValuePair<System.String, System.Object>(@""Key"", 123.45)");
+        actual.ShouldBe(@"new System.Collections.Generic.KeyValuePair<System.String, System.Object>(@""Key"", 123.45)");
     }
 
     [Fact]
@@ -224,7 +224,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("typeof(System.String)");
+        actual.ShouldBe("typeof(System.String)");
     }
 
     [Fact]
@@ -237,7 +237,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Uri(""http://www.google.com/"")");
+        actual.ShouldBe(@"new System.Uri(""http://www.google.com/"")");
     }
 
     [Fact]
@@ -250,7 +250,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("new System.Version(1, 2, 3, 4)");
+        actual.ShouldBe("new System.Version(1, 2, 3, 4)");
     }
 
     [Fact]
@@ -263,7 +263,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Tuple<System.String,System.Int32>
+        actual.ShouldBe(@"new System.Tuple<System.String,System.Int32>
 (
     item1: @""hello"",
     item2: 123
@@ -280,7 +280,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Tuple<System.String,System.Int32,System.Boolean>
+        actual.ShouldBe(@"new System.Tuple<System.String,System.Int32,System.Boolean>
 (
     item1: @""hello"",
     item2: 123,
@@ -298,7 +298,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.ValueTuple<System.String, System.Int32>(@""test"", 19)");
+        actual.ShouldBe(@"new System.ValueTuple<System.String, System.Int32>(@""test"", 19)");
     }
 
     [Fact]
@@ -311,7 +311,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.ValueTuple<System.String, System.Int32, System.Boolean>(@""test"", 19, true)");
+        actual.ShouldBe(@"new System.ValueTuple<System.String, System.Int32, System.Boolean>(@""test"", 19, true)");
     }
 
     [Fact]
@@ -324,7 +324,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.ValueTuple<System.String, System.Int32, System.Boolean, System.Boolean>(@""test"", 19, true, false)");
+        actual.ShouldBe(@"new System.ValueTuple<System.String, System.Int32, System.Boolean, System.Boolean>(@""test"", 19, true, false)");
     }
 
     [Fact]
@@ -337,7 +337,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.ValueTuple<System.String, System.Int32, System.Boolean, System.Boolean, System.String>(@""test"", 19, true, false, @""pfff"")");
+        actual.ShouldBe(@"new System.ValueTuple<System.String, System.Int32, System.Boolean, System.Boolean, System.String>(@""test"", 19, true, false, @""pfff"")");
     }
 
     [Fact]
@@ -347,7 +347,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(new[] { "a", "b" });
 
         // Assert
-        actual.Should().Be(@"new[]
+        actual.ShouldBe(@"new[]
 {
     @""a"",
     @""b"",
@@ -361,7 +361,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(new object[] { "a", 1, false });
 
         // Assert
-        actual.Should().Be(@"new System.Object[]
+        actual.ShouldBe(@"new System.Object[]
 {
     @""a"",
     1,
@@ -379,7 +379,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Collections.Generic.List<System.Object>(new System.Object[]
+        actual.ShouldBe(@"new System.Collections.Generic.List<System.Object>(new System.Object[]
 {
     @""a"",
     1,
@@ -397,7 +397,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Collections.ObjectModel.ObservableCollection<System.Object>()");
+        actual.ShouldBe(@"new System.Collections.ObjectModel.ObservableCollection<System.Object>()");
     }
 
     [Fact]
@@ -410,7 +410,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass>(new CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass[]
+        actual.ShouldBe(@"new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass>(new CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass[]
 {
     new CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass(),
     new CsharpExpressionDumper.Core.Tests.TestData.MyOverrideClass(),
@@ -427,7 +427,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass>()");
+        actual.ShouldBe(@"new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyBaseClass>()");
     }
 
     [Fact]
@@ -440,7 +440,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass
 {
     Property1 = @""hello"",
     Property2 = 1,
@@ -469,7 +469,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyRecursiveClass
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyRecursiveClass
 {
     Property1 = @""Root"",
     Property2 = new CsharpExpressionDumper.Core.Tests.TestData.MyRecursiveClass
@@ -494,7 +494,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithStringArray
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithStringArray
 {
     Property1 = @""test"",
     Property2 = new[]
@@ -515,7 +515,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassArray
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassArray
 {
     Property1 = @""test"",
     Property2 = new[]
@@ -546,7 +546,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassICollection
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassICollection
 {
     Property1 = @""test"",
     Property2 = new[]
@@ -577,7 +577,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassCollection
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassCollection
 {
     Property1 = @""test"",
     Property2 = new System.Collections.ObjectModel.Collection<CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass>(new[]
@@ -608,7 +608,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassIReadOnlyCollection
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassIReadOnlyCollection
 {
     Property1 = @""test"",
     Property2 = new[]
@@ -639,7 +639,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassReadOnlyCollection
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassReadOnlyCollection
 {
     Property1 = @""test"",
     Property2 = new System.Collections.ObjectModel.ReadOnlyCollection<CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass>(new[]
@@ -670,7 +670,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassIList
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassIList
 {
     Property1 = @""test"",
     Property2 = new[]
@@ -701,7 +701,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassList
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithFlatClassList
 {
     Property1 = @""test"",
     Property2 = new System.Collections.Generic.List<CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass>(new[]
@@ -739,7 +739,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithIDictionary
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithIDictionary
 {
     Property1 = new System.Collections.Generic.Dictionary<System.String, System.Object>
     {
@@ -761,7 +761,7 @@ public sealed class DefaultCsharpExpressionDumperTests : IDisposable
         var actual = Dump(input, new MyDictionaryHandler("x"));
 
         // Assert
-        actual.Should().Be(@"var x = new MyDictionaryBasedClass(@""custom1"", 32);
+        actual.ShouldBe(@"var x = new MyDictionaryBasedClass(@""custom1"", 32);
 x.Add(@""Key1"", @""string value"");
 x.Add(@""Key2"", 78);");
     }
@@ -776,7 +776,7 @@ x.Add(@""Key2"", 78);");
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new 
+        actual.ShouldBe(@"new 
 {
     Property1 = @""test"",
     Property2 = 2,
@@ -797,7 +797,7 @@ x.Add(@""Key2"", 78);");
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new[]
+        actual.ShouldBe(@"new[]
 {
     new 
     {
@@ -824,7 +824,7 @@ x.Add(@""Key2"", 78);");
         var actual = (string)Dump(input, new ExpandoObjectHandler("input"));
 
         // Assert
-        actual.Should().Be(@"dynamic input = new System.Dynamic.ExpandoObject();
+        actual.ShouldBe(@"dynamic input = new System.Dynamic.ExpandoObject();
 input.Property1 = @""test"";
 input.Property2 = 3;
 ");
@@ -840,7 +840,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithReadOnlyProperty
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithReadOnlyProperty
 {
     Property1 = @""Test"",
 }");
@@ -856,7 +856,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithOnlyReadOnlyProperties()");
+        actual.ShouldBe("new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithOnlyReadOnlyProperties()");
     }
 
     [Fact]
@@ -869,7 +869,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyImmutableClass
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyImmutableClass
 (
     property1: @""test"",
     property2: 2
@@ -886,7 +886,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyImmutableRecord
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyImmutableRecord
 (
     property1: @""test"",
     property2: 2
@@ -907,7 +907,7 @@ input.Property2 = 3;
         });
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyImmutableClassWithTwoCtors
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyImmutableClassWithTwoCtors
 (
     property1: @""test"",
     property2: 2
@@ -924,7 +924,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyHalfImmutableClass1
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyHalfImmutableClass1
 (
     property1: @""test""
 )
@@ -943,7 +943,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyHalfImmutableClass2
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyHalfImmutableClass2
 (
     property1: @""test""
 )
@@ -962,7 +962,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyNestedImmutableClass
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyNestedImmutableClass
 (
     property1: @""Root"",
     property2: 1,
@@ -990,7 +990,7 @@ input.Property2 = 3;
         var actual = Dump(input, new MyCustomTypeHandler());
 
         // Assert
-        actual.Should().Be(@"MyImmutableClass.Create(@""test"", 3)");
+        actual.ShouldBe(@"MyImmutableClass.Create(@""test"", 3)");
     }
 
     [Fact]
@@ -1003,7 +1003,7 @@ input.Property2 = 3;
         var actual = Dump(input, new[] { new MyCustomTypeFormatter() });
 
         // Assert
-        actual.Should().Be(@"new MYIMMUTABLECLASS
+        actual.ShouldBe(@"new MYIMMUTABLECLASS
 (
     property1: @""test"",
     property2: 3
@@ -1020,7 +1020,7 @@ input.Property2 = 3;
         var actual = Dump(input, new[] { new BuilderObjectHandler() });
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestFixtures.MyBuilder()
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestFixtures.MyBuilder()
     .WithName(@""Test"")
     .AddValues(
         @""1"",
@@ -1038,7 +1038,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be("some value");
+        actual.ShouldBe("some value");
     }
 
     [Fact]
@@ -1051,7 +1051,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithReservedKeywordArgument
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithReservedKeywordArgument
 (
     @namespace: @""some namespace""
 )");
@@ -1067,7 +1067,7 @@ input.Property2 = 3;
         var actual = Dump(input);
 
         // Assert
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithEnumerableArgument
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyClassWithEnumerableArgument
 (
     values: new System.Collections.Generic.List<System.String>(new[]
     {
@@ -1088,7 +1088,7 @@ input.Property2 = 3;
         var actual = Dump(input, new[] { filter });
 
         // Asset
-        actual.Should().Be(@"new CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass()");
+        actual.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.TestData.MyFlatClass()");
     }
 
     [Fact]
@@ -1104,9 +1104,10 @@ input.Property2 = 3;
         var sut = _serviceProvider.GetRequiredService<ICsharpExpressionDumper>();
 
         // Act & Assert
-        sut.Invoking(x => x.Dump("hello world"))
-           .Should().Throw<InvalidOperationException>()
-           .WithMessage("There is no object handler which supports object of type [System.String]");
+        Action a = () => sut.Dump("hello world");
+        a
+           .ShouldThrow<InvalidOperationException>()
+           .Message.ShouldBe("There is no object handler which supports object of type [System.String]");
     }
 
     private string Dump(object? input, params ICustomTypeHandler[] customTypeHandlers)

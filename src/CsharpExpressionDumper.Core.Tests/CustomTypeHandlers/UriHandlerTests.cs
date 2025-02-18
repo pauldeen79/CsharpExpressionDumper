@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class UriHandlerTests
 {
@@ -18,8 +18,8 @@ public class UriHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.Uri(""http://www.google.com/"")");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.Uri(""http://www.google.com/"")");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class UriHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new Uri(""http://www.google.com/"")");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new Uri(""http://www.google.com/"")");
     }
 }

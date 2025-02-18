@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.TypeNameFormatters;
+namespace CsharpExpressionDumper.Core.Tests.TypeNameFormatters;
 
 public class SkipNamespacesTypeNameFormatterTests
 {
@@ -12,7 +12,7 @@ public class SkipNamespacesTypeNameFormatterTests
         var actual = sut.Format("System.String");
 
         // Assert
-        actual.Should().BeNull();
+        actual.ShouldBeNull();
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class SkipNamespacesTypeNameFormatterTests
         var actual = sut.Format(null!);
 
         // Assert
-        actual.Should().BeNull();
+        actual.ShouldBeNull();
     }
 
     [Fact]
@@ -38,6 +38,6 @@ public class SkipNamespacesTypeNameFormatterTests
         var actual = sut.Format("System.String");
 
         // Assert
-        actual.Should().Be("String");
+        actual.ShouldBe("String");
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers;
+namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers;
 
 public class BuilderObjectHandlerTests : TestBase
 {
@@ -22,7 +22,7 @@ public class BuilderObjectHandlerTests : TestBase
         var actual = sut.ProcessInstance(command, Callback);
 
         // Assert
-        actual.Should().BeTrue();
+        actual.ShouldBeTrue();
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class BuilderObjectHandlerTests : TestBase
         var actual = sut.ProcessInstance(command, Callback);
 
         // Assert
-        actual.Should().BeFalse();
+        actual.ShouldBeFalse();
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class BuilderObjectHandlerTests : TestBase
         var actual = sut.ProcessInstance(command, Callback);
 
         // Assert
-        actual.Should().BeFalse();
+        actual.ShouldBeFalse();
     }
 
     public class MyPocoClass

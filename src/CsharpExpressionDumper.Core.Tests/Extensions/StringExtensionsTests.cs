@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.Extensions;
+namespace CsharpExpressionDumper.Core.Tests.Extensions;
 
 public class StringExtensionsTests
 {
@@ -13,7 +13,7 @@ public class StringExtensionsTests
         var actual = input.FixTypeName();
 
         // Assert
-        actual.Should().Be(expectedResult);
+        actual.ShouldBe(expectedResult);
     }
 
     [Theory]
@@ -27,7 +27,7 @@ public class StringExtensionsTests
         var actual = input.GetClassName();
 
         // Assert
-        actual.Should().Be(expectedResult);
+        actual.ShouldBe(expectedResult);
     }
 
 
@@ -42,6 +42,6 @@ public class StringExtensionsTests
         var actual = input.GetNamespaceWithDefault();
 
         // Assert
-        actual.Should().Be(expectedResult);
+        actual.ShouldBe(expectedResult);
     }
 }

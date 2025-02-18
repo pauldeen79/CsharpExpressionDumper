@@ -18,8 +18,8 @@ public class EnumerableHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.Collections.Generic.List<System.String>(new[]
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.Collections.Generic.List<System.String>(new[]
 {
     @""a"",
     @""b"",
@@ -43,8 +43,8 @@ public class EnumerableHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new List<String>(new[]
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new List<String>(new[]
 {
     @""a"",
     @""b"",
@@ -68,8 +68,8 @@ public class EnumerableHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new[]
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new[]
 {
     @""a"",
     @""b"",
@@ -93,8 +93,8 @@ public class EnumerableHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests.CustomList<System.String>(new[]
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new CsharpExpressionDumper.Core.Tests.CustomTypeHandlers.EnumerableHandlerTests.CustomList<System.String>(new[]
 {
     @""a"",
     @""b"",
@@ -118,8 +118,8 @@ public class EnumerableHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new CustomList<String>(new[]
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new CustomList<String>(new[]
 {
     @""a"",
     @""b"",

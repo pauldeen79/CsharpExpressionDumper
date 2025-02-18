@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class DateTimeHandlerTests
 {
@@ -18,8 +18,8 @@ public class DateTimeHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.DateTime(1900, 1, 2, 3, 4, 5, 0, System.DateTimeKind.Unspecified)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.DateTime(1900, 1, 2, 3, 4, 5, 0, System.DateTimeKind.Unspecified)");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class DateTimeHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new DateTime(1900, 1, 2, 3, 4, 5, 0, DateTimeKind.Unspecified)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new DateTime(1900, 1, 2, 3, 4, 5, 0, DateTimeKind.Unspecified)");
     }
 }

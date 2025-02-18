@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class KeyValuePairHandlerTests
 {
@@ -18,8 +18,8 @@ public class KeyValuePairHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.Collections.Generic.KeyValuePair<System.String, System.String>(@""Key"", @""Value"")");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.Collections.Generic.KeyValuePair<System.String, System.String>(@""Key"", @""Value"")");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class KeyValuePairHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new KeyValuePair<String, String>(@""Key"", @""Value"")");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new KeyValuePair<String, String>(@""Key"", @""Value"")");
     }
 }

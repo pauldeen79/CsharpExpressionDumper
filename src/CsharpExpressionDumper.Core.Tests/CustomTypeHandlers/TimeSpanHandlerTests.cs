@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class TimeSpanHandlerTests
 {
@@ -18,8 +18,8 @@ public class TimeSpanHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.TimeSpan(1, 2, 3, 4, 5)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.TimeSpan(1, 2, 3, 4, 5)");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class TimeSpanHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new TimeSpan(1, 2, 3, 4, 5)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new TimeSpan(1, 2, 3, 4, 5)");
     }
 }

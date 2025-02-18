@@ -18,8 +18,8 @@ public class DictionaryHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.Collections.Generic.Dictionary<System.String, System.String>
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.Collections.Generic.Dictionary<System.String, System.String>
 {
     [@""k1""] = @""a"",
     [@""k2""] = @""b"",
@@ -43,8 +43,8 @@ public class DictionaryHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new Dictionary<String, String>
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new Dictionary<String, String>
 {
     [@""k1""] = @""a"",
     [@""k2""] = @""b"",

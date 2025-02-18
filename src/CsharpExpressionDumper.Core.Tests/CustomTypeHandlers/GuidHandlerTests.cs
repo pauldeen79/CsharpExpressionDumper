@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class GuidHandlerTests
 {
@@ -18,8 +18,8 @@ public class GuidHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.Guid(""00000000-0000-0000-0000-000000000000"")");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.Guid(""00000000-0000-0000-0000-000000000000"")");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class GuidHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new Guid(""00000000-0000-0000-0000-000000000000"")");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new Guid(""00000000-0000-0000-0000-000000000000"")");
     }
 }

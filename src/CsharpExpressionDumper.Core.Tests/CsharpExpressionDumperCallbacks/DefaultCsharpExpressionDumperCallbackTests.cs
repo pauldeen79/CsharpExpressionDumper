@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CsharpExpressionDumperCallbacks;
+namespace CsharpExpressionDumper.Core.Tests.CsharpExpressionDumperCallbacks;
 
 public class DefaultCsharpExpressionDumperCallbackTests : TestBase
 {
@@ -18,7 +18,7 @@ public class DefaultCsharpExpressionDumperCallbackTests : TestBase
         sut.AppendTypeName(typeof(string));
 
         // Assert
-        sut.Builder.ToString().Should().Be("System.String");
+        sut.Builder.ToString().ShouldBe("System.String");
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class DefaultCsharpExpressionDumperCallbackTests : TestBase
         sut.AppendTypeName(typeof(string));
 
         // Assert
-        sut.Builder.ToString().Should().Be("System.String");
+        sut.Builder.ToString().ShouldBe("System.String");
     }
 
     [Fact]
@@ -54,6 +54,6 @@ public class DefaultCsharpExpressionDumperCallbackTests : TestBase
         sut.AppendTypeName(typeof(string));
 
         // Assert
-        sut.Builder.ToString().Should().Be("string");
+        sut.Builder.ToString().ShouldBe("string");
     }
 }

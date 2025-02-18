@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class VersionHandlerTests
 {
@@ -18,8 +18,8 @@ public class VersionHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.Version(1, 2, 3, 4)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.Version(1, 2, 3, 4)");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class VersionHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new Version(1, 2, 3, 4)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new Version(1, 2, 3, 4)");
     }
 }

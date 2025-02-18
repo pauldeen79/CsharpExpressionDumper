@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers;
+namespace CsharpExpressionDumper.Core.Tests.ObjectHandlers;
 
 public class DefaultObjectHandlerTests
 {
@@ -15,7 +15,7 @@ public class DefaultObjectHandlerTests
         var actual = sut.ProcessInstance(command, callback);
 
         // Assert
-        actual.Should().BeTrue();
+        actual.ShouldBeTrue();
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class DefaultObjectHandlerTests
         var actual = sut.ProcessInstance(command, callback);
 
         // Assert
-        actual.Should().BeTrue();
+        actual.ShouldBeTrue();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class DefaultObjectHandlerTests
         var actual = sut.ProcessInstance(command, callback);
 
         // Assert
-        actual.Should().BeFalse();
+        actual.ShouldBeFalse();
     }
 
     public class MyImmutableClass

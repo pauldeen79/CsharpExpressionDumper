@@ -1,4 +1,4 @@
-﻿namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
+namespace CsharpExpressionDumper.Core.Tests.CustomTypeHandlers;
 
 public class ValueTupleHandlerTests
 {
@@ -18,8 +18,8 @@ public class ValueTupleHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new System.ValueTuple<System.String, System.Int32>(@""test"", 19)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new System.ValueTuple<System.String, System.Int32>(@""test"", 19)");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class ValueTupleHandlerTests
         var code = callback.Builder.ToString();
 
         // Assert
-        actual.Should().BeTrue();
-        code.Should().Be(@"new ValueTuple<String, Int32>(@""test"", 19)");
+        actual.ShouldBeTrue();
+        code.ShouldBe(@"new ValueTuple<String, Int32>(@""test"", 19)");
     }
 }

@@ -20,7 +20,7 @@ global using CsharpExpressionDumper.Core.ReadOnlyPropertyResolvers;
 global using CsharpExpressionDumper.Core.Tests.TestData;
 global using CsharpExpressionDumper.Core.Tests.TestFixtures;
 global using CsharpExpressionDumper.Core.TypeNameFormatters;
-global using FluentAssertions;
 global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
+global using Shouldly;
 global using Xunit;
