@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="src/CsharpExpressionDumper.Abstractions/CsharpExpressionDumper.Abstractions.csproj" />
+  <Project Path="src/CsharpExpressionDumper.Core.Tests/CsharpExpressionDumper.Core.Tests.csproj" />
+  <Project Path="src/CsharpExpressionDumper.Core/CsharpExpressionDumper.Core.csproj" />
+</Solution>
